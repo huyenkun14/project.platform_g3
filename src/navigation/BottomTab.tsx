@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { View, Image } from "react-native"
+import { Image } from "react-native"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TabsData } from "../constants/bottomTab"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
