@@ -1,10 +1,13 @@
 import { useCallback } from "react"
-import { Image } from "react-native"
+import { Image, View } from "react-native"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TabsData } from "../constants/bottomTab"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Home from "../screens/home"
 import Test from "../screens/test"
+import Activity from "../screens/activities";
+import Chart from "../screens/charts";
+import History from "../screens/history";
 
 const MyBottomTabs = () => {
 
@@ -39,17 +42,36 @@ const MyBottomTabs = () => {
     const { focused, tabName } = props
     const tab = TabsData.filter(item => item?.name === tabName)[0]
     const getColor = useCallback(() => {
-      if (focused) return 'orange'
-      else return 'gray'
+      if (focused) return 'crimson'
+      else return 'grey'
     }, [focused])
+    if (tabName === 'Activity')
+      return (
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 60,
+          height: 60,
+          borderRadius: 100,
+          backgroundColor: 'crimson',
+          top: -25,
 
-    return (
-      <Image
-        source={tab?.icon}
-        style={{ tintColor: getColor(), height: 25 }}
-        resizeMode="contain"
-      />
-    )
+        }}>
+          <Image
+            source={tab?.icon}
+            style={{ tintColor: '#fff', height: 25, width: 25 }}
+            resizeMode="contain"
+          />
+        </View>
+      )
+    else
+      return (
+        <Image
+          source={tab?.icon}
+          style={{ tintColor: getColor(), height: 25, width: 25 }}
+          resizeMode="contain"
+        />
+      )
   }
 
   return (
@@ -57,6 +79,21 @@ const MyBottomTabs = () => {
       <Tab.Screen
         name="Home"
         component={Home}
+        options={getOptions}
+      />
+      <Tab.Screen
+        name="Chart"
+        component={Chart}
+        options={getOptions}
+      />
+      <Tab.Screen
+        name="Activity"
+        component={Activity}
+        options={getOptions}
+      />
+      <Tab.Screen
+        name="History"
+        component={History}
         options={getOptions}
       />
       <Tab.Screen

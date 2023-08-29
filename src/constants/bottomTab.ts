@@ -9,6 +9,24 @@ export const TabsData = [
     },
     {
         id: 2,
+        name: 'Chart',
+        icon: IconTabs.chart,
+        color: 'gray',
+    },
+    {
+        id: 3,
+        name: 'Activity',
+        icon: IconTabs.activity,
+        color: 'gray',
+    },
+    {
+        id: 4,
+        name: 'History',
+        icon: IconTabs.history,
+        color: 'gray',
+    },
+    {
+        id: 5,
         name: 'Test',
         icon: IconTabs.test,
         color: 'gray',
