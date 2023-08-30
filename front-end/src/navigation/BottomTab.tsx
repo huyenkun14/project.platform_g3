@@ -43,7 +43,7 @@ const MyBottomTabs = () => {
     const tab = TabsData.filter(item => item?.name === tabName)[0]
     const getColor = useCallback(() => {
       if (focused) return 'crimson'
-      else return 'grey'
+      else return '#BDBDBD'
     }, [focused])
     if (tabName === 'Activity')
       return (
@@ -75,7 +75,7 @@ const MyBottomTabs = () => {
   }
 
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: {height: 300} }}>
       <Tab.Screen
         name="Home"
         component={Home}
