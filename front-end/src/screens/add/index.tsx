@@ -1,11 +1,11 @@
 import { View, Text, StatusBar } from 'react-native'
 import React from 'react'
+import { styles } from './styles'
 
 const Activity = () => {
     return (
-        <View>
-            <StatusBar />
-            <Text>Activity</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>Add nè</Text>
         </View>
     )
 }

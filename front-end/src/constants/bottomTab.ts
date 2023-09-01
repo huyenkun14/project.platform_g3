@@ -27,8 +27,8 @@ export const TabsData = [
     },
     {
         id: 5,
-        name: 'Test',
-        icon: IconTabs.test,
+        name: 'Saving',
+        icon: IconTabs.saving,
         color: 'gray',
     }
 ]
