@@ -5,9 +5,10 @@ import { TabsData } from "../constants/bottomTab"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Home from "../screens/home"
 import Test from "../screens/test"
-import Activity from "../screens/activities";
+import Activity from "../screens/add";
 import Chart from "../screens/charts";
 import History from "../screens/history";
+import { defaultColors } from "../theme";
 
 const MyBottomTabs = () => {
 
@@ -26,7 +27,7 @@ const MyBottomTabs = () => {
       routeName === 'Test'
     ) {
       return { display: 'flex' };
-    }
+    } 
     return { display: 'none' };
   }, []);
 
@@ -42,8 +43,8 @@ const MyBottomTabs = () => {
     const { focused, tabName } = props
     const tab = TabsData.filter(item => item?.name === tabName)[0]
     const getColor = useCallback(() => {
-      if (focused) return 'crimson'
-      else return '#BDBDBD'
+      if (focused) return defaultColors.tabActive
+      else return defaultColors.tabColor
     }, [focused])
     if (tabName === 'Activity')
       return (
@@ -53,7 +54,7 @@ const MyBottomTabs = () => {
           width: 60,
           height: 60,
           borderRadius: 100,
-          backgroundColor: 'crimson',
+          backgroundColor: defaultColors.tabActive,
           top: -25,
 
         }}>
@@ -97,7 +98,7 @@ const MyBottomTabs = () => {
         options={getOptions}
       />
       <Tab.Screen
-        name="Test"
+        name="Saving"
         component={Test}
         options={getOptions}
       />
