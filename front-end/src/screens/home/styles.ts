@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { defaultColors } from '../../theme'
+import { SCREEN_WIDTH, defaultColors } from '../../theme'
 
 export const styles = StyleSheet.create({
     container: {
@@ -7,20 +7,21 @@ export const styles = StyleSheet.create({
     },
     overviewContainer: {
         marginBottom: 20,
+        // minWidth: SCREEN_WIDTH
     },
     title: {
-        fontWeight: '600',
-        fontSize: 25,
-        marginVertical: 15,
+        fontWeight: '300',
+        fontSize: 18,
+        marginVertical: 20,
         paddingHorizontal: 25,
     },
     overviewList:{
-        marginLeft: 25,
+        paddingLeft: 25,
     },
     overviewItem: {
         height: 200,
         backgroundColor: defaultColors.flatListItem,
-        width: 150,
+        minWidth: 150,
         paddingHorizontal: 20,
         paddingVertical: 25,
         marginRight: 15,

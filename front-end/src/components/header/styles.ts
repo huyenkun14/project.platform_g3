@@ -18,8 +18,8 @@ export const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     title: {
-        fontSize: 22,
-        fontWeight: '600',
+        fontSize: 18,
+        fontWeight: '400',
         color: '#000'
     },
     avatar: {

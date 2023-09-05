@@ -20,6 +20,10 @@ const Banner = () => {
     {
       id: 3,
       imgURL: require('../../../../../assets/images/banner/banner3.png')
+    },
+    {
+      id: 4,
+      imgURL: require('../../../../../assets/images/banner/banner4.png')
     }
   ]
 
