@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { defaultColors } from "../../theme";
+import { SCREEN_WIDTH, defaultColors } from "../../theme";
 
 export const styles = StyleSheet.create({
     container: {
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 25,
-        paddingVertical: 25,
+        paddingVertical: 20,
         borderRadius: 8,
         borderTopColor: '#E6E6E6',
         borderTopWidth: 1,
@@ -17,21 +17,25 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
-        height: 60,
-        width: 60,
+        height: 55,
+        width: 55,
         borderRadius: 8,
         backgroundColor: defaultColors.backgroundType,
         marginRight: 15,
     },
     title: {
         color: defaultColors.text_black,
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: '600',
     },
     content: {
         color: defaultColors.text_gray,
-        fontSize: 16,
-        fontWeight: '500'
+        fontSize: 14,
+        marginTop: 5,
+        fontWeight: '500',
+    },
+    note: {
+        maxWidth: SCREEN_WIDTH*0.45,
     },
     alignRight: {
         textAlign: 'right',
