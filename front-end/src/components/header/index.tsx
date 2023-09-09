@@ -9,7 +9,7 @@ const Header = (props: any) => {
             {isBack ?
                 <View style={styles.back}>
                     <Image
-                        source={require('../../../assets/images/icon/ic_arrowLeft.png')}
+                        source={require('../../../assets/images/icon/ic_arrow.png')}
                         style={styles.backIcon}
                     />
                 </View>
@@ -21,6 +21,7 @@ const Header = (props: any) => {
                 source={require('../../../assets/images/icon/ic_user.png')}
                 style={styles.avatar}
             />
+            
         </View>
     )
 }

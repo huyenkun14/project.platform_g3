@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native'
-import { SCREEN_HEIGHT } from '../../theme'
+import { SCREEN_HEIGHT, defaultColors } from '../../theme'
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: defaultColors.backgroundColor,
         minHeight: SCREEN_HEIGHT,
     },
     title: {

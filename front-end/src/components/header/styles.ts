@@ -15,7 +15,8 @@ export const styles = StyleSheet.create({
     backIcon: {
         height: 20,
         width: 20,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        
     },
     title: {
         fontSize: 18,
