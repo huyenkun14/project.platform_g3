@@ -3,9 +3,9 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { defaultColors } from '../../../../theme';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width
-export const SLIDER_HEIGHT = SLIDER_WIDTH * 0.52
-export const ITEM_WIDTH = SLIDER_WIDTH - 10
-export const ITEM_HEIGHT = SLIDER_WIDTH * 0.5
+export const SLIDER_HEIGHT = SLIDER_WIDTH * 0.45
+export const ITEM_WIDTH = SLIDER_WIDTH
+export const ITEM_HEIGHT = SLIDER_WIDTH * 0.4
 
 export const styles = StyleSheet.create({
     container: {

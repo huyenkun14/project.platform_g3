@@ -1,18 +1,23 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+
+import { View, Text, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { styles } from './styles'
 
 const Entry = (props: any) => {
-  const { title, time, price, note, iconSource } = props
+
+  const { title, time, price, note } = props
+  const navigation = useNavigation<any>()
+  const money = Number(price).toLocaleString('en')
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate('EntryDetail')}>
       <View style={styles.container}>
         <View style={styles.typeContainer}>
           <Image
              source={iconSource}
              style={styles.image}
-            
-          
+                  
           />
           <View>
             <Text style={styles.title}>{title}</Text>
@@ -20,7 +25,7 @@ const Entry = (props: any) => {
           </View>
         </View>
         <View>
-          <Text style={styles.title}>{price}</Text>
+          <Text style={styles.title}>{money}</Text>
           <Text style={[styles.content, styles.alignRight]}>{time}</Text>
         </View>
       </View>

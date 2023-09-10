@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 25,
     },
     back: {
-        height: 35,
-        width: 35,
+        height: 40,
+        width: 40,
         justifyContent: 'center',
     },
     backIcon: {
@@ -24,8 +24,9 @@ export const styles = StyleSheet.create({
         color: '#000'
     },
     avatar: {
-        height: 35,
-        width: 35,
-        resizeMode: 'contain'
+        height: 40,
+        width: 40,
+        resizeMode: 'cover',
+        borderRadius: 8,
     }
 })
