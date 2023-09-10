@@ -10,5 +10,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MariaDBDialect
-        show_sql: false
+        show_sql: true
         format_sql: true
+server:
+  port: 8081
+media:
+  img_path: "${user.home}${file.separator}Downloads${file.separator}images"
