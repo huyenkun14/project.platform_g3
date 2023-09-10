@@ -2,9 +2,8 @@
 /* eslint-disable unused-imports/no-unused-imports */
 import React from 'react'
 import Carousel from 'react-native-reanimated-carousel';
-import { View, Image, Text } from 'react-native';
+import { View, Image } from 'react-native';
 import { SLIDER_HEIGHT, SLIDER_WIDTH, styles } from './styles';
-import { defaultColors } from '../../../../theme';
 
 const Banner = () => {
 

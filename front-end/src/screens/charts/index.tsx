@@ -1,17 +1,10 @@
-import { View, Text, StatusBar, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
+import { LineChart, PieChart } from "react-native-chart-kit";
 import { chartDataExpense, chartDataIncome } from '../../mock/chart';
 import Header from '../../components/header';
-import { SCREEN_WIDTH } from '../../theme';
+import { SCREEN_WIDTH, defaultColors } from '../../theme';
 
 const Chart = () => {
 
@@ -61,7 +54,7 @@ const Chart = () => {
                   }
                 ]
               }}
-              width={SCREEN_WIDTH} 
+              width={SCREEN_WIDTH}
               height={220}
               yAxisLabel="$"
               yAxisSuffix="k"
@@ -127,22 +120,22 @@ const Chart = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header title='Biểu đồ' />
       {/* options */}
       <View style={styles.option}>
         <TouchableOpacity onPress={() => { setChartType('1') }}>
-          <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? 'green' : '#d8d8d8' }]}>Tổng quan</Text>
+          <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? defaultColors.flatListItem : '#d8d8d8' }]}>Tổng quan</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => { setChartType('2') }}>
-          <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? 'green' : '#d8d8d8' }]}>Chi tiêu</Text>
+          <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? defaultColors.flatListItem : '#d8d8d8' }]}>Chi tiêu</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => { setChartType('3') }}>
-          <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? 'green' : '#d8d8d8' }]}>Thu nhập</Text>
+          <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? defaultColors.flatListItem : '#d8d8d8' }]}>Thu nhập</Text>
         </TouchableOpacity>
       </View>
       {renderChart()}
-    </View>
+    </SafeAreaView>
   )
 }
 

@@ -21,11 +21,12 @@ const Header = (props: any) => {
                 <View style={styles.back} />
             }
             <Text style={styles.title}>{title}</Text>
-            <Image
-                source={require('../../../assets/images/icon/ic_user.png')}
-                style={styles.avatar}
-            />
-            
+            <TouchableOpacity>
+                <Image
+                    source={require('../../../assets/images/icon/ic_user.png')}
+                    style={styles.avatar}
+                />
+            </TouchableOpacity>
         </View>
     )
 }
