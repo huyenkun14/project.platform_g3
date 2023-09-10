@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput } from 'react-native'
+import { View, Text, ScrollView, TextInput, SafeAreaView } from 'react-native'
 import React, { useState } from 'react';
 import { Agenda, Calendar, LocaleConfig } from 'react-native-calendars';
 import { styles } from './styles'
@@ -10,7 +10,7 @@ const EntryDetail = () => {
     const [marksDate, setMarksDate] = useState({});
     const [refreshCalender, setRefreshCalender] = useState(false);
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Header title='Chi tiết' isBack={true} />
             <ScrollView contentContainerStyle={{paddingBottom: 250}}>
                 <View style={[styles.calendarContainer, styles.mgBottom20]}>
@@ -61,7 +61,7 @@ const EntryDetail = () => {
                     </View>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     )
 }
 

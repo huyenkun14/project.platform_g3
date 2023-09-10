@@ -1,91 +1,68 @@
 import { StyleSheet } from 'react-native'
-import { defaultColors } from '../../theme'
+import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from '../../theme'
 
 
 export const styles = StyleSheet.create({
-    container: {
-        backgroundColor: defaultColors.backgroundColor
-    },
-    title: {
-        fontSize: 30,
-        color: '#000',
-        margin: 10,
-        opacity: 500
-    },
-    plus: {
-        width: 40,
-        height: 40,
-    },
-
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginVertical: 10
-    },
-    
-    square: {
-    width: 50,
-    height: 50,
-    // backgroundColor: '#fff',
-    justifyContent: 'center', 
+  container: {
+    minHeight: SCREEN_HEIGHT,
+    backgroundColor: defaultColors.backgroundColor,
+    position: 'relative',
+  },
+  imageBack: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    tintColor: defaultColors.backgroundImg
+  },
+  title: {
+    fontWeight: '300',
+    fontSize: 18,
+    marginVertical: 20,
+    paddingHorizontal: 25,
+  },
+  addContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 10,
-    borderColor: 'black',
-    borderWidth: 1, 
-    borderStyle: 'dashed',
-    },
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 25,
+    marginVertical: 10
+  },
 
-    item: {
-        
-        width: 100, 
-        height: 100, 
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        // borderColor: '#ccc',
-        margin: 4,
-        borderRadius: 5,
-        backgroundColor: 'green',
-        marginBottom: 30
-      },
-
-    lastEntriesHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginHorizontal: 16,
-        marginBottom: 20
-      },
-    
-    dotsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        
-      },
-
-    dots: {
-        width: 24, 
-        height: 24,
-      },
-
-    add: {
-      height: 25,
-      width: 25,
-      resizeMode: 'contain',
-      tintColor: defaultColors.text_white,
-    },
-
-    overviewItem: {
-      height: 200,
-      backgroundColor: defaultColors.flatListItem,
-      minWidth: 150,
-      paddingHorizontal: 20,
-      paddingVertical: 25,
-      marginRight: 15,
-      justifyContent: 'space-between',
-      borderRadius: 10,}
-
-
-    
+  addItem: {
+    width: SCREEN_WIDTH/3.5,
+    height: SCREEN_WIDTH/3.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+    marginBottom: 20,
+    shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7,
+  },
+  itemIcon: {
+    height: 25,
+    width: 25,
+    resizeMode: 'contain',
+    marginBottom: 10
+  },
+  addIncome: {
+    backgroundColor: defaultColors.backgroundColor,
+  },
+  addIncomeText: {
+    tintColor: defaultColors.text_gray,
+    color: defaultColors.text_gray,
+  },
+  addExpense: {
+    backgroundColor: defaultColors.flatListItem
+  },
+  addExpenseText: {
+    color: defaultColors.text_white,
+  },
 })

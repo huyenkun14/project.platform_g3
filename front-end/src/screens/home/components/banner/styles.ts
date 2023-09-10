@@ -4,13 +4,14 @@ import { defaultColors } from '../../../../theme';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width
 export const SLIDER_HEIGHT = SLIDER_WIDTH * 0.45
-export const ITEM_WIDTH = SLIDER_WIDTH
-export const ITEM_HEIGHT = SLIDER_WIDTH * 0.4
+export const ITEM_WIDTH = SLIDER_WIDTH - 10
+export const ITEM_HEIGHT = SLIDER_WIDTH * 0.45
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'none',
+        backgroundColor: defaultColors.backgroundType,
         borderRadius: 8,
+        marginTop: -20,
         width: ITEM_WIDTH,
         height: ITEM_HEIGHT,
         shadowColor: "#000",

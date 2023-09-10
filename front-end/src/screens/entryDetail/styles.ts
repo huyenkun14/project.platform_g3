@@ -4,6 +4,7 @@ import { SCREEN_WIDTH, defaultColors } from '../../theme'
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: defaultColors.backgroundColor
     },
     calendarContainer: {
         width: SCREEN_WIDTH,

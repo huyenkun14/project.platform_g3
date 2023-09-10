@@ -1,18 +1,26 @@
 import { StyleSheet } from 'react-native'
-import { SCREEN_WIDTH, defaultColors } from '../../theme'
+import { defaultColors } from '../../theme'
 
 export const styles = StyleSheet.create({
     container: {
         backgroundColor: defaultColors.backgroundColor
     },
+    imageBack: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        tintColor: defaultColors.backgroundImg
+    },
     overviewContainer: {
         marginBottom: 20,
-        // minWidth: SCREEN_WIDTH
+        marginTop: 10
     },
     title: {
         fontWeight: '300',
         fontSize: 18,
-        marginVertical: 20,
+        marginBottom: 20,
         paddingHorizontal: 25,
     },
     overviewItem: {
@@ -47,4 +55,13 @@ export const styles = StyleSheet.create({
         color: defaultColors.text_white,
         marginTop: 8,
     },
+    optionContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        flexWrap: 'wrap',
+    },
+    emptyOption: {
+        backfaceVisibility: 'hidden',
+        width: 90,
+    }
 })
