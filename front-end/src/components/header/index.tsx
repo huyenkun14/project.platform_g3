@@ -25,6 +25,7 @@ const Header = (props: any) => {
                 source={require('../../../assets/images/icon/ic_user.png')}
                 style={styles.avatar}
             />
+            
         </View>
     )
 }

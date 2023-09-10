@@ -3,7 +3,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from '../../theme'
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: defaultColors.backgroundColor,
         minHeight: SCREEN_HEIGHT,
     },
     option: {
