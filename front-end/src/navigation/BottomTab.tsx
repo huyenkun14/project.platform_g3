@@ -4,11 +4,11 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TabsData } from "../constants/bottomTab"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Home from "../screens/home"
-import Test from "../screens/test"
 import Activity from "../screens/add";
 import Chart from "../screens/charts";
 import History from "../screens/history";
 import { defaultColors } from "../theme";
+import Classify from "../screens/classify";
 
 const MyBottomTabs = () => {
 
@@ -98,8 +98,8 @@ const MyBottomTabs = () => {
         options={getOptions}
       />
       <Tab.Screen
-        name="Saving"
-        component={Test}
+        name="Classify"
+        component={Classify}
         options={getOptions}
       />
     </Tab.Navigator>

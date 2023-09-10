@@ -1,18 +1,22 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { styles } from './styles'
+import { useNavigation } from '@react-navigation/native'
 
 const Header = (props: any) => {
     const { isBack, title } = props
+    const navigation = useNavigation<any>()
     return (
         <View style={styles.container}>
             {isBack ?
-                <View style={styles.back}>
-                    <Image
-                        source={require('../../../assets/images/icon/ic_arrowLeft.png')}
-                        style={styles.backIcon}
-                    />
-                </View>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <View style={styles.back}>
+                        <Image
+                            source={require('../../../assets/images/icon/ic_arrowLeft.png')}
+                            style={styles.backIcon}
+                        />
+                    </View>
+                </TouchableOpacity>
                 :
                 <View style={styles.back} />
             }
