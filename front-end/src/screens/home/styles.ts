@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
     title: {
         fontWeight: '300',
-        fontSize: 18,
+        fontSize: 16,
         marginBottom: 20,
         paddingHorizontal: 25,
     },
