@@ -56,7 +56,6 @@ export const styles = StyleSheet.create({
     backgroundColor: defaultColors.backgroundColor,
   },
   addIncomeText: {
-    tintColor: defaultColors.text_gray,
     color: defaultColors.text_gray,
   },
   addExpense: {
