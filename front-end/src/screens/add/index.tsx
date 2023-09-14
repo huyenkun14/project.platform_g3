@@ -24,7 +24,7 @@ const Add = () => {
             <View style={[styles.addItem, styles.addIncome]}>
               <Image
                 source={require('../../../assets/images/icon/add.png')}
-                style={[styles.itemIcon, {tintColor: defaultColors.text_gray}]}
+                style={[styles.itemIcon, {tintColor: defaultColors.text_3}]}
               />
               <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
             </View>
@@ -33,7 +33,7 @@ const Add = () => {
             <View style={[styles.addItem, styles.addExpense]}>
               <Image
                 source={require('../../../assets/images/icon/add.png')}
-                style={[styles.itemIcon, {tintColor: defaultColors.text_white}]}
+                style={[styles.itemIcon, {tintColor: defaultColors.text_2}]}
               />
               <Text style={styles.addExpenseText}>Thêm chi tiêu</Text>
             </View>

@@ -12,9 +12,9 @@ export const styles = StyleSheet.create({
         width: 56,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: defaultColors.backgroundColor,
+        backgroundColor: defaultColors.optionItem,
         borderRadius: 8,
-        shadowColor: "#000",
+        shadowColor: defaultColors.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,
@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     optionText: {
         textAlign: 'center',
         marginTop: 10,
-        fontWeight: '500'
+        fontWeight: '500',
+        color: defaultColors.text_1
     }
 })
