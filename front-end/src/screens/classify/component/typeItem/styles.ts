@@ -48,5 +48,21 @@ export const styles = StyleSheet.create({
     },
     warning: {
         backgroundColor: '#FFDCA2',
-    }
+    },
+    swipeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight:25,
+    },
+    swipeIconWrap: {
+        paddingVertical: 30,
+        paddingHorizontal: 20,
+        backgroundColor: 'red'
+    },
+    swipeIcon: {
+        height: 20,
+        width: 20,
+        resizeMode: 'contain',
+        tintColor: defaultColors.text_white
+    },
 })
