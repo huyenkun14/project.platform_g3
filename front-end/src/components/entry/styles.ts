@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
         marginRight: 15,
     },
     title: {
-        color: defaultColors.text_black,
+        color: defaultColors.text_1,
         fontSize: 16,
         fontWeight: '600',
     },
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
         fontSize: 15
     },
     content: {
-        color: defaultColors.text_gray,
+        color: defaultColors.text_3,
         fontSize: 12,
         marginTop: 3,
         fontWeight: '500',

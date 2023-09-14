@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import React, { useCallback } from "react"
 import { Image, View } from "react-native"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TabsData } from "../constants/bottomTab"
@@ -27,7 +27,7 @@ const MyBottomTabs = () => {
       routeName === 'Test'
     ) {
       return { display: 'flex' };
-    } 
+    }
     return { display: 'none' };
   }, []);
 
@@ -54,13 +54,13 @@ const MyBottomTabs = () => {
           width: 60,
           height: 60,
           borderRadius: 100,
-          backgroundColor: defaultColors.tabActive,
+          backgroundColor: defaultColors.tabAdd,
           top: -25,
 
         }}>
           <Image
             source={tab?.icon}
-            style={{ tintColor: '#fff', height: 25, width: 25 }}
+            style={{ tintColor: defaultColors.text_white, height: 25, width: 25 }}
             resizeMode="contain"
           />
         </View>
@@ -76,7 +76,16 @@ const MyBottomTabs = () => {
   }
 
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: {height: 300} }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          height: 300,
+          backgroundColor: defaultColors.backgroundColor
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={Home}

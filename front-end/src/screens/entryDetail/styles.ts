@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         width: SCREEN_WIDTH - 50,
         borderRadius: 8,
         paddingBottom: 10,
-        shadowColor: "#000",
+        shadowColor: defaultColors.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
         height: 50,
         fontSize: 16,
         borderRadius: 8,
-        shadowColor: "#000",
+        shadowColor: defaultColors.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,

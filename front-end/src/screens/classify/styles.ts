@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 20,
         paddingVertical: 10,
-        shadowColor: "#000",
+        shadowColor: defaultColors.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,

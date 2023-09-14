@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         marginTop: -20,
         width: ITEM_WIDTH,
         height: ITEM_HEIGHT,
-        shadowColor: "#000",
+        shadowColor: defaultColors.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,

@@ -17,8 +17,8 @@ const Home = () => {
     },
     {
       id: 2,
-      title: 'Tiết kiệm',
-      icon: require('../../../assets/images/icon/ic_saving.png')
+      title: 'Giao diện',
+      icon: require('../../../assets/images/icon/ic_moon.png')
     },
     {
       id: 3,

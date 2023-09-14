@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 20,
         paddingHorizontal: 25,
+        color: defaultColors.text_1,
     },
     overviewItem: {
         height: 155,
