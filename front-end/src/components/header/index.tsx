@@ -21,7 +21,7 @@ const Header = (props: any) => {
                 <View style={styles.back} />
             }
             <Text style={styles.title}>{title}</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <Image
                     source={require('../../../assets/images/icon/ic_user.png')}
                     style={styles.avatar}

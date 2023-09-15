@@ -84,7 +84,7 @@ export const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         right: 0,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
         zIndex: -10,
         opacity: 0.15,
     }

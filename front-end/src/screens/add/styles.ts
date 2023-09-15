@@ -37,12 +37,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     marginBottom: 20,
-    shadowColor: "#000",
+    shadowColor: defaultColors.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,
         },
-        shadowOpacity: 0.29,
+        shadowOpacity: 0.1,
         shadowRadius: 4.65,
         elevation: 7,
   },
@@ -56,13 +56,12 @@ export const styles = StyleSheet.create({
     backgroundColor: defaultColors.backgroundColor,
   },
   addIncomeText: {
-    tintColor: defaultColors.text_gray,
-    color: defaultColors.text_gray,
+    color: defaultColors.text_3,
   },
   addExpense: {
     backgroundColor: defaultColors.flatListItem
   },
   addExpenseText: {
-    color: defaultColors.text_white,
+    color: defaultColors.text_2,
   },
 })

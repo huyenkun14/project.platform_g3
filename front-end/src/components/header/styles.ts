@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { defaultColors } from '../../theme'
 export const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
@@ -16,12 +17,12 @@ export const styles = StyleSheet.create({
         height: 20,
         width: 20,
         resizeMode: 'contain',
-        
+        tintColor: defaultColors.text_1,
     },
     title: {
         fontSize: 18,
         fontWeight: '400',
-        color: '#000'
+        color: defaultColors.text_1,
     },
     avatar: {
         height: 40,

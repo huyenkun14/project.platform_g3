@@ -2,9 +2,11 @@
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import counterReducer from './slices/counterSlice';
+import themeReducer from './slices/themeSlice';
 
 const rootReducer = combineReducers({
     counter: counterReducer,
+    theme: themeReducer,
     // more reducer
 });
 

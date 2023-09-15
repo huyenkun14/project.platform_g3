@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
         width: SCREEN_WIDTH/3.2,
         fontSize: 16,
         borderRadius: 8,
-        color: defaultColors.text_white,
+        color: defaultColors.text_2,
         overflow: 'hidden',
     },
     ChartContainer: {
