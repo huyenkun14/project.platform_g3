@@ -16,3 +16,6 @@ server:
   port: 8081
 media:
   img_path: "${user.home}${file.separator}Downloads${file.separator}images"
+auth:
+  jwt_secret = ""
+  jwt_expiration = ""
