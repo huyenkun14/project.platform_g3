@@ -17,5 +17,5 @@ server:
 media:
   img_path: "${user.home}${file.separator}Downloads${file.separator}images"
 auth:
-  jwt_secret = ""
-  jwt_expiration = ""
+  jwt_secret = "hehe"
+  jwt_expiration = 604800000L

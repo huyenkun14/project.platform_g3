@@ -2,16 +2,17 @@ package com.example.moneytrackerbackend.security;
 
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
 public class JwtUtils {
-    // Đoạn JWT_SECRET này là bí mật, chỉ có phía server biết
-    private final String JWT_SECRET = "hehe";
-    //Thời gian có hiệu lực của chuỗi jwt
-    private final long JWT_EXPIRATION = 604800000L;
+    @Value("${app.jwt_secret}")
+    private String JWT_SECRET;
+    @Value("${app.jwt_expiration}")
+    private long JWT_EXPIRATION;
 
     // Tạo ra jwt từ thông tin user
     public String generateToken(UserDetailsImpl userDetails) {
