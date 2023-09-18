@@ -7,6 +7,7 @@ import Banner from './components/banner'
 import Entry from '../../components/entry'
 import { StatusBar } from 'expo-status-bar'
 import Option from './components/option'
+import { NAVIGATION_TITLE } from '../../constants/navigation'
 
 const Home = () => {
   const optionsData = [
@@ -27,18 +28,19 @@ const Home = () => {
     },
     {
       id: 4,
-      title: 'Lịch sử',
-      icon: require('../../../assets/images/icon/ic_history.png')
+      title: 'Nhắc nhở',
+      icon: require('../../../assets/images/icon/ic_bell.png')
     },
     {
       id: 5,
-      title: 'Cài đặt',
-      icon: require('../../../assets/images/icon/ic_setting.png')
+      title: 'Tìm kiếm',
+      icon: require('../../../assets/images/icon/ic_search.png')
     },
     {
       id: 6,
       title: 'Tài khoản',
-      icon: require('../../../assets/images/icon/ic_account.png')
+      icon: require('../../../assets/images/icon/ic_account.png'),
+      router: NAVIGATION_TITLE.ACCOUNT
     }
   ]
   const renderOverviewList = ({ item }) => (
@@ -83,7 +85,7 @@ const Home = () => {
           <Text style={styles.title}>Danh mục</Text>
           <View style={styles.optionContainer}>
             {optionsData.map((item) => (
-              <Option title={item.title} icon={item.icon} key={item.id}/>
+              <Option title={item.title} icon={item.icon} key={item.id} router={item.router}/>
             ))}
             <View style={styles.emptyOption} />
             <View style={styles.emptyOption} />

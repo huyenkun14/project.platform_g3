@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '500',
         fontSize: 15,
+        color: defaultColors.text_1,
     },
     error: {
         color: defaultColors.text_err,

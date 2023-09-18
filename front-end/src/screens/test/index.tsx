@@ -4,6 +4,7 @@ import { styles } from './styles'
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { add, sub } from '../../redux/slices/counterSlice';
 import { useNavigation } from '@react-navigation/native';
+import { NAVIGATION_TITLE } from '../../constants/navigation';
 
 
 const Home = () => {
@@ -24,7 +25,7 @@ const Home = () => {
       <Button
         title='login'
         onPress={() => {
-          navigation.navigate("Login")
+          navigation.navigate(NAVIGATION_TITLE.LOGIN)
         }}
       />
 
