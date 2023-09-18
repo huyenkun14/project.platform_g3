@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native'
+import { NAVIGATION_TITLE } from '../../constants/navigation'
 
 const Header = (props: any) => {
     const { isBack, title } = props
@@ -21,7 +22,7 @@ const Header = (props: any) => {
                 <View style={styles.back} />
             }
             <Text style={styles.title}>{title}</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.ACCOUNT)}>
                 <Image
                     source={require('../../../assets/images/icon/ic_user.png')}
                     style={styles.avatar}

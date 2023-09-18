@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native';
+import { NAVIGATION_TITLE } from '../../../constants/navigation';
 
 const Login = () => {
     const [account, setAccount] = useState({
@@ -14,7 +15,6 @@ const Login = () => {
     const handleChangeAccount = (textInputName) => {
         return (value: any) => {
             setAccount({ ...account, [textInputName]: value })
-            console.log(account)
         }
     }
 
@@ -22,8 +22,11 @@ const Login = () => {
         if (!account.username || !account.password) {
             setErrText('Không được để trống!')
         }
+        else if (account.username !== '1' || account.password !== '1') {
+            setErrText('Xem lại thông tin đăng nhập!')
+        }
         else {
-            navigation.navigate('Home');
+            navigation.navigate(NAVIGATION_TITLE.TAB, { screen: NAVIGATION_TITLE.HOME });
         }
     };
 
@@ -58,7 +61,7 @@ const Login = () => {
             </TouchableOpacity>
             <View style={styles.register}>
                 <Text style={styles.registerText}>Chưa có tài khoản? </Text>
-                <TouchableOpacity onPress={() => { navigation.navigate('Register') }}>
+                <TouchableOpacity onPress={() => { navigation.navigate(NAVIGATION_TITLE.REGISTER) }}>
                     <Text style={[styles.registerText, styles.registerLink]}>Đăng ký</Text>
                 </TouchableOpacity>
             </View>

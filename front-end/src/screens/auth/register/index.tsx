@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native';
+import { NAVIGATION_TITLE } from '../../../constants/navigation';
 
 const Login = () => {
   const [account, setAccount] = useState({
@@ -16,7 +17,6 @@ const Login = () => {
   const handleChangeAccount = (textInputName) => {
     return (value: any) => {
       setAccount({ ...account, [textInputName]: value })
-      console.log(account)
     }
   }
 
@@ -29,7 +29,7 @@ const Login = () => {
       setErrText('Kiểm tra lại email')
     }
     else {
-      navigation.navigate('Login');
+      navigation.navigate(NAVIGATION_TITLE.LOGIN);
     }
   };
 
@@ -84,7 +84,7 @@ const Login = () => {
         </TouchableOpacity>
         <View style={styles.register}>
           <Text style={styles.registerText}>Đã có tài khoản? </Text>
-          <TouchableOpacity onPress={() => { navigation.navigate('Login') }}>
+          <TouchableOpacity onPress={() => { navigation.navigate(NAVIGATION_TITLE.LOGIN) }}>
             <Text style={[styles.registerText, styles.registerLink]}>Đăng nhập</Text>
           </TouchableOpacity>
         </View>
