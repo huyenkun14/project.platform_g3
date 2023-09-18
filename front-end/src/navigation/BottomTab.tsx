@@ -4,11 +4,12 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TabsData } from "../constants/bottomTab"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Home from "../screens/home"
-import Activity from "../screens/add";
+import Add from "../screens/add";
 import Chart from "../screens/charts";
 import History from "../screens/history";
 import { defaultColors } from "../theme";
 import Classify from "../screens/classify";
+import { NAVIGATION_TITLE } from "../constants/navigation";
 
 const MyBottomTabs = () => {
 
@@ -46,7 +47,7 @@ const MyBottomTabs = () => {
       if (focused) return defaultColors.tabActive
       else return defaultColors.tabColor
     }, [focused])
-    if (tabName === 'Activity')
+    if (tabName === NAVIGATION_TITLE.ADD)
       return (
         <View style={{
           alignItems: 'center',
@@ -87,27 +88,27 @@ const MyBottomTabs = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name={NAVIGATION_TITLE.HOME}
         component={Home}
         options={getOptions}
       />
       <Tab.Screen
-        name="Chart"
+        name={NAVIGATION_TITLE.CHART}
         component={Chart}
         options={getOptions}
       />
       <Tab.Screen
-        name="Activity"
-        component={Activity}
+        name={NAVIGATION_TITLE.ADD}
+        component={Add}
         options={getOptions}
       />
       <Tab.Screen
-        name="History"
+        name={NAVIGATION_TITLE.HISTORY}
         component={History}
         options={getOptions}
       />
       <Tab.Screen
-        name="Classify"
+        name={NAVIGATION_TITLE.CLASSIFY}
         component={Classify}
         options={getOptions}
       />

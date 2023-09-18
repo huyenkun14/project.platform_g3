@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { styles } from './styles'
+import { NAVIGATION_TITLE } from '../../constants/navigation';
 
 const Entry = (props: any) => {
 
@@ -11,7 +12,7 @@ const Entry = (props: any) => {
   const money = Number(price).toLocaleString('en')
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('EntryDetail')}>
+    <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.DETAIL)}>
       <View style={styles.container}>
         <View style={styles.typeContainer}>
           <View style={styles.image} />
