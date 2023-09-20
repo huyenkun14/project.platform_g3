@@ -21,4 +21,10 @@ public class User {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 }

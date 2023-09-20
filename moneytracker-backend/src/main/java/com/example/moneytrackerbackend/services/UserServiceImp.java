@@ -5,14 +5,15 @@ import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImp implements UserDetailsService {
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
     public UserDetails loadUserById(Long id){
         User user = userRepository.findById(id).orElse(null);
         return new UserDetailsImpl(user);

@@ -14,8 +14,6 @@ spring:
         format_sql: true
 server:
   port: 8081
-media:
-  img_path: "${user.home}${file.separator}Downloads${file.separator}images"
 auth:
-  jwt_secret = "hehe"
-  jwt_expiration = 604800000L
+  jwt_secret : "hehe"
+#  jwt_expiration : 604800000L

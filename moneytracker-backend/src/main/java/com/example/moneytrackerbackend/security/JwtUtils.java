@@ -9,10 +9,10 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-    @Value("${app.jwt_secret}")
+    @Value("${auth.jwt_secret}")
     private String JWT_SECRET;
-    @Value("${app.jwt_expiration}")
-    private long JWT_EXPIRATION;
+//    @Value("${auth.jwt_expiration}")
+    private long JWT_EXPIRATION =604800000L;
 
     // Tạo ra jwt từ thông tin user
     public String generateToken(UserDetailsImpl userDetails) {
