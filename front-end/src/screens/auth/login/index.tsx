@@ -26,6 +26,10 @@ const Login = () => {
             setErrText('Xem lại thông tin đăng nhập!')
         }
         else {
+            setAccount({
+                username: '',
+                password: '',
+            });
             navigation.navigate(NAVIGATION_TITLE.TAB, { screen: NAVIGATION_TITLE.HOME });
         }
     };
