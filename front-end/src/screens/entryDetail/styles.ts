@@ -51,6 +51,7 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.29,
         shadowRadius: 4.65,
         elevation: 7,
+        color: defaultColors.text_1,
     },
     inputTitle: {
         width: SCREEN_WIDTH/2
@@ -60,6 +61,8 @@ export const styles = StyleSheet.create({
     },
     inputNote: {
         height: 150,
+        textAlignVertical: 'top',
+        paddingVertical: 10,
     },
     mgBottom20: {
         marginBottom: 20,

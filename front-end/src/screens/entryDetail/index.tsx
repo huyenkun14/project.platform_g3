@@ -4,7 +4,8 @@ import { Agenda, Calendar, LocaleConfig } from 'react-native-calendars';
 import { styles } from './styles'
 import Header from '../../components/header';
 
-const EntryDetail = () => {
+const EntryDetail = ({route}) => {
+    const {title, time, price, note, status} =route.params
     const [selected, setSelected] = useState('');
     const [events, setEvents] = useState({});
     const [marksDate, setMarksDate] = useState({});
@@ -43,21 +44,21 @@ const EntryDetail = () => {
                 <View style={[styles.contentRow,styles.mgBottom20]}>
                     <View>
                         <Text style={styles.inputLabel}>Loại</Text>
-                        <TextInput style={[styles.input, styles.inputType]} editable={false} value='Chi tiêu'/>
+                        <TextInput style={[styles.input, styles.inputType]} editable={false} value={status}/>
                     </View>
                     <View>
                         <Text style={styles.inputLabel}>Tiêu đề</Text>
-                        <TextInput style={[styles.input, styles.inputTitle]} editable={false} value='Giao thông'/>
+                        <TextInput style={[styles.input, styles.inputTitle]} editable={false} value={title}/>
                     </View>
                 </View>
                 <View style={styles.contentCol}>
                     <View style={styles.mgBottom20}>
                         <Text style={styles.inputLabel}>Số tiền</Text>
-                        <TextInput style={styles.input} editable={false} value='500000'/>
+                        <TextInput style={styles.input} editable={false} value={String(price)}/>
                     </View>
                     <View>
                         <Text style={styles.inputLabel}>Ghi chú</Text>
-                        <TextInput style={[styles.input, styles.inputNote]} multiline editable={false} value='Sửa xe máy'/>
+                        <TextInput style={[styles.input, styles.inputNote]} multiline editable={false} value={note}/>
                     </View>
                 </View>
             </ScrollView>

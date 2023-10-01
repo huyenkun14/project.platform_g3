@@ -13,7 +13,7 @@ spring:
         show_sql: true
         format_sql: true
 server:
-  port: 8081
+  port: 3000
 auth:
   jwt_secret : "hhhhhhhcccc123456789sdfghjklxcvbnmerygiughuhudfhgshdsugsh"
   jwt_expiration : 604800000

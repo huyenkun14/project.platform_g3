@@ -60,7 +60,7 @@ const Home = () => {
   )
   return (
     <SafeAreaView>
-      <StatusBar style="auto" />
+      <StatusBar style='light'/>
       <ScrollView style={styles.container}>
         {/* background */}
         <Image
@@ -85,7 +85,7 @@ const Home = () => {
           <Text style={styles.title}>Danh mục</Text>
           <View style={styles.optionContainer}>
             {optionsData.map((item) => (
-              <Option title={item.title} icon={item.icon} key={item.id} router={item.router}/>
+              <Option title={item.title} icon={item.icon} key={item.id} router={item.router} />
             ))}
             <View style={styles.emptyOption} />
             <View style={styles.emptyOption} />
