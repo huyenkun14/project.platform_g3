@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 public class UserServiceImp implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
-    public UserDetails loadUserById(Long id){
-        User user = userRepository.findById(id).orElse(null);
-        return new UserDetailsImpl(user);
-    }
+//    public UserDetails loadUserById(Long id){
+//        User user = userRepository.findById(id).orElse(null);
+//        return new UserDetailsImpl(user);
+//    }
     public UserDetails loadUserByUsername(String username) {
-        User user = (User) userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new CustomException("User not found with username: " + username);
         }
-        return new UserDetailsImpl(user);
+        return UserDetailsImpl.build(user);
     }
 }

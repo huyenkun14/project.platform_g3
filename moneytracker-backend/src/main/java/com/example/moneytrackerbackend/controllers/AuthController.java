@@ -40,6 +40,7 @@ public class AuthController {
     UserRepository userRepository;
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+        User user = userRepository.findByUsername(loginRequest.getUsername());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -47,8 +48,9 @@ public class AuthController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken((UserDetailsImpl) authentication.getPrincipal());
-        return ResponseEntity.ok(new LoginResponse(jwt));
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String jwt = tokenProvider.generateJwtToken(authentication);
+        return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getId(), userDetails.getUsername()));
     }
 
     @PostMapping("api/auth/register")

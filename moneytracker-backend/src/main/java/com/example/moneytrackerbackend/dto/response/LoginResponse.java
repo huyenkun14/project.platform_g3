@@ -9,7 +9,9 @@ public class LoginResponse {
     private Long id;
     private String username;
 
-    public LoginResponse(String accessToken) {
+    public LoginResponse(String accessToken, Long id, String username) {
         this.accessToken = accessToken;
+        this.id = id;
+        this.username = username;
     }
 }

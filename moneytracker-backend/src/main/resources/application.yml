@@ -15,5 +15,5 @@ spring:
 server:
   port: 8081
 auth:
-  jwt_secret : "hehe"
-#  jwt_expiration : 604800000L
+  jwt_secret : "hhhhhhhcccc123456789sdfghjklxcvbnmerygiughuhudfhgshdsugsh"
+  jwt_expiration : 604800000
