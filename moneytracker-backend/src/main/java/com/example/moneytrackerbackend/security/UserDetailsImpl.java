@@ -1,6 +1,7 @@
 package com.example.moneytrackerbackend.security;
 
 import com.example.moneytrackerbackend.entities.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,21 +14,40 @@ import java.util.Collections;
 @Data
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    User user;
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+
+    private String username;
+
+    private String email;
+
+    @JsonIgnore
+    private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    public static UserDetailsImpl build(User user) {
+
+        return new UserDetailsImpl(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword()
+        );
+    }
+
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return username;
     }
 
     @Override
