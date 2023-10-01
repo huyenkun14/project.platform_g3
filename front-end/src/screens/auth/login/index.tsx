@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ToastAndroid } from 'react-native';
 import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_TITLE } from '../../../constants/navigation';
@@ -9,7 +9,6 @@ const Login = () => {
         username: '',
         password: '',
     });
-    const [errText, setErrText] = useState('')
     const navigation = useNavigation<any>()
 
     const handleChangeAccount = (textInputName) => {
@@ -19,11 +18,8 @@ const Login = () => {
     }
 
     const handleLogin = () => {
-        if (!account.username || !account.password) {
-            setErrText('Không được để trống!')
-        }
-        else if (account.username !== '1' || account.password !== '1') {
-            setErrText('Xem lại thông tin đăng nhập!')
+        if (account.username !== '1' || account.password !== '1') {
+            ToastAndroid.show('Xem lại thông tin đăng nhập!',ToastAndroid.SHORT)
         }
         else {
             setAccount({
@@ -35,10 +31,9 @@ const Login = () => {
     };
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
             <Text style={styles.title}>Moli</Text>
             <Text style={styles.slogan}>Đừng để tiền rơi</Text>
-            {errText ? <Text style={styles.error}>* {errText}</Text> : ''}
             <Text style={styles.inputLabel}>Username: </Text>
             <View style={styles.formItem}>
                 <TextInput

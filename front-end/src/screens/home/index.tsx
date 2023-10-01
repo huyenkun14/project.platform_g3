@@ -60,7 +60,7 @@ const Home = () => {
   )
   return (
     <SafeAreaView>
-      {/* <StatusBar /> */}
+      <StatusBar style='light'/>
       <ScrollView style={styles.container}>
         {/* background */}
         <Image

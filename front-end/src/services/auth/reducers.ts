@@ -18,19 +18,19 @@ export const authSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(registerActions.pending, (state, action) => {
+        builder.addCase(registerActions.pending, (state) => {
             return {
                 ...state,
                 loading: true,
               };
         })
-        builder.addCase(registerActions.fulfilled, (state, action) => {
+        builder.addCase(registerActions.fulfilled, (state) => {
             return {
                 ...state,
                 loading: false,
               };
         })
-        builder.addCase(registerActions.rejected, (state, action) => {
+        builder.addCase(registerActions.rejected, (state) => {
             return {
                 ...state,
                 loading: true,

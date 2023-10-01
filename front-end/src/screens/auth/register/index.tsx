@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_TITLE } from '../../../constants/navigation';
 import { useDispatch } from 'react-redux';
 import { registerActions } from '../../../services/auth/actions';
+import { validateEmail, validatePassword, validatePhone } from '../../../../utils/validate';
 
 const Login = () => {
   const [account, setAccount] = useState({
@@ -13,7 +14,6 @@ const Login = () => {
     email: '',
     password: '',
   });
-  const [errText, setErrText] = useState('')
   const navigation = useNavigation<any>()
   const dispatch = useDispatch<any>()
 
@@ -31,12 +31,17 @@ const Login = () => {
   };
 
   const handleRegister = async () => {
-    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
     if (!account.name || !account.email || !account.password) {
-      setErrText('Không được để trống!')
+      ToastAndroid.show('Vui lòng điền đủ thông tin!', ToastAndroid.SHORT)
     }
-    else if (!regex.test(account.email)) {
-      setErrText('Kiểm tra lại email')
+    else if (validateEmail(account.email)) {
+      ToastAndroid.show('Kiểm tra lại email!', ToastAndroid.SHORT)
+    }
+    // else if (validatePhone(account.phone)) {
+    //   ToastAndroid.show('Xem lại số điện thoại!', ToastAndroid.SHORT)
+    // }
+    else if (validatePassword(account.password)) {
+      ToastAndroid.show('Mật khẩu dài tối thiểu 8 ký tự!', ToastAndroid.SHORT)
     }
     else {
       dispatch(registerActions({
@@ -50,10 +55,9 @@ const Login = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <Text style={styles.title}>Moli</Text>
       <Text style={styles.slogan}>Đừng để tiền rơi</Text>
-      {errText ? <Text style={styles.error}>* {errText}</Text> : ''}
       <Text style={styles.inputLabel}>Tên: </Text>
       <View style={styles.formItem}>
         <TextInput

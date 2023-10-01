@@ -12,7 +12,7 @@ const Entry = (props: any) => {
   const money = Number(price).toLocaleString('en')
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.DETAIL)}>
+    <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.DETAIL,{title, time, price, note, status})}>
       <View style={styles.container}>
         <View style={styles.typeContainer}>
           <View style={styles.image} />
