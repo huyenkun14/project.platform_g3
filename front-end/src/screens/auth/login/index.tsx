@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
 import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_TITLE } from '../../../constants/navigation';
@@ -27,11 +27,16 @@ const Login = () => {
         }
         else {
             navigation.navigate(NAVIGATION_TITLE.TAB, { screen: NAVIGATION_TITLE.HOME });
+            setAccount({
+                username: '',
+                password: '',
+            })
         }
     };
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+            <StatusBar />
             <Text style={styles.title}>Moli</Text>
             <Text style={styles.slogan}>Đừng để tiền rơi</Text>
             {errText ? <Text style={styles.error}>* {errText}</Text> : ''}

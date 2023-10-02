@@ -19,6 +19,7 @@ const Stack = () => {
             <Stack.Screen name={NAVIGATION_TITLE.LOGIN} component={Login} />
             <Stack.Screen name={NAVIGATION_TITLE.REGISTER} component={Register} />
             <Stack.Screen name={NAVIGATION_TITLE.ACCOUNT} component={Account} />
+            
         </Stack.Navigator>
     )
 }

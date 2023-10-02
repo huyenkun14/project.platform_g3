@@ -1,11 +1,24 @@
-import { View, Text, StatusBar, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text,Button, StatusBar, Modal,TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
 import { styles } from './styles'
 import Header from '../../components/header'
 import Entry from '../../components/entry'
 import { defaultColors } from '../../theme'
-
+import ExpensesModal from './component/modal'
+import IncomeModal from './component/modal_income'
 const Add = () => {
+  const [AddIncome, setAddIncome] = useState(false)
+  const [AddExpenses, setAddExpenses] = useState(false)
+
+  
+  const toAddIncome = () => {
+    setAddIncome(!AddIncome);
+  };
+
+  const toAddExpense = () => {
+    setAddExpenses(!AddExpenses);
+  };
+
 
   return (
     <SafeAreaView>
@@ -20,24 +33,30 @@ const Add = () => {
         <Header title='Thêm' isBack={false} />
         {/* add item */}
         <View style={styles.addContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={toAddIncome}>
             <View style={[styles.addItem, styles.addIncome]}>
               <Image
                 source={require('../../../assets/images/icon/add.png')}
                 style={[styles.itemIcon, {tintColor: defaultColors.text_3}]}
               />
-              <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
+              
+                  <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
+                     
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <View style={styles.addContainer}>
+            <TouchableOpacity onPress={toAddExpense}>
             <View style={[styles.addItem, styles.addExpense]}>
               <Image
                 source={require('../../../assets/images/icon/add.png')}
                 style={[styles.itemIcon, {tintColor: defaultColors.text_2}]}
               />
               <Text style={styles.addExpenseText}>Thêm chi tiêu</Text>
+              
             </View>
           </TouchableOpacity>
+          </View>
+          
         </View>
         {/* last entries */}
         <View>
@@ -46,9 +65,29 @@ const Add = () => {
           <Entry title='Bonus' time='01-09-2023' price={500000} note='Thưởng lễ 2/9' status='thu nhập' />
           <Entry title='Traffic' time='31-08-2023' price={7000} note='Buýt' status='chi tiêu' />
         </View>
+
+        
+        {/* Expense Modal */}
+        <ExpensesModal
+        visible={AddExpenses}
+        onRequestClose={() => setAddExpenses(false)}
+        onExpensesSubmit={() => {
+          
+        }}
+      />
+      <IncomeModal
+        visible={AddIncome}
+        onRequestClose={() => setAddIncome(false)}
+        onIncomeSubmit={() => {
+          
+        }}
+      />
+        
+
       </ScrollView>
     </SafeAreaView>
   )
+
 }
 
 export default Add

@@ -45,6 +45,8 @@ export const styles = StyleSheet.create({
         backgroundColor: defaultColors.backgroundColor,
     },
     formItem: {
+        backgroundColor: defaultColors.backgroundColor,
+        borderRadius: 10,
         justifyContent: 'center',
         shadowColor: defaultColors.shadowColor,
         shadowOffset: {
