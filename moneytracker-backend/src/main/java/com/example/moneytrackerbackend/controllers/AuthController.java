@@ -3,7 +3,9 @@ package com.example.moneytrackerbackend.controllers;
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
+import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.User;
+import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.AuthTokenFilter;
 import com.example.moneytrackerbackend.security.JwtUtils;
@@ -55,6 +57,9 @@ public class AuthController {
 
     @PostMapping("api/auth/register")
     public ResponseEntity register(@RequestBody RegisterRequest registerRequest) {
+        if(userRepository.existsByUsername(registerRequest.getUsername())){
+            throw new CustomException("Error: Username is already taken!");
+        }
         User user = new User(registerRequest.getUsername(),
                 encoder.encode(registerRequest.getPassword()),
                 registerRequest.getEmail());
