@@ -19,9 +19,9 @@ const Login = () => {
 
   const handleChangeAccount = (textInputName) => {
     return (value: any) => {
-      setAccount({ ...account, [textInputName]: value })
-    }
-  }
+      setAccount({ ...account, [textInputName]: value });
+    };
+  };
 
   const showToast = () => {
     ToastAndroid.show(
@@ -51,6 +51,12 @@ const Login = () => {
       }))
       showToast()
       navigation.navigate(NAVIGATION_TITLE.LOGIN);
+      setAccount({
+        name: "",
+        phone: "",
+        email: "",
+        password: "",
+      });
     }
   };
 

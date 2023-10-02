@@ -23,7 +23,6 @@ const Login = () => {
     }
 
     const handleLogin = () => {
-
         dispatch(loginActions(account))
 
             .then(res => {

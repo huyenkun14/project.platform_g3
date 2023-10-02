@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, Image, Button, TextInput, Modal,StyleSheet, ScrollView, SafeAreaView, StatusBar } from 'react-native';
-import { styles } from './styles';
 import Header from '../../../../components/header';
 import { defaultColors } from '../../../../theme';
 import { Calendar } from 'react-native-calendars';
+import { styles } from './style';
 
-const ExpensesModal = ({visible, onRequestClose, onExpensesSubmit }) => {
-  const [expensesTitle, setExpensesTitle] = useState('')
-  const [expensesPrice, setExpensesPrice] = useState('')
-  const [expensesTime, setExpensesTime] = useState('')
-  const [expensesStatus, setExpensesStatus] = useState('')
+const IncomeModal = ({visible, onRequestClose, onIncomeSubmit }) => {
+  const [incomeTitle, setIncomeTitle] = useState('')
+  const [incomePrice, setIncomePrice] = useState('')
+  const [incomeTime, setIncomeTime] = useState('')
+  const [incomeStatus, setIncomeStatus] = useState('')
 
-  const handleExpenseSubmit = () => {
+  const handleIncomeSubmit = () => {
     
-    setExpensesTitle('');
-    setExpensesPrice('');
-    setExpensesTime('');
-    setExpensesStatus('')
-    onExpensesSubmit()
+    setIncomeTitle('');
+    setIncomePrice('');
+    setIncomeTime('');
+    setIncomeStatus('')
+    onIncomeSubmit()
   };
 
   return (
@@ -35,7 +35,7 @@ const ExpensesModal = ({visible, onRequestClose, onExpensesSubmit }) => {
           style={styles.imageBack}
         />
         {/* header */}
-        <Header title='Add Expense' isBack={false} />
+        <Header title='Add Income' isBack={false} />
         <Calendar style={styles.calen}
         current={'2023-10-02'} 
         hideExtraDays={true} 
@@ -48,28 +48,28 @@ const ExpensesModal = ({visible, onRequestClose, onExpensesSubmit }) => {
           /> 
         <View style={styles.back}>
             
-          <Text style={styles.label}>Expense Title</Text>
+          <Text style={styles.label}>Income Title</Text>
             <TextInput
-              placeholder="Family Expense"
-              value={expensesTitle}
-              onChangeText={text => setExpensesTitle(text)}
+              placeholder="Side Business"
+              value={incomeTitle}
+              onChangeText={text => setIncomeTitle(text)}
               style={styles.title}
             />
           <Text style={styles.price}>Amount</Text>
           <View style={styles.input}>
           <Image
-                source={require('../../../../../assets/images/icon/dollar.png')} // Thay đổi đường dẫn đến tệp ảnh của bạn
+                source={require('../../../../../assets/images/icon/dollar.png')} 
                 style={styles.moneyIcon}
               />
             <TextInput 
               placeholder="Amount"
-              value={expensesPrice}
-              onChangeText={text => setExpensesPrice(text)}
+              value={incomePrice}
+              onChangeText={text => setIncomePrice(text)}
               keyboardType="numeric"
               style={styles.moneyInput}
             />
           </View>
-          <Text style={styles.cate}>Expense Category</Text>
+          <Text style={styles.cate}>Income Category</Text>
           <View style={styles.itemPrice}>
              <View style={styles.squareIcon}>
                 <Image
@@ -78,21 +78,12 @@ const ExpensesModal = ({visible, onRequestClose, onExpensesSubmit }) => {
                  />
               </View>
               <View style={styles.square}>
-                 <Text>Health</Text>
+                 <Text>Salary</Text>
               </View>
               <View style={styles.squaree}>
-                 <Text>Grocery</Text>
+                 <Text>Rewards</Text>
               </View>     
-          </View>
-          <Text style={styles.resit}>Expense Resit Photo </Text>
-          <View style={styles.photo}>
-          <View style={styles.itemcamera}>
-                <Image
-                 source={require('../../../../../assets/images/icon/camera.png')}
-            style={styles.camera}
-            />
-            <Text style={styles.textcamera}>Add Photo</Text>
-              </View>
+          
             
             
           </View>
@@ -107,7 +98,7 @@ const ExpensesModal = ({visible, onRequestClose, onExpensesSubmit }) => {
            
             <View style={styles.reset}> 
               <View style={styles.item}>
-                 <Button title="Add Expense" onPress={handleExpenseSubmit} />
+                 <Button title="Add Income" onPress={handleIncomeSubmit} />
               </View>
               
             </View>
@@ -126,4 +117,4 @@ const ExpensesModal = ({visible, onRequestClose, onExpensesSubmit }) => {
   )
 
 }
-export default ExpensesModal;
+export default IncomeModal;
