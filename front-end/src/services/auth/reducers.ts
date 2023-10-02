@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { registerActions } from "./actions"
+import { loginActions, registerActions } from "./actions"
 
 interface IAuth {
     loading: boolean,
@@ -31,6 +31,24 @@ export const authSlice = createSlice({
               };
         })
         builder.addCase(registerActions.rejected, (state) => {
+            return {
+                ...state,
+                loading: true,
+              };
+        })
+        builder.addCase(loginActions.pending, (state) => {
+            return {
+                ...state,
+                loading: true,
+              };
+        })
+        builder.addCase(loginActions.fulfilled, (state) => {
+            return {
+                ...state,
+                loading: false,
+              };
+        })
+        builder.addCase(loginActions.rejected, (state) => {
             return {
                 ...state,
                 loading: true,

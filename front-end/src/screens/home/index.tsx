@@ -1,5 +1,5 @@
 import { ScrollView, View, Text, FlatList, Image, SafeAreaView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { styles } from './styles'
 import Header from '../../components/header'
 import { overview } from '../../mock/home'
@@ -8,8 +8,18 @@ import Entry from '../../components/entry'
 import { StatusBar } from 'expo-status-bar'
 import Option from './components/option'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
+import { getItemObjectAsyncStorage } from '../../../utils/asyncStorage'
+import { KEY_STORAGE } from '../../constants/storage'
 
 const Home = () => {
+  useEffect(() => {
+    getUserInfoSaved();
+  }, []);
+
+  const getUserInfoSaved = async () => {
+    const userInfo = await getItemObjectAsyncStorage(KEY_STORAGE.SAVED_INFO);
+    console.log('user info', userInfo);
+  };
   const optionsData = [
     {
       id: 1,
@@ -60,7 +70,7 @@ const Home = () => {
   )
   return (
     <SafeAreaView>
-      <StatusBar style='light'/>
+      <StatusBar style='light' />
       <ScrollView style={styles.container}>
         {/* background */}
         <Image
