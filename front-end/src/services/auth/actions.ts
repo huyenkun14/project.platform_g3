@@ -9,3 +9,11 @@ export const registerActions = createAsyncThunk(
         return res.data
     }
 )
+
+export const loginActions = createAsyncThunk(
+    'auth/loginActions',
+    async (payload: {}) => {
+        const res = await httpClient.post(AUTH.LOGIN, payload)
+        return res.data
+    }
+)
