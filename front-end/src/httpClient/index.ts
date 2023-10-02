@@ -7,6 +7,7 @@ const httpClient = axios.create({
         'Content-Type': 'application/json',
         // 'Content-Type': 'multipart/form-data',
         Accept: '*/*',
+        
     }
 })
 

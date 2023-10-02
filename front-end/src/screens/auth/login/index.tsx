@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ToastAndroid } from 'react-native';
 import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_TITLE } from '../../../constants/navigation';
+import { useDispatch } from 'react-redux';
+import { loginActions } from '../../../services/auth/actions';
+import { getItemObjectAsyncStorage, setItemAsyncStorage } from '../../../../utils/asyncStorage';
+import { KEY_STORAGE } from '../../../constants/storage';
 
 const Login = () => {
     const [account, setAccount] = useState({
         username: '',
         password: '',
     });
-    const [errText, setErrText] = useState('')
     const navigation = useNavigation<any>()
+    const dispatch = useDispatch<any>()
 
     const handleChangeAccount = (textInputName) => {
         return (value: any) => {
@@ -19,27 +23,32 @@ const Login = () => {
     }
 
     const handleLogin = () => {
-        if (!account.username || !account.password) {
-            setErrText('Không được để trống!')
-        }
-        else if (account.username !== '1' || account.password !== '1') {
-            setErrText('Xem lại thông tin đăng nhập!')
-        }
-        else {
-            navigation.navigate(NAVIGATION_TITLE.TAB, { screen: NAVIGATION_TITLE.HOME });
-            setAccount({
-                username: '',
-                password: '',
+        dispatch(loginActions(account))
+
+            .then(res => {
+                console.log("res", res)
+                if (res.payload) {
+                    setItemAsyncStorage(KEY_STORAGE.SAVED_INFO, JSON.stringify(res.payload));
+                    navigation.navigate(NAVIGATION_TITLE.TAB, { screen: NAVIGATION_TITLE.HOME })
+                    setAccount({
+                        username: '',
+                        password: '',
+                    });
+                } else {
+                    ToastAndroid.show('Xem lại thông tin đăng nhập!', ToastAndroid.SHORT)
+                }
             })
-        }
+            .catch(err => {
+                console.log(err)
+                ToastAndroid.show('Xem lại thông tin đăng nhập!', ToastAndroid.SHORT)
+            })
+        // }
     };
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-            <StatusBar />
+        <KeyboardAvoidingView style={styles.container}>
             <Text style={styles.title}>Moli</Text>
             <Text style={styles.slogan}>Đừng để tiền rơi</Text>
-            {errText ? <Text style={styles.error}>* {errText}</Text> : ''}
             <Text style={styles.inputLabel}>Username: </Text>
             <View style={styles.formItem}>
                 <TextInput

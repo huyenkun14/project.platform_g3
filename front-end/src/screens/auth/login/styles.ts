@@ -45,10 +45,7 @@ export const styles = StyleSheet.create({
         backgroundColor: defaultColors.backgroundColor,
     },
     formItem: {
-        // borderColor: 'rgba(0,0,0,0.1)',
-        // borderWidth: 1,
         borderRadius: 10,
-        // overflow: 'hidden',
         backgroundColor: defaultColors.backgroundColor,
         justifyContent: 'center',
         shadowColor: defaultColors.shadowColor,
