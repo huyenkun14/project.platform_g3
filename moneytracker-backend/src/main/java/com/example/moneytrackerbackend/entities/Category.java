@@ -17,4 +17,6 @@ public class Category {
     @Column(name = "image_id")
     private Long imageId;
     private String status;
+    //xác định khoản thu hay chi: true=0=thu, false=1=chi
+    private boolean value;
 }

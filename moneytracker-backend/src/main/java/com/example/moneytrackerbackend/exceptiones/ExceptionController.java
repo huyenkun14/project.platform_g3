@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 public class ExceptionController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Object> customException(CustomException ex) {
-        ErrorMessage exceptionResponse = new ErrorMessage(HttpStatus.NOT_FOUND.value(),
+        ErrorMessage exceptionResponse = new ErrorMessage(HttpStatus.BAD_REQUEST.value(),
                 LocalDateTime.now().toString(),
                 ex.getMessage(),
                 "");
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

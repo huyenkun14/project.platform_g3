@@ -17,3 +17,5 @@ server:
 auth:
   jwt_secret : "hhhhhhhcccc123456789sdfghjklxcvbnmerygiughuhudfhgshdsugsh"
   jwt_expiration : 604800000
+media:
+  img_path: "${user.home}${file.separator}Downloads${file.separator}images"
