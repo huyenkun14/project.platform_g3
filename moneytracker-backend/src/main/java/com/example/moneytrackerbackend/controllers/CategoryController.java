@@ -5,6 +5,7 @@ import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,16 +14,19 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/category/create")
     public ResponseEntity createCategory(@RequestBody CategoryRequest categoryRequest){
         Category category = categoryService.createCategory(categoryRequest);
         return ResponseEntity.ok(category);
     }
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/vi/category")
     public ResponseEntity getCategory(@RequestParam Long categoryId){
         Category category = categoryService.getCategoryById(categoryId);
         return ResponseEntity.ok(category);
     }
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/vi/category/categories")
     public  ResponseEntity getAllCategory(){
         List<Category> categories = categoryService.getAllCategory();

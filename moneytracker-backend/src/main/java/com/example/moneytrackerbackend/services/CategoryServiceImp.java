@@ -4,12 +4,14 @@ import com.example.moneytrackerbackend.dto.request.CategoryRequest;
 import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CategoryServiceImp implements CategoryService{
+    @Autowired
     private CategoryRepository categoryRepository;
     public Category createCategory(CategoryRequest categoryRequest){
         if(categoryRepository.existsByTitle(categoryRequest.getTitle())){
