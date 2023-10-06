@@ -3,7 +3,7 @@ package com.example.moneytrackerbackend.dto.request;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,9 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class TransactionRequest {
+    private Long transactionId;
     private Long userId;
     private Long categoryId;
     private Double amount;
     private String description;
-    private LocalDateTime datetime;
+    private LocalDate date;
 }
