@@ -2,6 +2,7 @@ package com.example.moneytrackerbackend.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -21,8 +22,7 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
     private Double amount;
     private String description;
-    private LocalDateTime datetime;
+    private LocalDate date;
 }

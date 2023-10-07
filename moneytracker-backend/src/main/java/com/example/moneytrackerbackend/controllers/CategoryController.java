@@ -27,7 +27,7 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/api/vi/category/categories")
+    @GetMapping("/api/vi/category/get-all")
     public  ResponseEntity getAllCategory(){
         List<Category> categories = categoryService.getAllCategory();
         return ResponseEntity.ok(categories);

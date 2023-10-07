@@ -4,7 +4,13 @@ import com.example.moneytrackerbackend.dto.request.TransactionRequest;
 import com.example.moneytrackerbackend.entities.Transaction;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface TransactionService {
     Transaction createTransaction(TransactionRequest transactionRequest);
+    void deleteTransaction(Long id);
+    List<Transaction> getAllTransaction();
+    Transaction updateTransaction(TransactionRequest transactionRequest);
+    Transaction getTransaction(Long id);
 }
