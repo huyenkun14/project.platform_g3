@@ -23,27 +23,38 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
   const dispatch = useDispatch<any>()
   const [listClassify, setListClassify] = useState([]);
   const [listClassifyOpen, setListClassifyOpen] = useState(false);
-  const [listClassifyValue, setListClassifyValue] = useState(null);
+  const [classifyValue, setClassifyValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [listOpen, setListOpen] = useState(false);
+  const [infoUserId, setInfoUserId] = useState({});
   useEffect(() => {
     getListClassify()
+    getUserInfoId()
   }, [])
+  const getUserInfoId = async () => {
+    const data = await getItemObjectAsyncStorage(KEY_STORAGE.SAVED_INFO);
+    setInfoUserId(data?.id)
+  } 
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
       .then(res => {
         console.log(res)
-        const converListClassify = res?.payload.map((item) => ({ id: item.id, label: item.title, value: item.title }))
+        const converListClassify = res?.payload.map((item) => ({ label: item.title, value: item.id }))
         setListClassify(converListClassify)
       })
       .catch(err => console.log('err', err))
   }
   const handleCreateEntry = () => {
-    dispatch(createEntryAction(infoEntry))
+    dispatch(createEntryAction({
+      userId: infoUserId,
+      categoryId: classifyValue,
+      amount: infoEntry.money,
+      date: infoEntry.time,
+      description: infoEntry.note
+    }))
       .then(res => {
         console.log(res)
-        const converListClassify = res?.payload.map((item) => ({ id: item.id, label: item.title, value: item.title }))
-        setListClassify(converListClassify)
+
       })
       .catch(err => console.log('err', err))
   }
@@ -92,10 +103,10 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
                 <DropDownPicker
                   style={[styles.dropdown]}
                   open={listClassifyOpen}
-                  value={listClassifyValue}
+                  value={classifyValue}
                   items={listClassify}
                   setOpen={setListClassifyOpen}
-                  setValue={setListClassifyValue}
+                  setValue={setClassifyValue}
                   setItems={setListClassify}
                   placeholder="Chon danh muc"
                   onOpen={onListClassifyOpen}

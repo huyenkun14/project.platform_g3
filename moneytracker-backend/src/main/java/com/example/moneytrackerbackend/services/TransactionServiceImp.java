@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +27,17 @@ public class TransactionServiceImp implements TransactionService{
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     public Transaction createTransaction(TransactionRequest transactionRequest)
     {
         Category category = categoryRepository.findById(transactionRequest.getCategoryId()).orElseThrow(()->new CustomException("Error: category"));
         User user = userRepository.findById(transactionRequest.getUserId()).orElseThrow(()-> new CustomException("Error: user")) ;
+        LocalDate date = LocalDate.parse(transactionRequest.getDate(), formatter);
         Transaction transaction= Transaction.builder()
                 .amount(transactionRequest.getAmount())
                 .category(category)
-                .date(transactionRequest.getDate())
+                .date(date)
                 .description(transactionRequest.getDescription())
                 .user(user)
                 .build();
@@ -52,7 +57,7 @@ public class TransactionServiceImp implements TransactionService{
         transaction.setAmount(transactionRequest.getAmount());
         transaction.setCategory(category);
         transaction.setDescription(transactionRequest.getDescription());
-        transaction.setDate(transactionRequest.getDate());
+        transaction.setDate(LocalDate.parse(transactionRequest.getDate(), formatter));
         return transactionRepository.save(transaction);
     }
     public Transaction getTransaction(Long id){
