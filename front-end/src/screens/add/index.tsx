@@ -8,16 +8,17 @@ import AddNewEntry from './component/modal'
 const Add = () => {
   const [addIncome, setAddIncome] = useState(false)
   const [addExpenses, setAddExpenses] = useState(false)
-
+  const [isIncome, setIsIncome] = useState(false)
 
   const toAddIncome = () => {
     setAddIncome(true);
+    setIsIncome(false)
   };
 
   const toAddExpense = () => {
     setAddExpenses(true);
+    setIsIncome(true)
   };
-
 
   return (
     <SafeAreaView>
@@ -38,9 +39,7 @@ const Add = () => {
                 source={require('../../../assets/images/icon/add.png')}
                 style={[styles.itemIcon, { tintColor: defaultColors.text_3 }]}
               />
-
               <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
-
             </View>
           </TouchableOpacity>
           <View style={styles.addContainer}>
@@ -51,7 +50,6 @@ const Add = () => {
                   style={[styles.itemIcon, { tintColor: defaultColors.text_2 }]}
                 />
                 <Text style={styles.addExpenseText}>Thêm chi tiêu</Text>
-
               </View>
             </TouchableOpacity>
           </View>
@@ -73,6 +71,7 @@ const Add = () => {
           onSubmit={() => {
 
           }}
+          isIncomeStatus={isIncome}
         />
         <AddNewEntry
           title='Thêm thu nhập'
@@ -81,6 +80,8 @@ const Add = () => {
           onSubmit={() => {
 
           }}
+          isIncomeStatus={isIncome}
+
         />
 
 
