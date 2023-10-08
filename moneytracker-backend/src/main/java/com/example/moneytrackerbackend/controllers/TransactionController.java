@@ -15,7 +15,7 @@ public class TransactionController {
     private TransactionService transactionService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/transaction/create")
-    public ResponseEntity createTransaction(TransactionRequest transactionRequest){
+    public ResponseEntity createTransaction(@RequestBody TransactionRequest transactionRequest){
         Transaction transaction = transactionService.createTransaction(transactionRequest);
         return ResponseEntity.ok(transaction);
     }
@@ -31,12 +31,12 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getAllTransaction());
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/api/v1/transaction/update")
-    public ResponseEntity updateTransaction(TransactionRequest transactionRequest){
+    @PutMapping("/api/v1/transaction/update")
+    public ResponseEntity updateTransaction(@RequestBody TransactionRequest transactionRequest){
         return ResponseEntity.ok(transactionService.updateTransaction(transactionRequest));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/api/v1/transaction")
+    @GetMapping("/api/v1/transaction")
     public ResponseEntity getTransaction(@RequestParam("transactionId") Long id){
         return ResponseEntity.ok(transactionService.getTransaction(id));
     }
