@@ -8,12 +8,18 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 40,
     backgroundColor: defaultColors.backgroundColor,
     justifyContent: 'center',
+    position: 'relative'
   },
   title: {
     color: defaultColors.titleColor,
     fontSize: 20,
     fontWeight: '800',
     textAlign: 'center',
+  },
+  closeIcon: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
   },
   inputLabel: {
     fontSize: 15,
@@ -58,15 +64,9 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: defaultColors.backgroundColor
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 30,
-  },
   button: {
+    marginTop: 30,
     fontSize: 16,
-    width: SCREEN_WIDTH / 2.65,
     paddingVertical: 15,
     textAlign: 'center',
     borderRadius: 5,

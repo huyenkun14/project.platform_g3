@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class TransactionResponse {
-//    private Long transactionId;
-//    private Category category;
-//    private Double amount;
-//    private String description;
-//    private LocalDate date;
+    private Long transactionId;
+    private Category category;
+    private Double amount;
+    private String description;
+    private LocalDate date;
 }

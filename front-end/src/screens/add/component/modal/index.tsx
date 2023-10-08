@@ -4,11 +4,13 @@ import { styles } from './styles';
 import DatePicker from '@react-native-community/datetimepicker';
 import Header from '../../../../components/header';
 import DropDownPicker from 'react-native-dropdown-picker';
+import AddNewClassify from '../../../../components/addNewClassify';
 
-const AddNewEntry = ({title, modalVisible, setModalVisible, onSubmit }) => {
+const AddNewEntry = ({ title, modalVisible, setModalVisible, onSubmit }) => {
+  const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
   const [infoEntry, setInfoEntry] = useState({
-    time: String(new Date().toLocaleDateString()),
+    time: String(date.toLocaleDateString()),
     title: '',
     note: '',
     money: '',
@@ -43,7 +45,7 @@ const AddNewEntry = ({title, modalVisible, setModalVisible, onSubmit }) => {
   }
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowDatePicker(!showDatePicker);
+    setShowDatePicker(false);
     setDate(currentDate);
   };
   const handleExpenseSubmit = () => {
@@ -51,19 +53,27 @@ const AddNewEntry = ({title, modalVisible, setModalVisible, onSubmit }) => {
   };
 
   return (
-
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-    >
-      <View style={styles.modalContainer}>
-        <Image
-          style={styles.bg}
-          source={require('../../../../../assets/images/background-auth.png')}
-        />
-        <View>
+    <View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      >
+        <View style={styles.modalContainer}>
+          <Image
+            style={styles.bg}
+            source={require('../../../../../assets/images/background-auth.png')}
+          />
           <Text style={styles.title}>{title}</Text>
+          <TouchableOpacity
+            style={{ position: 'absolute', top: 40, right: 40, }}
+            onPress={() => { setModalVisible(false) }}
+          >
+            <Image
+              source={require('../../../../../assets/images/icon/ic_close.png')}
+              style={styles.closeIcon}
+            />
+          </TouchableOpacity>
           <View>
             <Text style={styles.inputLabel}>Danh mục</Text>
             <View style={styles.dropdownContainer}>
@@ -85,7 +95,7 @@ const AddNewEntry = ({title, modalVisible, setModalVisible, onSubmit }) => {
                   zIndex={2000}
                 />
               </View>
-              <TouchableOpacity style={styles.newClassify}>
+              <TouchableOpacity style={styles.newClassify} onPress={() => { setAddNewClassifyOpen(true) }}>
                 <Image
                   source={require('../../../../../assets/images/icon/ic_plus.png')}
                   style={styles.newClassifyIcon}
@@ -94,11 +104,14 @@ const AddNewEntry = ({title, modalVisible, setModalVisible, onSubmit }) => {
             </View>
             <Text style={styles.inputLabel}>Thời gian</Text>
             <View style={styles.shadow}>
-              <TextInput
-                defaultValue={String(date.toLocaleDateString())}
-                onChangeText={onChangeInfoEntry('time')}
-                style={styles.input}
-              />
+              <TouchableOpacity onPress={() => { setShowDatePicker(true) }}>
+                <TextInput
+                  value={String(date.toLocaleDateString())}
+                  onChangeText={onChangeInfoEntry('time')}
+                  style={styles.input}
+                  editable={false}
+                />
+              </TouchableOpacity>
             </View>
             <Text style={styles.inputLabel}>Số tiền</Text>
             <View style={styles.shadow}>
@@ -118,26 +131,22 @@ const AddNewEntry = ({title, modalVisible, setModalVisible, onSubmit }) => {
                 style={[styles.input, styles.inputNote]}
               />
             </View>
-            <View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={()=>{setModalVisible(false)}}>
-                  <Text style={[styles.button, styles.buttonCancel]}>Trở lại</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleExpenseSubmit}>
-                  <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <TouchableOpacity onPress={handleExpenseSubmit}>
+              <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
+            </TouchableOpacity>
           </View>
-          {/* <DatePicker
+          {showDatePicker &&
+            <DatePicker
               value={date}
               mode="date"
               display="default"
               onChange={onChangeDate}
-            /> */}
+            />
+          }
         </View>
-      </View>
-    </Modal>
+      </Modal>
+      <AddNewClassify modalVisible={addNewClassifyOpen} setModalVisible={setAddNewClassifyOpen} onSubmit={undefined} />
+    </View>
   )
 
 }
