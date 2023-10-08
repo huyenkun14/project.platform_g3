@@ -47,7 +47,7 @@ const EntryDetail = ({route}) => {
                         <TextInput style={[styles.input, styles.inputType]} editable={false} value={status}/>
                     </View>
                     <View>
-                        <Text style={styles.inputLabel}>Tiêu đề</Text>
+                        <Text style={styles.inputLabel}>Danh mục</Text>
                         <TextInput style={[styles.input, styles.inputTitle]} editable={false} value={title}/>
                     </View>
                 </View>

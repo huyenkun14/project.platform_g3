@@ -2,243 +2,117 @@ import { StyleSheet } from 'react-native'
 import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from '../../../../theme'
 
 export const styles = StyleSheet.create({
-  container: {
-    minHeight: SCREEN_HEIGHT,
-    backgroundColor: defaultColors.backgroundColor,
-    position: 'relative',
-  },
-  imageBack: {
+
+  modalContainer: {
     flex: 1,
+    paddingHorizontal: 40,
+    backgroundColor: defaultColors.backgroundColor,
+    justifyContent: 'center',
+    position: 'relative'
+  },
+  title: {
+    color: defaultColors.titleColor,
+    fontSize: 20,
+    fontWeight: '800',
+    textAlign: 'center',
+  },
+  closeIcon: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
+  },
+  inputLabel: {
+    fontSize: 15,
+    marginTop: 20,
+    marginBottom: 10,
+    fontWeight: '500',
+    color: defaultColors.text_3,
+  },
+  input: {
+    color: defaultColors.text_1,
+    fontSize: 14,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    height: 50,
+    overflow: 'hidden',
+    backgroundColor: defaultColors.backgroundColor,
+  },
+  inputNote: {
+    height: 100,
+    textAlignVertical: 'top',
+  },
+  dropdownContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  dropdown: {
+    borderColor: defaultColors.backgroundColor,
+    width: SCREEN_WIDTH * 0.6,
+    borderRadius: 5,
+  },
+  newClassify: {
+    height: 50,
+    paddingHorizontal: 20,
+    backgroundColor: defaultColors.flatListItem,
+    borderRadius: 5,
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  newClassifyIcon: {
+    height: 30,
+    width: 20,
+    resizeMode: 'contain',
+    tintColor: defaultColors.backgroundColor
+  },
+  button: {
+    marginTop: 30,
+    fontSize: 16,
+    paddingVertical: 15,
+    textAlign: 'center',
+    borderRadius: 5,
+    marginBottom: 20,
+    borderColor: defaultColors.borderColor,
+    borderWidth: 0.5,
+    shadowColor: defaultColors.shadowColor,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 4.65,
+    elevation: 3,
+  },
+  buttonCancel: {
+    color: defaultColors.text_1,
+    backgroundColor: defaultColors.backgroundColor,
+  },
+  buttonAdd: {
+    color: defaultColors.text_white,
+    opacity: 0.9,
+    backgroundColor: defaultColors.tabActive,
+  },
+  bg: {
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    // tintColor: defaultColors.backgroundImg
+    resizeMode: 'contain',
+    zIndex: -10,
+    opacity: 0.3,
   },
-    
-  input: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    borderWidth: 1,
-    borderColor: 'blue',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
-    margin: 5,
-    width: '100%',
-  }, 
-
-  title: {
-    borderWidth: 1,
-    // borderBlockColor: 'blue',
-     borderColor: '#fff', 
-     padding: 10, 
-     marginBottom: 10,
-     margin: 5,
-     right: 0,
-    //  left: 0,
-     width: '100%',
-     color: defaultColors.text_1,
-        fontSize: 16,
-        fontWeight: '600',
-}, 
-
-  back:{
-  // flex: 1, 
-  // justifyContent: 'center', 
-  alignItems: 'center' ,
-  flexDirection: 'column',
-    justifyContent: 'space-between',
-    paddingHorizontal: 25,
-    // marginVertical: 100
-    margin: 15
-  },
-
-  item: {
-    flex: 1,
-    margin: 10,
-    marginTop: 50,
-    right: 10,
-
-    
-
-  },
-  
-  itemm:{
-    flex: 1,
-    margin: 10,
-    marginTop: 100,
-    left: 40
-    
-
-  }, 
-
-  fullscreen: {
-    flex: 1,
-    marginVertical: 10
-  },
-
-  calen: {
-   
-      borderWidth: 0.5,
-      borderColor: 'green',
-      borderRadius: 30,
-  
-  },
-    label: {
-        marginVertical: 5,
-        borderRadius: 10,
-        margin: 10,
-        fontSize: 20,
-        right: 100,
-        color: defaultColors.text_3,
-
-  },
-  price: {
-    marginVertical: 5,
-    borderRadius: 10,
-    margin: 10,
-    fontSize: 20,
-    right: 120,
-    color: defaultColors.text_3,
-
-
-},
-reset: {
-  flexDirection: 'row-reverse',
-},
-moneyIcon: {
-  width: 20, 
-  height: 20, 
-  marginRight: 10, 
-  left: 250,
-
-
-},
-
-moneyInput: {
-  flex: 1,
-  borderWidth: 1,
-  borderColor: '#fff', 
-  right: 20,
-  width: '100%',
-  color: defaultColors.text_1,
-        fontSize: 16,
-        fontWeight: '600',
-},
- cate: {
-        marginVertical: 5,
-        borderRadius: 10,
-        margin: 10,
-        fontSize: 20,
-        right: 80,
-        color: defaultColors.text_3,
-
-
- },
- itemIcon: {
-  height: 25,
-  width: 25,
-  marginBottom: 10,
-  margin: 5,
-  alignSelf: 'center'
-  
-
-},
-
-  squareIcon: {
-    width: 50, 
-    height: 50, 
-    backgroundColor: '#fff',
-    marginRight: 10, 
-    borderStyle: 'dashed',
-    borderColor: 'gray',
-    borderWidth: 1,
-    right: 130,
-    alignItems: 'center', 
-    justifyContent: 'center',
-    marginLeft: 60
-}, 
-square:{
-  width: 90, 
-  height: 50, 
-  backgroundColor:'#00CCCC',
-  marginRight: 20, 
-  borderRadius: 5,
-  borderColor: 'gray',
-  borderWidth: 1,
-  right: 130,
-  alignItems: 'center', 
-  justifyContent: 'center',
-  marginLeft: 30,
-},
-squaree:{
-  width: 80, 
-  height: 50, 
-  backgroundColor:'#97FFFF',
-  marginRight: 20, 
-  borderRadius: 5,
-  borderColor: 'gray',
-  borderWidth: 1,
-  right: 130,
-  alignItems: 'center', 
-  justifyContent: 'center',
-  marginLeft: 30,
-  
-
-},
-
-itemPrice: {
-  flexDirection: 'row',
-  marginLeft: 40,
-  right: -80,
-  marginTop: 10
-
-},
-resit: {
-        marginVertical: 10,
-        borderRadius: 10,
-        margin: 10,
-        fontSize: 20,
-        right: 70,
-        color: defaultColors.text_3,
-        marginBottom: 20,
-        marginTop: 20
-        
-},
-photo: {
-  flexDirection: 'row', 
-    alignItems: 'center',
-
-},
-camera: {
-  width: 30, 
-    height: 30, 
-    marginRight: 10,
-},
-itemcamera: {
-  flexDirection: 'row', 
-    alignItems: 'center',
-    borderStyle: 'dashed',
-    borderColor: 'gray',
-    borderWidth: 1,
-    width: 300, 
-    height: 50, 
-    backgroundColor: '#fff',
+  shadow: {
     borderRadius: 5,
-    
-    right: 30,
-    justifyContent: 'center',
-    marginLeft: 60
-},
-textcamera: {
-  color: defaultColors.text_1,
-
-}
-  
-  
-  
-
-
-  })
+    borderColor: defaultColors.borderColor,
+    borderWidth: 1.5,
+    backgroundColor: defaultColors.backgroundColor,
+    // shadowColor: defaultColors.shadowColor,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.15,
+    // shadowRadius: 4.65,
+    // elevation: 7,
+  },
+})
