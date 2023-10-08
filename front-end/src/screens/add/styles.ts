@@ -29,7 +29,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 25,
     marginVertical: 10
   },
-
   addItem: {
     width: SCREEN_WIDTH/3.5,
     height: SCREEN_WIDTH/3.5,
@@ -52,21 +51,6 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginBottom: 10
   },
-
-  input: {
-    top: 0,
-    // position: 'absolute',
-    // top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    // tintColor: defaultColors.backgroundImg,
-
-    borderWidth: 2,
-    padding: 10,
-    width: "90%",
-    borderRadius: 10
-}, 
   addIncome: {
     backgroundColor: defaultColors.backgroundColor,
   },
