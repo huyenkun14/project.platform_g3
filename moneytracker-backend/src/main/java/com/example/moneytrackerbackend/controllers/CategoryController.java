@@ -21,13 +21,13 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/api/vi/category")
+    @GetMapping("/api/v1/category")
     public ResponseEntity getCategory(@RequestParam Long categoryId){
         Category category = categoryService.getCategoryById(categoryId);
         return ResponseEntity.ok(category);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/api/vi/category/get-all")
+    @GetMapping("/api/v1/category/get-all")
     public  ResponseEntity getAllCategory(){
         List<Category> categories = categoryService.getAllCategory();
         return ResponseEntity.ok(categories);

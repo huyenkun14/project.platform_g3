@@ -11,6 +11,7 @@ import com.example.moneytrackerbackend.repositories.TransactionRepository;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class TransactionServiceImp implements TransactionService{
     public List<Transaction> getAllTransaction(){
         return transactionRepository.findAll();
     }
-    public Transaction updateTransaction(TransactionRequest transactionRequest){
+    public Transaction updateTransaction( TransactionRequest transactionRequest){
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("no transaction"));
         Category category = categoryRepository.findById(transactionRequest.getCategoryId()).orElseThrow(()->new CustomException("Error: category"));
 
