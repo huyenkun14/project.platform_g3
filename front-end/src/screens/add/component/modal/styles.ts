@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
   inputNote: {
     height: 100,
     textAlignVertical: 'top',
+    paddingVertical: 10,
   },
   dropdownContainer: {
     flexDirection: 'row',

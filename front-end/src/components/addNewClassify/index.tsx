@@ -2,7 +2,7 @@ import { View, Text, Modal, TextInput, TouchableOpacity, Image } from 'react-nat
 import React, { useState } from 'react'
 import { styles } from './styles'
 
-const AddNewClassify = ({ modalVisible, setModalVisible, onSubmit }) => {
+const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus, onSubmit }) => {
     const [infoClassify, setInfoClassify] = useState({
         title: '',
         image: '',
@@ -25,7 +25,7 @@ const AddNewClassify = ({ modalVisible, setModalVisible, onSubmit }) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalInner}>
                         <View style={styles.headerContainer}>
-                            <View style={styles.empty}/>
+                            <View style={styles.empty} />
                             <Text style={styles.title}>Thêm danh mục</Text>
                             <TouchableOpacity onPress={() => { setModalVisible(false) }}>
                                 <Image
@@ -43,23 +43,26 @@ const AddNewClassify = ({ modalVisible, setModalVisible, onSubmit }) => {
                                 placeholder='Nhập tên danh mục'
                             />
                         </View>
-                        <Text style={styles.inputLabel}>Ngân sách</Text>
-                        <View style={styles.shadow}>
-                            <TextInput
-                                value={infoClassify.title}
-                                onChangeText={onChangeInfoClassify('title')}
-                                style={styles.input}
-                                placeholder='Nhập ngân sách cho danh mục'
-                            />
-                        </View>
+                        {isIncomeStatus && <>
+                            <Text style={styles.inputLabel}>Ngân sách</Text>
+                            <View style={styles.shadow}>
+                                <TextInput
+                                    value={infoClassify.title}
+                                    onChangeText={onChangeInfoClassify('title')}
+                                    style={styles.input}
+                                    placeholder='Nhập ngân sách cho danh mục'
+                                />
+                            </View>
+                        </>
+                        }
                         <TouchableOpacity>
-                        <View style={styles.addImage}>
-                            <Image 
-                            source={require('../../../assets/images/icon/ic_camera.png')}
-                            style={styles.addImageIcon}
-                            />
-                            <Text style={styles.addImageText}>Chọn ảnh</Text>
-                        </View>
+                            <View style={styles.addImage}>
+                                <Image
+                                    source={require('../../../assets/images/icon/ic_camera.png')}
+                                    style={styles.addImageIcon}
+                                />
+                                <Text style={styles.addImageText}>Chọn ảnh</Text>
+                            </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { setModalVisible(false) }}>
                             <Text style={styles.button}>Thêm danh mục</Text>

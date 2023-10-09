@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { getAllEntryAction, createEntryAction } from "./actions"
 
-interface IAuth {
+interface IEntry {
     loading: boolean,
     res: [],
     message: string,
 }
 
-const initialState:IAuth = {
+const initialState:IEntry = {
     res: [],
     loading: false,
     message: '',
@@ -42,10 +42,11 @@ export const authSlice = createSlice({
                 loading: true,
               };
         })
-        builder.addCase(getAllEntryAction.fulfilled, (state) => {
+        builder.addCase(getAllEntryAction.fulfilled, (state,action) => {
             return {
                 ...state,
                 loading: false,
+                res: action.payload.data
               };
         })
         builder.addCase(getAllEntryAction.rejected, (state) => {

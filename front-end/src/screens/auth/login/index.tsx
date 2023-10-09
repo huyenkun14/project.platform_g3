@@ -24,7 +24,6 @@ const Login = () => {
 
     const handleLogin = () => {
         dispatch(loginActions(account))
-
             .then(res => {
                 console.log("res", res)
                 if (res.payload) {

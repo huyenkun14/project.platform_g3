@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { getAllClassifyAction, createClassifyAction } from "./actions"
 
-interface IAuth {
+interface IClassify {
     loading: boolean,
     res: [],
     message: string,
 }
 
-const initialState:IAuth = {
+const initialState:IClassify = {
     res: [],
     loading: false,
     message: '',
@@ -42,10 +42,11 @@ export const authSlice = createSlice({
                 loading: true,
               };
         })
-        builder.addCase(getAllClassifyAction.fulfilled, (state) => {
+        builder.addCase(getAllClassifyAction.fulfilled, (state, action) => {
             return {
                 ...state,
                 loading: false,
+                res: action.payload.data
               };
         })
         builder.addCase(getAllClassifyAction.rejected, (state) => {
