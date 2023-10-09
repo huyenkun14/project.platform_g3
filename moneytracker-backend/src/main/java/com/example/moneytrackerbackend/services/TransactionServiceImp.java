@@ -27,7 +27,7 @@ public class TransactionServiceImp implements TransactionService{
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
 
     public Transaction createTransaction(TransactionRequest transactionRequest)
     {
