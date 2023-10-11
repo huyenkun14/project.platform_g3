@@ -42,10 +42,10 @@ public class AuthController {
     UserRepository userRepository;
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
-        User user = userRepository.findByUsername(loginRequest.getUsername());
+        User user = userRepository.findByEmail(loginRequest.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
@@ -57,12 +57,15 @@ public class AuthController {
 
     @PostMapping("api/auth/register")
     public ResponseEntity register(@RequestBody RegisterRequest registerRequest) {
-        if(userRepository.existsByUsername(registerRequest.getUsername())){
-            throw new CustomException("Error: Username is already taken!");
+        if(userRepository.existsByEmail(registerRequest.getEmail())){
+            throw new CustomException("Error: Email is already taken!");
         }
-        User user = new User(registerRequest.getUsername(),
-                encoder.encode(registerRequest.getPassword()),
-                registerRequest.getEmail());
+        User user = User.builder().username(registerRequest.getUsername())
+                .password(encoder.encode(registerRequest.getPassword()))
+                .email(registerRequest.getEmail())
+                .phoneNumber(registerRequest.getPhoneNumber())
+                .money(0)
+                .build();
         userRepository.save(user);
         return ResponseEntity.ok().build();
     }

@@ -19,7 +19,7 @@ public class UserServiceImp implements UserDetailsService {
 //        return new UserDetailsImpl(user);
 //    }
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(username);
         if (user == null) {
             throw new CustomException("User not found with username: " + username);
         }
