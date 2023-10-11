@@ -1,5 +1,6 @@
 package com.example.moneytrackerbackend.services;
 
+import com.example.moneytrackerbackend.dto.response.UserResponse;
 import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
@@ -24,5 +25,9 @@ public class UserServiceImp implements UserDetailsService {
             throw new CustomException("User not found with username: " + username);
         }
         return UserDetailsImpl.build(user);
+    }
+    public User getUser(Long id){
+        User user = userRepository.findById(id).orElseThrow(()-> new CustomException("no use"));
+        return user;
     }
 }

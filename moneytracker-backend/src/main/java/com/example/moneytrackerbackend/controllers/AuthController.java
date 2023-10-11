@@ -23,23 +23,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
     private final UserServiceImp userService;
-    @Autowired
-    AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
     @Autowired
     PasswordEncoder encoder;
-    @Autowired
-    private JwtUtils tokenProvider;
-    @Autowired
-    UserRepository userRepository;
+    private final JwtUtils tokenProvider;
+    private final UserRepository userRepository;
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail());
@@ -68,5 +63,11 @@ public class AuthController {
                 .build();
         userRepository.save(user);
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("api/v1/user")
+    public ResponseEntity getUser(@RequestParam("userId") Long userId){
+
+        return ResponseEntity.ok(userService.getUser(userId));
+
     }
 }
