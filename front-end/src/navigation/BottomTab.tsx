@@ -1,13 +1,15 @@
-import { useCallback } from "react"
+import React, { useCallback } from "react"
 import { Image, View } from "react-native"
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { TabsData } from "../constants/bottomTab"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Home from "../screens/home"
-import Test from "../screens/test"
-import Activity from "../screens/activities";
+import Add from "../screens/add";
 import Chart from "../screens/charts";
 import History from "../screens/history";
+import { defaultColors } from "../theme";
+import Classify from "../screens/classify";
+import { NAVIGATION_TITLE } from "../constants/navigation";
 
 const MyBottomTabs = () => {
 
@@ -42,10 +44,10 @@ const MyBottomTabs = () => {
     const { focused, tabName } = props
     const tab = TabsData.filter(item => item?.name === tabName)[0]
     const getColor = useCallback(() => {
-      if (focused) return 'crimson'
-      else return '#BDBDBD'
+      if (focused) return defaultColors.tabActive
+      else return defaultColors.tabColor
     }, [focused])
-    if (tabName === 'Activity')
+    if (tabName === NAVIGATION_TITLE.ADD)
       return (
         <View style={{
           alignItems: 'center',
@@ -53,13 +55,13 @@ const MyBottomTabs = () => {
           width: 60,
           height: 60,
           borderRadius: 100,
-          backgroundColor: 'crimson',
+          backgroundColor: defaultColors.tabAdd,
           top: -25,
 
         }}>
           <Image
             source={tab?.icon}
-            style={{ tintColor: '#fff', height: 25, width: 25 }}
+            style={{ tintColor: defaultColors.text_white, height: 25, width: 25 }}
             resizeMode="contain"
           />
         </View>
@@ -75,30 +77,39 @@ const MyBottomTabs = () => {
   }
 
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: {height: 300} }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          height: 300,
+          backgroundColor: defaultColors.backgroundColor
+        },
+      }}
+    >
       <Tab.Screen
-        name="Home"
+        name={NAVIGATION_TITLE.HOME}
         component={Home}
         options={getOptions}
       />
       <Tab.Screen
-        name="Chart"
+        name={NAVIGATION_TITLE.CHART}
         component={Chart}
         options={getOptions}
       />
       <Tab.Screen
-        name="Activity"
-        component={Activity}
+        name={NAVIGATION_TITLE.ADD}
+        component={Add}
         options={getOptions}
       />
       <Tab.Screen
-        name="History"
+        name={NAVIGATION_TITLE.HISTORY}
         component={History}
         options={getOptions}
       />
       <Tab.Screen
-        name="Test"
-        component={Test}
+        name={NAVIGATION_TITLE.CLASSIFY}
+        component={Classify}
         options={getOptions}
       />
     </Tab.Navigator>

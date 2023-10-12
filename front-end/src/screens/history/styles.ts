@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native'
+import { SCREEN_HEIGHT } from '../../theme'
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
         backgroundColor: '#fff',
+        paddingBottom: 80,
+        minHeight: SCREEN_HEIGHT,
     },
     title: {
         fontSize: 30,

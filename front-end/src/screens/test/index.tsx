@@ -3,10 +3,14 @@ import React from 'react'
 import { styles } from './styles'
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { add, sub } from '../../redux/slices/counterSlice';
+import { useNavigation } from '@react-navigation/native';
+import { NAVIGATION_TITLE } from '../../constants/navigation';
+
 
 const Home = () => {
   const counterRdx = useAppSelector((state: any) => state.counter.value)
   const dispatch = useAppDispatch()
+  const navigation = useNavigation<any>();
   return (
     <View style={styles.container}>
       <Button
@@ -18,6 +22,13 @@ const Home = () => {
         title='+'
         onPress={() => dispatch(add())}
       />
+      <Button
+        title='login'
+        onPress={() => {
+          navigation.navigate(NAVIGATION_TITLE.LOGIN)
+        }}
+      />
+
     </View>
   )
 }
