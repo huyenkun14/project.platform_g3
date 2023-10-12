@@ -35,7 +35,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/category/get")
     public  ResponseEntity getAllCategory(@RequestParam("value") boolean value){
-        List<Category> categories = categoryService.getAllCategory();
+        List<Category> categories = categoryService.getAllByValue(value);
         return ResponseEntity.ok(categories);
     }
 }

@@ -36,6 +36,11 @@ public class CategoryServiceImp implements CategoryService{
         List<Category> categories=categoryRepository.findAll();
         return categories;
     }
+    public List<Category> getAllByValue(boolean value){
+        List<Category> categories = categoryRepository.findAllByValue(value);
+        return categories;
+    }
+
     public Category getCategoryById(Long id){
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CustomException("Error: Category nay khong ton tai"));
