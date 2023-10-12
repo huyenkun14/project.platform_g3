@@ -22,8 +22,7 @@ public class Budget {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
-    private Double amount;
+    private int amount;
     private LocalDate startDate;
     private LocalDate endDate;
     private String description;

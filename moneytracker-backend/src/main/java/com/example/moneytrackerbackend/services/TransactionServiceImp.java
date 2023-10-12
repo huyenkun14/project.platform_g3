@@ -27,7 +27,7 @@ public class TransactionServiceImp implements TransactionService{
                 .orElseThrow(()->new CustomException("Error: category"));
         User user = userRepository.findById(transactionRequest.getUserId())
                 .orElseThrow(()-> new CustomException("Error: user")) ;
-        Transaction transaction= Transaction.builder()
+        Transaction transaction = Transaction.builder()
                 .amount(transactionRequest.getAmount())
                 .category(category)
                 .date(transactionRequest.getDate())
@@ -50,12 +50,7 @@ public class TransactionServiceImp implements TransactionService{
     public Transaction updateTransaction( TransactionRequest transactionRequest){
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("no transaction"));
         int money = transaction.getAmount();
-//        if(transaction.getCategory().isValue()){
-//            money-= transaction.getAmount();
-//        }
-//        else {
-//            money += transaction.getAmount();
-//        }
+
         money = updateMoney(transaction.getAmount(),money, !transaction.getCategory().isValue());
         Category category = categoryRepository.findById(transactionRequest.getCategoryId()).orElseThrow(()->new CustomException("Error: category"));
 
