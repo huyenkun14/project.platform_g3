@@ -1,9 +1,8 @@
 package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.request.BudgetRequest;
-import com.example.moneytrackerbackend.dto.request.TransactionRequest;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
-import com.example.moneytrackerbackend.entities.Transaction;
+import com.example.moneytrackerbackend.entities.Budget;
 import com.example.moneytrackerbackend.services.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,8 @@ public class BudgetController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/budget/create")
     public ResponseEntity createBudget(@RequestBody BudgetRequest budgetRequest){
-        Transaction transaction = budgetService.createBudget(budgetRequest);
-        return ResponseEntity.ok(transaction);
+        Budget budget = budgetService.createBudget(budgetRequest);
+        return ResponseEntity.ok(budget);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/api/v1/budget/delete")

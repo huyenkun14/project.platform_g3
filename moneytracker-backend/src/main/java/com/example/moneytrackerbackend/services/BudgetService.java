@@ -9,11 +9,11 @@ import java.util.List;
 
 @Service
 public interface BudgetService {
-    Transaction createBudget(BudgetRequest budgetRequest);
+    Budget createBudget(BudgetRequest budgetRequest);
 
-    Object updateBudget(BudgetRequest budgetRequest);
+    Budget updateBudget(BudgetRequest budgetRequest);
 
-    Object getBudget(Long id);
+    Budget getBudget(Long id);
 
     void deleteBudget(Long id);
 

@@ -32,4 +32,10 @@ public class CategoryController {
         List<Category> categories = categoryService.getAllCategory();
         return ResponseEntity.ok(categories);
     }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/api/v1/category/get")
+    public  ResponseEntity getAllCategory(@RequestParam("value") boolean value){
+        List<Category> categories = categoryService.getAllCategory();
+        return ResponseEntity.ok(categories);
+    }
 }

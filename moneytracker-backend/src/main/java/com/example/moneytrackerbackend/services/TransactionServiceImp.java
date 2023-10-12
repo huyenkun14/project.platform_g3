@@ -11,6 +11,8 @@ import com.example.moneytrackerbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -21,16 +23,18 @@ public class TransactionServiceImp implements TransactionService{
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
     public Transaction createTransaction(TransactionRequest transactionRequest)
     {
         Category category = categoryRepository.findById(transactionRequest.getCategoryId())
                 .orElseThrow(()->new CustomException("Error: category"));
         User user = userRepository.findById(transactionRequest.getUserId())
                 .orElseThrow(()-> new CustomException("Error: user")) ;
+        LocalDate date = LocalDate.parse(transactionRequest.getDate(), formatter);
         Transaction transaction = Transaction.builder()
                 .amount(transactionRequest.getAmount())
                 .category(category)
-                .date(transactionRequest.getDate())
+                .date(date)
                 .description(transactionRequest.getDescription())
                 .user(user)
                 .build();
@@ -45,7 +49,7 @@ public class TransactionServiceImp implements TransactionService{
         transactionRepository.delete(transaction);
     }
     public List<Transaction> getAllTransaction(){
-        return transactionRepository.findAll();
+        return transactionRepository.findAllByOrderByDate();
     }
     public Transaction updateTransaction( TransactionRequest transactionRequest){
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("no transaction"));
@@ -57,7 +61,7 @@ public class TransactionServiceImp implements TransactionService{
         transaction.setAmount(transactionRequest.getAmount());
         transaction.setCategory(category);
         transaction.setDescription(transactionRequest.getDescription());
-        transaction.setDate(transactionRequest.getDate());
+        transaction.setDate(LocalDate.parse(transactionRequest.getDate(), formatter));
         transaction = transactionRepository.save(transaction);
         money = updateMoney(transaction.getAmount(), money, transaction.getCategory().isValue());
         User user = transaction.getUser();

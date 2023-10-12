@@ -17,7 +17,7 @@ public class BudgetRequest {
     private Long userId;
     private Long categoryId;
     private int amount;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private String description;
 }

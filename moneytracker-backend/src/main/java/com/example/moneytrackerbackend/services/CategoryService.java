@@ -10,5 +10,6 @@ import java.util.List;
 public interface CategoryService {
     Category createCategory(CategoryRequest categoryRequest);
     List<Category> getAllCategory();
+    List<Category> getAllByValue(boolean value);
     Category getCategoryById(Long id);
 }
