@@ -19,4 +19,7 @@ public class Category {
     private String status;
     //xác định khoản thu hay chi: true=0=thu, false=1=chi
     private boolean value;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

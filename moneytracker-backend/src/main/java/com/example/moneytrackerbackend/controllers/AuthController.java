@@ -23,29 +23,24 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
     private final UserServiceImp userService;
-    @Autowired
-    AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
     @Autowired
     PasswordEncoder encoder;
-    @Autowired
-    private JwtUtils tokenProvider;
-    @Autowired
-    UserRepository userRepository;
+    private final JwtUtils tokenProvider;
+    private final UserRepository userRepository;
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
-        User user = userRepository.findByUsername(loginRequest.getUsername());
+        User user = userRepository.findByEmail(loginRequest.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
@@ -57,13 +52,22 @@ public class AuthController {
 
     @PostMapping("api/auth/register")
     public ResponseEntity register(@RequestBody RegisterRequest registerRequest) {
-        if(userRepository.existsByUsername(registerRequest.getUsername())){
-            throw new CustomException("Error: Username is already taken!");
+        if(userRepository.existsByEmail(registerRequest.getEmail())){
+            throw new CustomException("Error: Email is already taken!");
         }
-        User user = new User(registerRequest.getUsername(),
-                encoder.encode(registerRequest.getPassword()),
-                registerRequest.getEmail());
+        User user = User.builder().username(registerRequest.getUsername())
+                .password(encoder.encode(registerRequest.getPassword()))
+                .email(registerRequest.getEmail())
+                .phoneNumber(registerRequest.getPhoneNumber())
+                .money(0)
+                .build();
         userRepository.save(user);
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("api/v1/user")
+    public ResponseEntity getUser(@RequestParam("userId") Long userId){
+
+        return ResponseEntity.ok(userService.getUser(userId));
+
     }
 }

@@ -22,7 +22,7 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    private Double amount;
+    private int amount;
     private String description;
     private LocalDate date;
 }
