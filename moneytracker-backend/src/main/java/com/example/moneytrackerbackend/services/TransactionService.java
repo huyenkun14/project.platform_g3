@@ -10,7 +10,7 @@ import java.util.List;
 public interface TransactionService {
     Transaction createTransaction(TransactionRequest transactionRequest);
     void deleteTransaction(Long id);
-    List<Transaction> getAllTransaction();
+    List<Transaction> getAllTransaction(Long userId);
     Transaction updateTransaction(TransactionRequest transactionRequest);
     Transaction getTransaction(Long id);
 }

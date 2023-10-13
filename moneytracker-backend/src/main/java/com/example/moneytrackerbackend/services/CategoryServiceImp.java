@@ -36,8 +36,10 @@ public class CategoryServiceImp implements CategoryService{
         List<Category> categories=categoryRepository.findAll();
         return categories;
     }
-    public List<Category> getAllByValue(boolean value){
-        List<Category> categories = categoryRepository.findAllByValue(value);
+    public List<Category> getAllByValue(boolean value, Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException("Error: no user"));
+        List<Category> categories = categoryRepository.findAllByValueAndUser(value,user);
         return categories;
     }
 

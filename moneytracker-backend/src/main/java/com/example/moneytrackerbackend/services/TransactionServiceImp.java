@@ -48,8 +48,10 @@ public class TransactionServiceImp implements TransactionService{
         Transaction transaction = transactionRepository.findById(id).orElseThrow(()-> new CustomException("no transaction"));
         transactionRepository.delete(transaction);
     }
-    public List<Transaction> getAllTransaction(){
-        return transactionRepository.findAllByOrderByDate();
+    public List<Transaction> getAllTransaction(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException("Error: no user"));
+        return transactionRepository.findAllByUserOrderByDate(user);
     }
     public Transaction updateTransaction( TransactionRequest transactionRequest){
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("no transaction"));

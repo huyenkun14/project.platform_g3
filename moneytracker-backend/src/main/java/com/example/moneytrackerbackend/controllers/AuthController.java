@@ -17,13 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,10 +68,11 @@ public class AuthController {
         userRepository.save(user);
         return ResponseEntity.ok().build();
     }
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("api/v1/user")
-    public ResponseEntity getUser(@RequestParam("userId") Long userId){
-
-        return ResponseEntity.ok(userService.getUser(userId));
-
+    public ResponseEntity getUser(Principal principal){
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        return ResponseEntity.ok(userId);
     }
 }

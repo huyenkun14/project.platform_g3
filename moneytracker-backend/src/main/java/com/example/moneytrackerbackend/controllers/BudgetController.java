@@ -3,11 +3,15 @@ package com.example.moneytrackerbackend.controllers;
 import com.example.moneytrackerbackend.dto.request.BudgetRequest;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.Budget;
+import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 public class BudgetController {
@@ -15,7 +19,10 @@ public class BudgetController {
     private BudgetService budgetService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/budget/create")
-    public ResponseEntity createBudget(@RequestBody BudgetRequest budgetRequest){
+    public ResponseEntity createBudget(@RequestBody BudgetRequest budgetRequest, Principal principal){
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        budgetRequest.setUserId(userId);
         Budget budget = budgetService.createBudget(budgetRequest);
         return ResponseEntity.ok(budget);
     }
@@ -27,7 +34,9 @@ public class BudgetController {
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/budget/get-all")
-    public ResponseEntity getAllBudget(){
+    public ResponseEntity getAllBudget(Principal principal){
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
         return ResponseEntity.ok(budgetService.getAllBudget());
     }
     @PreAuthorize("hasRole('ROLE_USER')")
