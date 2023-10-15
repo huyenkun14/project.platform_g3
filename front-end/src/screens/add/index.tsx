@@ -1,15 +1,31 @@
 import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import Header from '../../components/header'
 import Entry from '../../components/entry'
 import { defaultColors } from '../../theme'
 import AddNewEntry from './component/modal'
+import { getAllEntryAction } from '../../services/entry/actions'
+import { useDispatch } from 'react-redux'
 const Add = () => {
   const [addIncome, setAddIncome] = useState(false)
   const [addExpenses, setAddExpenses] = useState(false)
   const [isIncome, setIsIncome] = useState(false)
+  const dispatch = useDispatch<any>()
+  const [listEntry, setListEntry] = useState([])
 
+  useEffect(() => {
+    getListEntry()
+  }, [])
+  const getListEntry = () => {
+    dispatch(getAllEntryAction())
+      .then(res => {
+        console.log(res)
+        const converListEntry = res?.payload.slice(-3)
+        setListEntry(converListEntry)
+      })
+      .catch(err => console.log('err', err))
+  }
   const toAddIncome = () => {
     setAddIncome(true);
     setIsIncome(false)
@@ -19,7 +35,6 @@ const Add = () => {
     setAddExpenses(true);
     setIsIncome(true)
   };
-
   return (
     <SafeAreaView>
       <StatusBar />
@@ -58,9 +73,17 @@ const Add = () => {
         {/* last entries */}
         <View>
           <Text style={styles.title}>Gần đây</Text>
-          <Entry title='Food' time='02-09-2023' price={200000} note='Ăn sáng' status='chi tiêu' />
-          <Entry title='Bonus' time='01-09-2023' price={500000} note='Thưởng lễ 2/9' status='thu nhập' />
-          <Entry title='Traffic' time='31-08-2023' price={7000} note='Buýt' status='chi tiêu' />
+          {listEntry.length >= 1 ?
+            listEntry.map(item =>
+            (<Entry
+              title={item.category.title}
+              time={item.date}
+              price={item.amount}
+              note={item.description}
+              status={item.category.value} />))
+            :
+            <Text style={{ textAlign: 'center' }}>Không có giao dịch gần đây</Text>
+          }
         </View>
 
         {/* Expense Modal */}
