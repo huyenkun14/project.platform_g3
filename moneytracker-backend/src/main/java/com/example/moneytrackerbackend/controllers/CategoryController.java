@@ -20,6 +20,9 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/category/create")
     public ResponseEntity createCategory(@RequestBody CategoryRequest categoryRequest, Principal principal){
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        categoryRequest.setUserId(userId);
         Category category = categoryService.createCategory(categoryRequest);
         return ResponseEntity.ok(category);
     }
@@ -34,7 +37,7 @@ public class CategoryController {
     public  ResponseEntity getAllCategory(Principal principal){
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        List<Category> categories = categoryService.getAllCategory();
+        List<Category> categories = categoryService.getAllCategory(userId);
         return ResponseEntity.ok(categories);
     }
     @PreAuthorize("hasRole('ROLE_USER')")

@@ -16,36 +16,32 @@ public class CategoryServiceImp implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserServiceImp userService;
     public Category createCategory(CategoryRequest categoryRequest){
         if(categoryRepository.existsByTitle(categoryRequest.getTitle())){
-            throw new CustomException("Error: Name category ddax toonf taij!!!");
+            throw new CustomException("Error: Name category da ton tai!!!");
         }
-        User user = userRepository.findById(categoryRequest.getUserId())
-                .orElseThrow(()-> new CustomException("Error: not user")) ;
-
+        User user = userService.getUser(categoryRequest.getUserId());
         Category category = Category.builder()
                 .title(categoryRequest.getTitle())
                 .user(user)
-                .status(categoryRequest.getStatus())
                 .value(categoryRequest.isValue()).build();
         return categoryRepository.save(category);
     }
-    public List<Category> getAllCategory(){
-
-        List<Category> categories=categoryRepository.findAll();
+    public List<Category> getAllCategory(Long userId){
+        User user = userService.getUser(userId);
+        List<Category> categories=categoryRepository.findAllByUser(user);
         return categories;
     }
     public List<Category> getAllByValue(boolean value, Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException("Error: no user"));
+        User user = userService.getUser(userId);
         List<Category> categories = categoryRepository.findAllByValueAndUser(value,user);
         return categories;
     }
 
     public Category getCategoryById(Long id){
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CustomException("Error: Category nay khong ton tai"));
+                .orElseThrow(() -> new CustomException("Error: no category"));
         return category;
     }
 }

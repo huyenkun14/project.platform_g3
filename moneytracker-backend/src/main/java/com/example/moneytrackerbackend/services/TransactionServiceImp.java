@@ -20,16 +20,14 @@ public class TransactionServiceImp implements TransactionService{
     @Autowired
     private TransactionRepository transactionRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
     @Autowired
-    private UserRepository userRepository;
+    private UserServiceImp userService;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
     public Transaction createTransaction(TransactionRequest transactionRequest)
     {
-        Category category = categoryRepository.findById(transactionRequest.getCategoryId())
-                .orElseThrow(()->new CustomException("Error: category"));
-        User user = userRepository.findById(transactionRequest.getUserId())
-                .orElseThrow(()-> new CustomException("Error: user")) ;
+        Category category = categoryService.getCategoryById(transactionRequest.getTransactionId());
+        User user = userService.getUser(transactionRequest.getUserId());
         LocalDate date = LocalDate.parse(transactionRequest.getDate(), formatter);
         Transaction transaction = Transaction.builder()
                 .amount(transactionRequest.getAmount())
@@ -41,7 +39,7 @@ public class TransactionServiceImp implements TransactionService{
         transaction = transactionRepository.save(transaction);
         int money = updateMoney(transaction.getAmount(), user.getMoney(), transaction.getCategory().isValue());
         user.setMoney(money);
-        userRepository.save(user);
+        userService.updateUser(user);
         return transaction;
     }
     public void deleteTransaction(Long id){
@@ -49,17 +47,14 @@ public class TransactionServiceImp implements TransactionService{
         transactionRepository.delete(transaction);
     }
     public List<Transaction> getAllTransaction(Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException("Error: no user"));
+        User user = userService.getUser(userId);
         return transactionRepository.findAllByUserOrderByDate(user);
     }
     public Transaction updateTransaction( TransactionRequest transactionRequest){
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("no transaction"));
         int money = transaction.getAmount();
-
         money = updateMoney(transaction.getAmount(),money, !transaction.getCategory().isValue());
-        Category category = categoryRepository.findById(transactionRequest.getCategoryId()).orElseThrow(()->new CustomException("Error: category"));
-
+        Category category = categoryService.getCategoryById(transactionRequest.getCategoryId());
         transaction.setAmount(transactionRequest.getAmount());
         transaction.setCategory(category);
         transaction.setDescription(transactionRequest.getDescription());
@@ -68,7 +63,7 @@ public class TransactionServiceImp implements TransactionService{
         money = updateMoney(transaction.getAmount(), money, transaction.getCategory().isValue());
         User user = transaction.getUser();
         user.setMoney(money);
-        userRepository.save(user);
+        userService.updateUser(user);
         return transaction;
     }
     public Transaction getTransaction(Long id){
