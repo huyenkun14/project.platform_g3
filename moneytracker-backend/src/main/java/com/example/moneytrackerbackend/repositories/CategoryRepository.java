@@ -12,4 +12,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category findByTitle(String title);
     Boolean existsByTitle(String title);
     List<Category> findAllByValueAndUser(boolean value, User user);
+    List<Category> findAllByUser(User user);
+
 }

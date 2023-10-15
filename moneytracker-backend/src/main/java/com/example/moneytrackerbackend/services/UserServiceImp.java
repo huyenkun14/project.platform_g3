@@ -15,10 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImp implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
-//    public UserDetails loadUserById(Long id){
-//        User user = userRepository.findById(id).orElse(null);
-//        return new UserDetailsImpl(user);
-//    }
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username);
         if (user == null) {
@@ -27,7 +23,11 @@ public class UserServiceImp implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
     public User getUser(Long id){
-        User user = userRepository.findById(id).orElseThrow(()-> new CustomException("no use"));
+        User user = userRepository.findById(id).orElseThrow(()-> new CustomException("Error: no use"));
         return user;
+    }
+
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 }

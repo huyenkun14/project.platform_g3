@@ -9,9 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @Builder
 public class CategoryResponse {
-    private String categoryId;
+    private Long categoryId;
     private String title;
-//    private MultipartFile image;
-    private String status;
     private boolean value;
 }

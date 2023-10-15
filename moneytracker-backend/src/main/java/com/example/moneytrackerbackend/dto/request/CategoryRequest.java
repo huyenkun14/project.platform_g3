@@ -12,6 +12,6 @@ public class CategoryRequest {
     private Long userId;
     private String title;
     private MultipartFile image;
-    private String status;
+//    private String status;
     private boolean value;
 }
