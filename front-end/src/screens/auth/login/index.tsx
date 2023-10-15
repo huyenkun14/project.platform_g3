@@ -10,7 +10,7 @@ import { KEY_STORAGE } from '../../../constants/storage';
 
 const Login = () => {
     const [account, setAccount] = useState({
-        username: '',
+        email: '',
         password: '',
     });
     const navigation = useNavigation<any>()
@@ -30,7 +30,7 @@ const Login = () => {
                     setItemAsyncStorage(KEY_STORAGE.SAVED_INFO, JSON.stringify(res.payload));
                     navigation.navigate(NAVIGATION_TITLE.TAB, { screen: NAVIGATION_TITLE.HOME })
                     setAccount({
-                        username: '',
+                        email: '',
                         password: '',
                     });
                 } else {
@@ -48,12 +48,12 @@ const Login = () => {
         <KeyboardAvoidingView style={styles.container}>
             <Text style={styles.title}>Moli</Text>
             <Text style={styles.slogan}>Đừng để tiền rơi</Text>
-            <Text style={styles.inputLabel}>Username: </Text>
+            <Text style={styles.inputLabel}>E-mail: </Text>
             <View style={styles.formItem}>
                 <TextInput
                     style={styles.input}
-                    value={account.username}
-                    onChangeText={handleChangeAccount('username')}
+                    value={account.email}
+                    onChangeText={handleChangeAccount('email')}
                     placeholder='Nhập email/số điện thoại'
                 />
             </View>

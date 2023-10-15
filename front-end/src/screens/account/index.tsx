@@ -6,6 +6,7 @@ import Entry from '../../components/entry'
 import { defaultColors } from '../../theme'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { useNavigation } from '@react-navigation/native'
+import { clearAllAsyncStorage } from '../../../utils/asyncStorage'
 
 const Account = () => {
     const navigation = useNavigation<any>()
@@ -34,14 +35,17 @@ const Account = () => {
                         <Text style={[styles.itemText]}>Góp ý - đánh giá</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.LOGIN)}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate(NAVIGATION_TITLE.LOGIN)
+                    clearAllAsyncStorage()
+                }}>
                     <View style={styles.item}>
                         <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_exit.png')} />
                         <Text style={[styles.itemText, styles.logoutText]}>Đăng xuất</Text>
                     </View>
                 </TouchableOpacity>
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 

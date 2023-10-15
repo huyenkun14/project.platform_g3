@@ -1,11 +1,10 @@
-import { ScrollView, View, Text, FlatList, Image, SafeAreaView } from 'react-native'
+import { ScrollView, View, Text, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
 import React, { useEffect } from 'react'
 import { styles } from './styles'
 import Header from '../../components/header'
 import { overview } from '../../mock/home'
 import Banner from './components/banner'
 import Entry from '../../components/entry'
-import { StatusBar } from 'expo-status-bar'
 import Option from './components/option'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { getItemObjectAsyncStorage } from '../../../utils/asyncStorage'
@@ -70,7 +69,7 @@ const Home = () => {
   )
   return (
     <SafeAreaView>
-      {/* <StatusBar style="auto" > */}
+      <StatusBar />
       <ScrollView style={styles.container}>
         {/* background */}
         <Image
