@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    paddingHorizontal: 25,
     marginVertical: 10
   },
   addItem: {

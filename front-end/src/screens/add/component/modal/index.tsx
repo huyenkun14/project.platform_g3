@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
+import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ToastAndroid } from 'react-native';
 import { styles } from './styles';
 import DatePicker from '@react-native-community/datetimepicker';
 import Header from '../../../../components/header';
@@ -26,19 +26,18 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
   const [classifyValue, setClassifyValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [listOpen, setListOpen] = useState(false);
-  const [infoUserId, setInfoUserId] = useState({});
   useEffect(() => {
     getListClassify()
-    getUserInfoId()
   }, [])
-  const getUserInfoId = async () => {
-    const data = await getItemObjectAsyncStorage(KEY_STORAGE.SAVED_INFO);
-    setInfoUserId(data?.id)
-  } 
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
       .then(res => {
-        console.log(res)
+        setInfoEntry({
+          time: String(date.toLocaleDateString()),
+          title: '',
+          note: '',
+          money: '',
+        })
         const converListClassify = res?.payload.map((item) => ({ label: item.title, value: item.id }))
         setListClassify(converListClassify)
       })
@@ -46,7 +45,6 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
   }
   const handleCreateEntry = () => {
     dispatch(createEntryAction({
-      userId: infoUserId,
       categoryId: classifyValue,
       amount: infoEntry.money,
       date: infoEntry.time,
@@ -54,7 +52,8 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
     }))
       .then(res => {
         console.log(res)
-
+        ToastAndroid.show('Thêm giao dịch thành công',ToastAndroid.SHORT)
+        setModalVisible(false)
       })
       .catch(err => console.log('err', err))
   }
@@ -84,11 +83,28 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
         <View style={styles.modalContainer}>
           <Image
             style={styles.bg}
-            source={require('../../../../../assets/images/background-auth.png')}
+            source={require('../../../../../assets/images/bg_modal.png')}
           />
+          <Image
+            style={styles.logo}
+            source={require('../../../../../assets/images/logo_add.png')}
+          />
+          <Text style={styles.header}>Moli</Text>
           <Text style={styles.title}>{title}</Text>
+          <View style={[styles.shadow, styles.timeContainer]}>
+            <TouchableOpacity
+              style={styles.timeIconView}
+              onPress={() => { setShowDatePicker(true) }}
+            >
+              <Image
+                style={styles.timeIcon}
+                source={require('../../../../../assets/images/icon/ic_calendar.png')}
+              />
+            </TouchableOpacity>
+            <Text style={styles.timeText}>{infoEntry.time}</Text>
+          </View>
           <TouchableOpacity
-            style={{ position: 'absolute', top: 40, right: 40, }}
+            style={{ position: 'absolute', top: 30, right: 25, }}
             onPress={() => { setModalVisible(false) }}
           >
             <Image
@@ -97,9 +113,8 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
             />
           </TouchableOpacity>
           <View>
-            <Text style={styles.inputLabel}>Danh mục</Text>
-            <View style={styles.dropdownContainer}>
-              <View style={[styles.shadow]}>
+            <View style={[styles.shadow, styles.dropdownContainer]}>
+              <View style={styles.dropdownView}>
                 <DropDownPicker
                   style={[styles.dropdown]}
                   open={listClassifyOpen}
@@ -108,7 +123,7 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
                   setOpen={setListClassifyOpen}
                   setValue={setClassifyValue}
                   setItems={setListClassify}
-                  placeholder="Chon danh muc"
+                  placeholder="Chọn danh mục"
                   onOpen={onListClassifyOpen}
                   onChangeValue={onChangeInfoEntry('title')}
                   dropDownDirection="DEFAULT"
@@ -124,33 +139,37 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
                 />
               </TouchableOpacity>
             </View>
-            <Text style={styles.inputLabel}>Thời gian</Text>
-            <View style={styles.shadow}>
-              <TouchableOpacity onPress={() => { setShowDatePicker(true) }}>
-                <TextInput
-                  value={infoEntry.time}
-                  onChangeText={onChangeInfoEntry('time')}
-                  style={styles.input}
-                  editable={false}
-                />
-              </TouchableOpacity>
+            <View style={styles.inputLabelContainer}>
+              <Image
+                style={styles.inputLabelIcon}
+                source={require('../../../../../assets/images/icon/ic_money.png')}
+              />
+              <Text style={styles.inputLabel}>Số tiền</Text>
             </View>
-            <Text style={styles.inputLabel}>Số tiền</Text>
             <View style={styles.shadow}>
               <TextInput
                 value={infoEntry.money}
                 onChangeText={onChangeInfoEntry('money')}
                 keyboardType="numeric"
                 style={styles.input}
+                placeholder='Nhập số tiền'
               />
+              <Text style={styles.moneyText}>VNĐ</Text>
             </View>
-            <Text style={styles.inputLabel}>Ghi chú</Text>
+            <View style={styles.inputLabelContainer}>
+              <Image
+                style={styles.inputLabelIcon}
+                source={require('../../../../../assets/images/icon/ic_edit.png')}
+              />
+              <Text style={styles.inputLabel}>Ghi chú</Text>
+            </View>
             <View style={styles.shadow}>
               <TextInput
                 value={infoEntry.note}
                 onChangeText={onChangeInfoEntry('note')}
                 multiline
                 style={[styles.input, styles.inputNote]}
+                placeholder='Nhập ghi chú...'
               />
             </View>
             <TouchableOpacity onPress={handleCreateEntry}>

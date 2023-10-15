@@ -5,16 +5,29 @@ export const styles = StyleSheet.create({
 
   modalContainer: {
     flex: 1,
-    paddingHorizontal: 40,
-    backgroundColor: defaultColors.backgroundColor,
-    justifyContent: 'center',
-    position: 'relative'
+    paddingHorizontal: 25,
+    backgroundColor: defaultColors.borderColor,
+    paddingVertical: 20,
+    position: 'relative',
   },
-  title: {
+  logo: {
+    height: 120,
+    alignSelf: 'center',
+    width: SCREEN_WIDTH,
+    resizeMode: 'contain',
+  },
+  header: {
     color: defaultColors.titleColor,
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: '800',
     textAlign: 'center',
+  },
+  title: {
+    color: defaultColors.text_3,
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   closeIcon: {
     height: 20,
@@ -23,19 +36,28 @@ export const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 15,
-    marginTop: 20,
-    marginBottom: 10,
+    marginBottom: 12,
     fontWeight: '500',
     color: defaultColors.text_3,
+    marginLeft: 10
   },
   input: {
     color: defaultColors.text_1,
-    fontSize: 14,
-    paddingHorizontal: 15,
-    borderRadius: 5,
+    fontSize: 13.5,
+    paddingHorizontal: 10,
+    borderRadius: 10,
     height: 50,
     overflow: 'hidden',
     backgroundColor: defaultColors.backgroundColor,
+  },
+  inputLabelContainer: {
+    flexDirection: 'row',
+  },
+  inputLabelIcon: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
+    tintColor: defaultColors.text_3,
   },
   inputNote: {
     height: 100,
@@ -44,18 +66,20 @@ export const styles = StyleSheet.create({
   },
   dropdownContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+  },
+  dropdownView: {
+    width: SCREEN_WIDTH * 0.5,
   },
   dropdown: {
     borderColor: defaultColors.backgroundColor,
-    width: SCREEN_WIDTH * 0.6,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   newClassify: {
     height: 50,
-    paddingHorizontal: 20,
+    width: SCREEN_WIDTH * 0.3,
     backgroundColor: defaultColors.flatListItem,
-    borderRadius: 5,
+    borderRadius: 10,
     alignItems:'center',
     justifyContent:'center',
   },
@@ -65,12 +89,43 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: defaultColors.backgroundColor
   },
+  timeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timeIconView: {
+    height: 40,
+    width: 40,
+    backgroundColor: defaultColors.flatListItem,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timeIcon: {
+    height: 20,
+    width: 20,
+    resizeMode: 'contain',
+    tintColor: defaultColors.text_white
+  },
+  timeText: {
+    marginLeft: 20,
+    fontSize: 16,
+  },
+  moneyText: {
+    position: 'absolute',
+    right: 15,
+    top: 15,
+    fontSize: 14,
+    fontWeight: '400',
+    color: defaultColors.text_3,
+  },
   button: {
-    marginTop: 30,
+    marginTop: 10,
     fontSize: 16,
     paddingVertical: 15,
     textAlign: 'center',
-    borderRadius: 5,
+    borderRadius: 10,
     marginBottom: 20,
     borderColor: defaultColors.borderColor,
     borderWidth: 0.5,
@@ -103,10 +158,11 @@ export const styles = StyleSheet.create({
     opacity: 0.3,
   },
   shadow: {
-    borderRadius: 5,
-    borderColor: defaultColors.borderColor,
-    borderWidth: 1.5,
-    backgroundColor: defaultColors.backgroundColor,
+    marginBottom: 20,
+    // borderRadius: 10,
+    // borderColor: defaultColors.borderColor,
+    // borderWidth: 1.5,
+    // backgroundColor: defaultColors.backgroundColor,
     // shadowColor: defaultColors.shadowColor,
     // shadowOffset: {
     //   width: 0,

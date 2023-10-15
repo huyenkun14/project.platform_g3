@@ -10,7 +10,7 @@ import { validateEmail, validatePassword, validatePhone } from '../../../../util
 const Login = () => {
   const [account, setAccount] = useState({
     name: '',
-    // phone: '',
+    phone: '',
     email: '',
     password: '',
   });
@@ -37,9 +37,9 @@ const Login = () => {
     else if (validateEmail(account.email)) {
       ToastAndroid.show('Kiểm tra lại email!', ToastAndroid.SHORT)
     }
-    // else if (validatePhone(account.phone)) {
-    //   ToastAndroid.show('Xem lại số điện thoại!', ToastAndroid.SHORT)
-    // }
+    else if (validatePhone(account.phone)) {
+      ToastAndroid.show('Xem lại số điện thoại!', ToastAndroid.SHORT)
+    }
     else if (validatePassword(account.password)) {
       ToastAndroid.show('Mật khẩu dài tối thiểu 8 ký tự!', ToastAndroid.SHORT)
     }
@@ -47,7 +47,8 @@ const Login = () => {
       dispatch(registerActions({
         username: account.name,
         email: account.email,
-        password: account.password
+        password: account.password,
+        phoneNumber: account.phone
       }))
       showToast()
       navigation.navigate(NAVIGATION_TITLE.LOGIN);
@@ -77,8 +78,8 @@ const Login = () => {
       <View style={styles.formItem}>
         <TextInput
           style={styles.input}
-          // value={account.phone}
-          // onChangeText={handleChangeAccount('phone')}
+          value={account.phone}
+          onChangeText={handleChangeAccount('phone')}
           placeholder='Nhập số điện thoại'
           keyboardType='phone-pad'
         />

@@ -1,25 +1,39 @@
-import { ScrollView, View, Text, FlatList, Image, SafeAreaView } from 'react-native'
-import React, { useEffect } from 'react'
+import { ScrollView, View, Text, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import Header from '../../components/header'
 import { overview } from '../../mock/home'
 import Banner from './components/banner'
 import Entry from '../../components/entry'
-import { StatusBar } from 'expo-status-bar'
 import Option from './components/option'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { getItemObjectAsyncStorage } from '../../../utils/asyncStorage'
 import { KEY_STORAGE } from '../../constants/storage'
+import { useDispatch } from 'react-redux'
+import { getAllEntryAction } from '../../services/entry/actions'
 
 const Home = () => {
+  const dispatch = useDispatch<any>()
+  const [listEntry, setListEntry] = useState([])
+
   useEffect(() => {
     getUserInfoSaved();
+    getListEntry()
   }, []);
 
   const getUserInfoSaved = async () => {
     const userInfo = await getItemObjectAsyncStorage(KEY_STORAGE.SAVED_INFO);
     console.log('user info', userInfo);
   };
+  const getListEntry = () => {
+    dispatch(getAllEntryAction())
+      .then(res => {
+        console.log(res)
+        const converListEntry = res?.payload.slice(-3)
+        setListEntry(converListEntry)
+      })
+      .catch(err => console.log('err', err))
+  }
   const optionsData = [
     {
       id: 1,
@@ -70,7 +84,7 @@ const Home = () => {
   )
   return (
     <SafeAreaView>
-      {/* <StatusBar style="auto" > */}
+      <StatusBar />
       <ScrollView style={styles.container}>
         {/* background */}
         <Image
@@ -107,9 +121,18 @@ const Home = () => {
         {/* last entries */}
         <View>
           <Text style={styles.title}>Gần đây</Text>
-          <Entry title='Food' time='02-09-2023' price={200000} note='Ăn sáng' status='chi tiêu' />
-          <Entry title='Bonus' time='01-09-2023' price={500000} note='Thưởng lễ 2/9' status='thu nhập' />
-          <Entry title='Traffic' time='31-08-2023' price={7000} note='Buýt' status='chi tiêu' />
+          {listEntry.length >= 1 ?
+            listEntry.map((item, index) =>
+            (<Entry
+              key={index}
+              title={item.category.title}
+              time={item.date}
+              price={item.amount}
+              note={item.description}
+              status={item.category.value} />))
+            :
+            <Text style={{ textAlign: 'center', paddingBottom: 50 }}>Không có giao dịch gần đây</Text>
+          }
         </View>
       </ScrollView>
     </SafeAreaView>
