@@ -114,7 +114,7 @@ export const styles = StyleSheet.create({
   },
   moneyText: {
     position: 'absolute',
-    right: 20,
+    right: 15,
     top: 15,
     fontSize: 14,
     fontWeight: '400',

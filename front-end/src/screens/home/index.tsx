@@ -122,8 +122,9 @@ const Home = () => {
         <View>
           <Text style={styles.title}>Gần đây</Text>
           {listEntry.length >= 1 ?
-            listEntry.map(item =>
+            listEntry.map((item, index) =>
             (<Entry
+              key={index}
               title={item.category.title}
               time={item.date}
               price={item.amount}

@@ -54,7 +54,7 @@ const Login = () => {
                     style={styles.input}
                     value={account.email}
                     onChangeText={handleChangeAccount('email')}
-                    placeholder='Nhập email/số điện thoại'
+                    placeholder='Nhập email'
                 />
             </View>
             <Text style={styles.inputLabel}>Mật khẩu:</Text>

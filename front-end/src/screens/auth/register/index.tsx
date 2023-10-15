@@ -48,7 +48,7 @@ const Login = () => {
         username: account.name,
         email: account.email,
         password: account.password,
-        phone: account.phone
+        phoneNumber: account.phone
       }))
       showToast()
       navigation.navigate(NAVIGATION_TITLE.LOGIN);

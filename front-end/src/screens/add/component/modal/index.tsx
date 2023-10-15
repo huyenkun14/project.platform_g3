@@ -32,7 +32,12 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
       .then(res => {
-        console.log(res)
+        setInfoEntry({
+          time: String(date.toLocaleDateString()),
+          title: '',
+          note: '',
+          money: '',
+        })
         const converListClassify = res?.payload.map((item) => ({ label: item.title, value: item.id }))
         setListClassify(converListClassify)
       })
@@ -99,7 +104,7 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
             <Text style={styles.timeText}>{infoEntry.time}</Text>
           </View>
           <TouchableOpacity
-            style={{ position: 'absolute', top: 30, right: 40, }}
+            style={{ position: 'absolute', top: 30, right: 25, }}
             onPress={() => { setModalVisible(false) }}
           >
             <Image

@@ -16,11 +16,10 @@ const Add = () => {
 
   useEffect(() => {
     getListEntry()
-  }, [])
+  }, [addIncome, addExpenses])
   const getListEntry = () => {
     dispatch(getAllEntryAction())
       .then(res => {
-        console.log(res)
         const converListEntry = res?.payload.slice(-3)
         setListEntry(converListEntry)
       })
@@ -68,14 +67,14 @@ const Add = () => {
               </View>
             </TouchableOpacity>
           </View>
-
         </View>
         {/* last entries */}
         <View>
           <Text style={styles.title}>Gần đây</Text>
           {listEntry.length >= 1 ?
-            listEntry.map(item =>
+            listEntry.map((item, index) =>
             (<Entry
+              key={index}
               title={item.category.title}
               time={item.date}
               price={item.amount}
