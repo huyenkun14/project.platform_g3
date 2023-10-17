@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class BudgetRequest {
+    private Long id;
     private Long userId;
     private Long categoryId;
     private int amount;
