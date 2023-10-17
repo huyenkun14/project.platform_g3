@@ -25,13 +25,12 @@ import java.nio.file.Paths;
 public class ImageController {
     @Autowired
     private ImageService imageService;
-//    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/api/image/upload")
-    public ResponseEntity uploadImage(@RequestParam("image") MultipartFile img)throws IOException {
-        Long imgId= imageService.saveUploadedFiles(img);
-        return ResponseEntity.ok( new MessageResponse("Success"));
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/api/v1/image/upload")
+    public ResponseEntity uploadImage(@RequestParam("image") MultipartFile image)throws IOException {
+        Long imgId= imageService.saveUploadedFiles(image);
+        return ResponseEntity.ok( new MessageResponse("Success: "+imgId));
     }
-//    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping ("/api/image")
     public ResponseEntity<Resource> getImage(@RequestParam("imageId") Long imageId) throws IOException {
         Path path = Paths.get(imageService.getPathImage(imageId));
