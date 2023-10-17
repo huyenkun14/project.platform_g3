@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class BudgetController {
@@ -37,7 +38,7 @@ public class BudgetController {
     public ResponseEntity getAllBudget(Principal principal){
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        return ResponseEntity.ok(budgetService.getAllBudget());
+        return ResponseEntity.ok(budgetService.getAllBudget(userId));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/budget/update")
@@ -48,5 +49,23 @@ public class BudgetController {
     @GetMapping("/api/v1/budget")
     public ResponseEntity getTransaction(@RequestParam("budgetId") Long id){
         return ResponseEntity.ok(budgetService.getBudget(id));
+    }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/api/v1/budget/get-of-month")
+    public ResponseEntity getAllBudgetOfMonth(Principal principal, @RequestParam String monthAndYear){
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        List<Budget> budgetsOfMonth = budgetService.getAllBudgetOfMonth(monthAndYear, userId);
+        return ResponseEntity.ok(budgetsOfMonth);
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/api/v1/budget/get-over")
+    public ResponseEntity getAllBudgetOfMonth(Principal principal){
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        List<Budget> overBudgets = budgetService.getOverBudgets( userId);
+        return ResponseEntity.ok(overBudgets);
     }
 }

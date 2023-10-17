@@ -43,7 +43,11 @@ public class TransactionServiceImp implements TransactionService{
         return transaction;
     }
     public void deleteTransaction(Long id){
-        Transaction transaction = transactionRepository.findById(id).orElseThrow(()-> new CustomException("no transaction"));
+        Transaction transaction = getTransaction(id);
+        User user = transaction.getUser();
+        int money = updateMoney(transaction.getAmount(), user.getMoney(), !transaction.getCategory().isValue());
+        user.setMoney(money);
+        userService.updateUser(user);
         transactionRepository.delete(transaction);
     }
     public List<Transaction> getAllTransaction(Long userId){
@@ -77,5 +81,10 @@ public class TransactionServiceImp implements TransactionService{
             money -= amount;
         }
         return money;
+    }
+    public List<Transaction> getTransactionOfMonth(String monthAndYear, Long userId){
+        String[] mothYear = monthAndYear.split("/");
+        List<Transaction> transactionsOfMonth = transactionRepository.findTransactionsOfMonth(userId,Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
+        return transactionsOfMonth;
     }
 }

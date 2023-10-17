@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class TransactionController {
@@ -48,5 +49,13 @@ public class TransactionController {
     @GetMapping("/api/v1/transaction")
     public ResponseEntity getTransaction(@RequestParam("transactionId") Long id){
         return ResponseEntity.ok(transactionService.getTransaction(id));
+    }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/api/v1/transaction/get-of-month")
+    public ResponseEntity getAllTransactionOfMonth(Principal principal,@RequestParam String monthAndYear){
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        List<Transaction> transactionsOfMonth = transactionService.getTransactionOfMonth(monthAndYear, userId);
+        return ResponseEntity.ok(transactionsOfMonth);
     }
 }
