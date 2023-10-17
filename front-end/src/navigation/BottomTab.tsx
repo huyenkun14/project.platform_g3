@@ -21,15 +21,15 @@ const MyBottomTabs = () => {
   }, [])
 
   const getTabBarVisibility = useCallback((route: object) => {
-    const routeName = getFocusedRouteNameFromRoute(route);
-    if (
-      routeName === undefined ||
-      routeName === 'Home' ||
-      routeName === 'Test'
-    ) {
-      return { display: 'flex' };
-    }
-    return { display: 'none' };
+    // const routeName = getFocusedRouteNameFromRoute(route);
+    // if (
+    //   routeName === undefined ||
+    //   routeName === 'Home' ||
+    //   routeName === 'Test'
+    // ) {
+    //   return { display: 'flex' };
+    // }
+    return { display: 'flex' };
   }, []);
 
   const getOptions = useCallback(

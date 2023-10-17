@@ -13,7 +13,7 @@ export const getAllEntryAction = createAsyncThunk(
 export const getEntryByIdAction = createAsyncThunk(
     'entry/getEntryByIdAction',
     async (id: number) => {
-        const res = await httpClient.get(`${ENTRY.GET_ALL}?transactionId=${id}`)
+        const res = await httpClient.get(`${ENTRY.GET_BY_ID}?transactionId=${id}`)
         return res.data
     }
 )
