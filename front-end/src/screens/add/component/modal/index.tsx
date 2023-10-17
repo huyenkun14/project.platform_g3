@@ -7,11 +7,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import AddNewClassify from '../../../../components/addNewClassify';
 import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
-import { getItemObjectAsyncStorage } from '../../../../../utils/asyncStorage';
-import { KEY_STORAGE } from '../../../../constants/storage';
 import { createEntryAction } from '../../../../services/entry/actions';
 
-const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onSubmit }) => {
+const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) => {
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
   const [infoEntry, setInfoEntry] = useState({
@@ -32,14 +30,8 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
       .then(res => {
-        setInfoEntry({
-          time: String(date.toLocaleDateString()),
-          title: '',
-          note: '',
-          money: '',
-        })
-        const converListClassify = res?.payload.map((item) => ({ label: item.title, value: item.id }))
-        setListClassify(converListClassify)
+        const convertListClassify = res?.payload.map((item, index) => ({ label: item.title, value: item.id }))
+        setListClassify(convertListClassify)
       })
       .catch(err => console.log('err', err))
   }
@@ -52,7 +44,13 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
     }))
       .then(res => {
         console.log(res)
-        ToastAndroid.show('Thêm giao dịch thành công',ToastAndroid.SHORT)
+        setInfoEntry({
+          time: String(date.toLocaleDateString()),
+          title: '',
+          note: '',
+          money: '',
+        })
+        ToastAndroid.show('Thêm giao dịch thành công', ToastAndroid.SHORT)
         setModalVisible(false)
       })
       .catch(err => console.log('err', err))
@@ -123,6 +121,7 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
                   setOpen={setListClassifyOpen}
                   setValue={setClassifyValue}
                   setItems={setListClassify}
+                  itemKey="label"
                   placeholder="Chọn danh mục"
                   onOpen={onListClassifyOpen}
                   onChangeValue={onChangeInfoEntry('title')}
@@ -186,9 +185,12 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible, onS
           }
         </View>
       </Modal>
-      <AddNewClassify isIncomeStatus={isIncomeStatus} modalVisible={addNewClassifyOpen} setModalVisible={setAddNewClassifyOpen} onSubmit={undefined} />
+      <AddNewClassify
+        isIncomeStatus={isIncomeStatus}
+        modalVisible={addNewClassifyOpen}
+        setModalVisible={setAddNewClassifyOpen}
+      />
     </View>
   )
-
 }
 export default AddNewEntry;
