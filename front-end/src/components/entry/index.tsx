@@ -7,12 +7,12 @@ import { NAVIGATION_TITLE } from '../../constants/navigation';
 
 const Entry = (props: any) => {
 
-  const { title, time, price, note, status } = props
+  const { title, time, price, note, status, entryId } = props
   const navigation = useNavigation<any>()
   const money = Number(price).toLocaleString('en')
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.DETAIL, { title, time, price, note, status })}>
+    <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.DETAIL, { entryId })}>
       <View style={styles.container}>
         <View style={styles.typeContainer}>
           <View style={styles.image} />

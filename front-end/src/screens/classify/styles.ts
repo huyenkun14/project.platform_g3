@@ -33,5 +33,27 @@ export const styles = StyleSheet.create({
         color: defaultColors.text_white,
         fontWeight: '500',
         fontSize: 14,
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    searchView: {
+        height: 50,
+        width: SCREEN_WIDTH*0.5
+    },
+    searchInput: {
+
+    },
+    searchImageView: {
+        width: SCREEN_WIDTH*0.3,
+        backgroundColor: defaultColors.flatListItem,
+        height: 50,
+    },
+    searchImage:{
+        height: 25,
+        width: 25,
+        tintColor: defaultColors.text_white,
+        resizeMode: 'contain'
     }
 })

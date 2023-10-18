@@ -33,14 +33,14 @@ export const styles = StyleSheet.create({
     range: {
         width: SCREEN_WIDTH/2,
         backgroundColor: '#f2f2f2',
-        height: 3,
+        height: 4,
         marginTop: 10,
         borderRadius: 100,
         position: 'relative',
     },
     current: {
         position: 'absolute',
-        height: 3,
+        height: 4,
         borderRadius: 100,
     },
     safe: {

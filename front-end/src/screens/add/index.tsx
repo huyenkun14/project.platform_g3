@@ -32,7 +32,7 @@ const Add = () => {
 
   const toAddExpense = () => {
     setAddExpenses(true);
-    setIsIncome(true)
+    setIsIncome(!isIncome)
   };
   return (
     <SafeAreaView>
@@ -74,6 +74,7 @@ const Add = () => {
           {listEntry.length >= 1 ?
             listEntry.map((item, index) =>
             (<Entry
+              entryId={item.transactionId}
               key={index}
               title={item.category.title}
               time={item.date}
@@ -90,23 +91,14 @@ const Add = () => {
           title='Thêm chi tiêu'
           modalVisible={addExpenses}
           setModalVisible={setAddExpenses}
-          onSubmit={() => {
-
-          }}
           isIncomeStatus={isIncome}
         />
         <AddNewEntry
           title='Thêm thu nhập'
           modalVisible={addIncome}
           setModalVisible={setAddIncome}
-          onSubmit={() => {
-
-          }}
           isIncomeStatus={isIncome}
-
         />
-
-
       </ScrollView>
     </SafeAreaView>
   )

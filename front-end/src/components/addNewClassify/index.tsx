@@ -1,20 +1,35 @@
-import { View, Text, Modal, TextInput, TouchableOpacity, Image } from 'react-native'
+import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
+import { useDispatch } from 'react-redux'
+import { createClassifyAction } from '../../services/classify/actions'
 
-const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus, onSubmit }) => {
+const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
+    const dispatch = useDispatch<any>()
     const [infoClassify, setInfoClassify] = useState({
         title: '',
         image: '',
-
+        budget: '',
+        value: isIncomeStatus,
     })
     const onChangeInfoClassify = (name) => {
         return (value: any) => {
             setInfoClassify({ ...infoClassify, [name]: value })
             console.log('infoClassify', infoClassify)
         }
-
     }
+    const handleCreateClassify = () => {
+        dispatch(createClassifyAction({
+          title: infoClassify.title,
+          value: infoClassify.value
+        }))
+          .then(res => {
+            console.log(res)
+            ToastAndroid.show('Thêm danh mục thành công',ToastAndroid.SHORT)
+            setModalVisible(false)
+          })
+          .catch(err => console.log('err', err))
+      }
     return (
         <View>
             <Modal
@@ -47,8 +62,8 @@ const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus, onSubmi
                             <Text style={styles.inputLabel}>Ngân sách</Text>
                             <View style={styles.shadow}>
                                 <TextInput
-                                    value={infoClassify.title}
-                                    onChangeText={onChangeInfoClassify('title')}
+                                    value={infoClassify.budget}
+                                    onChangeText={onChangeInfoClassify('budget')}
                                     style={styles.input}
                                     placeholder='Nhập ngân sách cho danh mục'
                                 />
@@ -64,7 +79,7 @@ const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus, onSubmi
                                 <Text style={styles.addImageText}>Chọn ảnh</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { setModalVisible(false) }}>
+                        <TouchableOpacity onPress={handleCreateClassify}>
                             <Text style={styles.button}>Thêm danh mục</Text>
                         </TouchableOpacity>
                     </View>

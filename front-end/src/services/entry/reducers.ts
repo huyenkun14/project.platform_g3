@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { getAllEntryAction, createEntryAction } from "./actions"
+import { getAllEntryAction, createEntryAction, getEntryByIdAction } from "./actions"
 
 interface IEntry {
     loading: boolean,
@@ -50,6 +50,25 @@ export const authSlice = createSlice({
               };
         })
         builder.addCase(getAllEntryAction.rejected, (state) => {
+            return {
+                ...state,
+                loading: true,
+              };
+        })
+        builder.addCase(getEntryByIdAction.pending, (state) => {
+            return {
+                ...state,
+                loading: true,
+              };
+        })
+        builder.addCase(getEntryByIdAction.fulfilled, (state,action) => {
+            return {
+                ...state,
+                loading: false,
+                res: action.payload.data
+              };
+        })
+        builder.addCase(getEntryByIdAction.rejected, (state) => {
             return {
                 ...state,
                 loading: true,

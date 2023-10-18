@@ -13,7 +13,7 @@ export const getAllClassifyAction = createAsyncThunk(
 export const getClassifyByIdAction = createAsyncThunk(
     'classify/getClassifyByIdAction',
     async (id: number) => {
-        const res = await httpClient.get(`${CLASSIFY.GET_ALL}?categoryId=${id}`)
+        const res = await httpClient.get(`${CLASSIFY.GET_BY_ID}?categoryId=${id}`)
         return res.data
     }
 )
