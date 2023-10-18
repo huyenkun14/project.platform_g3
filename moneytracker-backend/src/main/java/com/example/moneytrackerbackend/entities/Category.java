@@ -15,7 +15,7 @@ public class Category {
     private Long id;
     private String title;
     @Column(name = "image_id")
-    private Long imageId;
+    private Long iconId;
     //xác định khoản thu hay chi: true=0=thu, false=1=chi
     private boolean value;
     @ManyToOne

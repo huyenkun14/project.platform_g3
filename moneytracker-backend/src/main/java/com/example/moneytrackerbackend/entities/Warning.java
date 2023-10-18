@@ -14,6 +14,7 @@ import lombok.Setter;
 @Table
 public class Warning {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name="user_id")

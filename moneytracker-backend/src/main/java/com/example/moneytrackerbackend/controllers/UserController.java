@@ -1,14 +1,18 @@
 package com.example.moneytrackerbackend.controllers;
 
+import com.example.moneytrackerbackend.dto.request.CategoryRequest;
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
+import com.example.moneytrackerbackend.dto.response.MessageResponse;
+import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.JwtUtils;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
+import com.example.moneytrackerbackend.services.ImageService;
 import com.example.moneytrackerbackend.services.TransactionService;
 import com.example.moneytrackerbackend.services.UserServiceImp;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +25,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -29,7 +35,7 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class UserController {
     private final UserServiceImp userService;
     private final TransactionService transactionService;
 
@@ -38,6 +44,7 @@ public class AuthController {
     PasswordEncoder encoder;
     private final JwtUtils tokenProvider;
     private final UserRepository userRepository;
+    private final ImageService imageService;
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail());
@@ -64,7 +71,19 @@ public class AuthController {
                 .phoneNumber(registerRequest.getPhoneNumber())
                 .money(0)
                 .build();
-        userRepository.save(user);
+        user = userService.saveUser(user);
+        CategoryRequest defaultIncomeCategory = CategoryRequest.builder()
+                .userId(user.getId())
+                .title("Thu")
+                .iconId(Long.parseLong( "1"))
+                .value(true)
+                .build();
+        CategoryRequest defaultSpendingCategory = CategoryRequest.builder()
+                .userId(user.getId())
+                .title("Chi")
+                .iconId(Long.parseLong( "1"))
+                .value(true)
+                .build();
         return ResponseEntity.ok().build();
     }
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -85,5 +104,16 @@ public class AuthController {
             }
         }
         return ResponseEntity.ok(convertUser(user, totalIncome, totalSpending));
+    }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("api/v1/user/set-avatar")
+    public ResponseEntity setAvatar(@RequestParam("image")MultipartFile image, Principal principal) throws IOException {
+        Long imgId= imageService.saveUploadedFiles(image);
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        User user = userService.getUser(userId);
+        user.setImageId(imgId);
+        userService.saveUser(user);
+        return ResponseEntity.ok( new MessageResponse("Success set avatar"));
     }
 }

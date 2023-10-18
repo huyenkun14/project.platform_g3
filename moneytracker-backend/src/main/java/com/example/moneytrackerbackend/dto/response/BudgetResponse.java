@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class BudgetResponse {
-    private Long id;
+    private Long budgetId;
     private CategoryResponse category;
     private LocalDate startDate;
     private LocalDate endDate;

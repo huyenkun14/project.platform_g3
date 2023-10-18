@@ -1,7 +1,6 @@
 package com.example.moneytrackerbackend.security;
 
 import com.example.moneytrackerbackend.exceptiones.CustomException;
-import com.example.moneytrackerbackend.services.UserService;
 import com.example.moneytrackerbackend.services.UserServiceImp;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

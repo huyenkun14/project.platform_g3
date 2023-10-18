@@ -1,8 +1,7 @@
 package com.example.moneytrackerbackend.dto.request;
 
-import jakarta.persistence.Column;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
+
 @Builder
 @Getter
 @Setter
@@ -11,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CategoryRequest {
     private Long userId;
     private String title;
-    private Long imageId;
+    private Long iconId;
 //    private String status;
     private boolean value;
 }

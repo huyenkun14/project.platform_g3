@@ -19,3 +19,4 @@ auth:
   jwt_expiration : 604800000
 media:
   img_path: "${user.home}${file.separator}Downloads${file.separator}images"
+  icon_path: "${user.home}${file.separator}Downloads${file.separator}images${file.separator}icons"

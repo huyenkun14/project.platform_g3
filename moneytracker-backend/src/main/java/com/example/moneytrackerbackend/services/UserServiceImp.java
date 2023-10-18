@@ -26,8 +26,11 @@ public class UserServiceImp implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(()-> new CustomException("Error: no use"));
         return user;
     }
-
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
+
+//    public User updateUser(User user) {
+//        return userRepository.save(user);
+//    }
 }
