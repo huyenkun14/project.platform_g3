@@ -12,6 +12,7 @@ import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.JwtUtils;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
+import com.example.moneytrackerbackend.services.CategoryService;
 import com.example.moneytrackerbackend.services.ImageService;
 import com.example.moneytrackerbackend.services.TransactionService;
 import com.example.moneytrackerbackend.services.UserServiceImp;
@@ -45,6 +46,7 @@ public class UserController {
     private final JwtUtils tokenProvider;
     private final UserRepository userRepository;
     private final ImageService imageService;
+    private final CategoryService categoryService;
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail());
@@ -78,16 +80,18 @@ public class UserController {
                 .iconId(Long.parseLong( "1"))
                 .value(true)
                 .build();
+        categoryService.createCategory(defaultIncomeCategory);
         CategoryRequest defaultSpendingCategory = CategoryRequest.builder()
                 .userId(user.getId())
                 .title("Chi")
                 .iconId(Long.parseLong( "1"))
                 .value(true)
                 .build();
+        categoryService.createCategory(defaultSpendingCategory);
         return ResponseEntity.ok().build();
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("api/v1/user")
+    @GetMapping("api/v1/user")
     public ResponseEntity getUser(Principal principal){
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();

@@ -56,7 +56,8 @@ public class TransactionServiceImp implements TransactionService{
     }
     public Transaction updateTransaction( TransactionRequest transactionRequest){
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("no transaction"));
-        int money = transaction.getAmount();
+        User user = transaction.getUser();
+        int money = user.getMoney();
         money = updateMoney(transaction.getAmount(),money, !transaction.getCategory().isValue());
         Category category = categoryRepository.findById(transactionRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException("Error: no category"));
@@ -66,7 +67,6 @@ public class TransactionServiceImp implements TransactionService{
         transaction.setDate(LocalDate.parse(transactionRequest.getDate(), formatter));
         transaction = transactionRepository.save(transaction);
         money = updateMoney(transaction.getAmount(), money, transaction.getCategory().isValue());
-        User user = transaction.getUser();
         user.setMoney(money);
         userRepository.save(user);
         return transaction;
