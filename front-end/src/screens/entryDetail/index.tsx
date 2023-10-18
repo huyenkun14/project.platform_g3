@@ -21,7 +21,7 @@ const EntryDetail = ({ route }) => {
         dispatch(getEntryByIdAction(entryId))
             .then(res => {
                 setEntryInfo(res?.payload)
-                console.log(res)
+                console.log(res?.payload)
                 console.log('entryId', entryId)
             })
             .catch(err => console.log('err', err))
@@ -50,7 +50,7 @@ const EntryDetail = ({ route }) => {
                 </View>
                 <View style={styles.titleContainer}>
                     <TextInput
-                        value='Học phí'
+                        value='Chi tiêu'
                         style={styles.title}
                         editable={false}
                     />
@@ -70,8 +70,8 @@ const EntryDetail = ({ route }) => {
                             <Text style={styles.inputLabel}>Loại</Text>
                             <TextInput
                                 style={styles.input}
-                                value='Chi tiêu'
-                                editable={false}
+                                value='Học phí'
+                                editable={isEdit}
                             />
                         </View>
                     </View>

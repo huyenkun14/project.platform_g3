@@ -74,7 +74,7 @@ const Add = () => {
           {listEntry.length >= 1 ?
             listEntry.map((item, index) =>
             (<Entry
-              entryId={item.id}
+              entryId={item.transactionId}
               key={index}
               title={item.category.title}
               time={item.date}
