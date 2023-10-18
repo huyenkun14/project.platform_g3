@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CategoryRequest {
     private Long userId;
     private String title;
-    private MultipartFile image;
+    private Long imageId;
 //    private String status;
     private boolean value;
 }
