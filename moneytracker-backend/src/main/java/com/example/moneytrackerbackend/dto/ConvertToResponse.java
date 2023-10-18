@@ -13,6 +13,7 @@ public class ConvertToResponse {
     public static CategoryResponse convertCategory(Category category){
         CategoryResponse categoryResponse = CategoryResponse.builder()
                 .categoryId(category.getId())
+                .urlIcon("/icon?iconId="+category.getIconId())
                 .title(category.getTitle())
                 .value(category.isValue())
                 .build();
@@ -23,7 +24,7 @@ public class ConvertToResponse {
         UserResponse userResponse = UserResponse.builder()
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .urlImage("")
+                .urlImage("/image?imageId="+user.getImageId())
                 .id(user.getId())
                 .username(user.getUsername())
                 .money(user.getMoney())
@@ -45,7 +46,7 @@ public class ConvertToResponse {
     }
     public static BudgetResponse convertBudget(Budget budget){
         BudgetResponse budgetResponse = BudgetResponse.builder()
-                .id(budget.getId())
+                .budgetId(budget.getId())
                 .startDate(budget.getStartDate())
                 .description(budget.getDescription())
                 .amount(budget.getAmount())

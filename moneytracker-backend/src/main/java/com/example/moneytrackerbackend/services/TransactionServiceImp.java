@@ -20,14 +20,14 @@ public class TransactionServiceImp implements TransactionService{
     @Autowired
     private TransactionRepository transactionRepository;
     @Autowired
-    private CategoryService categoryService;
+    private CategoryRepository categoryRepository;
     @Autowired
-    private UserServiceImp userService;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
+    private UserRepository userRepository;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public Transaction createTransaction(TransactionRequest transactionRequest)
     {
-        Category category = categoryService.getCategoryById(transactionRequest.getTransactionId());
-        User user = userService.getUser(transactionRequest.getUserId());
+        Category category = categoryRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("Error: no category"));
+        User user = userRepository.findById(transactionRequest.getUserId()).orElseThrow(()-> new CustomException("Error: no use"));
         LocalDate date = LocalDate.parse(transactionRequest.getDate(), formatter);
         Transaction transaction = Transaction.builder()
                 .amount(transactionRequest.getAmount())
@@ -39,7 +39,7 @@ public class TransactionServiceImp implements TransactionService{
         transaction = transactionRepository.save(transaction);
         int money = updateMoney(transaction.getAmount(), user.getMoney(), transaction.getCategory().isValue());
         user.setMoney(money);
-        userService.updateUser(user);
+        userRepository.save(user);
         return transaction;
     }
     public void deleteTransaction(Long id){
@@ -47,27 +47,28 @@ public class TransactionServiceImp implements TransactionService{
         User user = transaction.getUser();
         int money = updateMoney(transaction.getAmount(), user.getMoney(), !transaction.getCategory().isValue());
         user.setMoney(money);
-        userService.updateUser(user);
+        userRepository.save(user);
         transactionRepository.delete(transaction);
     }
     public List<Transaction> getAllTransaction(Long userId){
-        User user = userService.getUser(userId);
+        User user = userRepository.findById(userId).orElseThrow(()-> new CustomException("Error: no use"));
         return transactionRepository.findAllByUserOrderByDate(user);
     }
     public Transaction updateTransaction( TransactionRequest transactionRequest){
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("no transaction"));
-        int money = transaction.getAmount();
+        User user = transaction.getUser();
+        int money = user.getMoney();
         money = updateMoney(transaction.getAmount(),money, !transaction.getCategory().isValue());
-        Category category = categoryService.getCategoryById(transactionRequest.getCategoryId());
+        Category category = categoryRepository.findById(transactionRequest.getCategoryId())
+                .orElseThrow(() -> new CustomException("Error: no category"));
         transaction.setAmount(transactionRequest.getAmount());
         transaction.setCategory(category);
         transaction.setDescription(transactionRequest.getDescription());
         transaction.setDate(LocalDate.parse(transactionRequest.getDate(), formatter));
         transaction = transactionRepository.save(transaction);
         money = updateMoney(transaction.getAmount(), money, transaction.getCategory().isValue());
-        User user = transaction.getUser();
         user.setMoney(money);
-        userService.updateUser(user);
+        userRepository.save(user);
         return transaction;
     }
     public Transaction getTransaction(Long id){
@@ -86,5 +87,11 @@ public class TransactionServiceImp implements TransactionService{
         String[] mothYear = monthAndYear.split("/");
         List<Transaction> transactionsOfMonth = transactionRepository.findTransactionsOfMonth(userId,Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
         return transactionsOfMonth;
+    }
+    public List<Transaction> getTransactionByCategory(Long categoryID){
+        Category category = categoryRepository.findById(categoryID)
+                .orElseThrow(() -> new CustomException("Error: no category"));
+        List<Transaction> transactions =transactionRepository.findAllByCategoryOrderByDate(category);
+        return transactions;
     }
 }
