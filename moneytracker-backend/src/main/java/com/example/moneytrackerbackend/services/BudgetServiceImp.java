@@ -23,7 +23,7 @@ public class BudgetServiceImp  implements BudgetService{
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public Budget createBudget(BudgetRequest budgetRequest){
         Category category = categoryRepository.findById(budgetRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException("Error: no category"));

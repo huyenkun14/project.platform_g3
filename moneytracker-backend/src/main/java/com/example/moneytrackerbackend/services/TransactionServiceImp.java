@@ -23,7 +23,7 @@ public class TransactionServiceImp implements TransactionService{
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public Transaction createTransaction(TransactionRequest transactionRequest)
     {
         Category category = categoryRepository.findById(transactionRequest.getTransactionId()).orElseThrow(()-> new CustomException("Error: no category"));
