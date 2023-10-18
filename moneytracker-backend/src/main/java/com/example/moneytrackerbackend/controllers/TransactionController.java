@@ -2,6 +2,7 @@ package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.request.TransactionRequest;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
+import com.example.moneytrackerbackend.dto.response.TransactionResponse;
 import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.TransactionService;
@@ -12,7 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertTransaction;
 
 @RestController
 public class TransactionController {
@@ -25,7 +29,7 @@ public class TransactionController {
         Long userId = userDetails.getId();
         transactionRequest.setUserId(userId);
         Transaction transaction = transactionService.createTransaction(transactionRequest);
-        return ResponseEntity.ok(transaction);
+        return ResponseEntity.ok(convertTransaction(transaction));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/api/v1/transaction/delete")
@@ -38,17 +42,24 @@ public class TransactionController {
     public ResponseEntity getAllTransaction(Principal principal){
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        return ResponseEntity.ok(transactionService.getAllTransaction(userId));
+        List<Transaction> transactions = transactionService.getAllTransaction(userId);
+        List<TransactionResponse> transactionResponses = new ArrayList<>();
+        for (Transaction transaction: transactions){
+            transactionResponses.add(convertTransaction(transaction));
+        }
+        return ResponseEntity.ok(transactionResponses);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/transaction/update")
     public ResponseEntity updateTransaction(@RequestBody TransactionRequest transactionRequest){
-        return ResponseEntity.ok(transactionService.updateTransaction(transactionRequest));
+        Transaction transaction = transactionService.updateTransaction(transactionRequest);
+        return ResponseEntity.ok(convertTransaction(transaction));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/transaction")
     public ResponseEntity getTransaction(@RequestParam("transactionId") Long id){
-        return ResponseEntity.ok(transactionService.getTransaction(id));
+        Transaction transaction = transactionService.getTransaction(id);
+        return ResponseEntity.ok(convertTransaction(transaction));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/transaction/get-of-month")
@@ -56,6 +67,10 @@ public class TransactionController {
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         List<Transaction> transactionsOfMonth = transactionService.getTransactionOfMonth(monthAndYear, userId);
-        return ResponseEntity.ok(transactionsOfMonth);
+        List<TransactionResponse> transactionResponses = new ArrayList<>();
+        for (Transaction transaction: transactionsOfMonth){
+            transactionResponses.add(convertTransaction(transaction));
+        }
+        return ResponseEntity.ok(transactionResponses);
     }
 }

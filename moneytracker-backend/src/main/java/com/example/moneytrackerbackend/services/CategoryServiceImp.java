@@ -18,7 +18,7 @@ public class CategoryServiceImp implements CategoryService{
     @Autowired
     private UserServiceImp userService;
     public Category createCategory(CategoryRequest categoryRequest){
-        if(categoryRepository.existsByTitle(categoryRequest.getTitle())){
+        if(categoryRepository.existsByTitle(categoryRequest.getTitle(), categoryRequest.getUserId()) >0){
             throw new CustomException("Error: Name category da ton tai!!!");
         }
         User user = userService.getUser(categoryRequest.getUserId());

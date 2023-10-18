@@ -12,4 +12,5 @@ public interface CategoryService {
     List<Category> getAllCategory(Long userId);
     List<Category> getAllByValue(boolean value, Long userId);
     Category getCategoryById(Long id);
+    void deleteCategory(Long id);
 }

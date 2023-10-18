@@ -9,8 +9,12 @@ import lombok.Setter;
 @Builder
 
 public class UserResponse {
+    private Long id;
     private String username;
     private String urlImage;
     private String email;
     private String phoneNumber;
+    private int money;
+    private int totalIncomeMoney;
+    private int totalSpendingMoney;
 }

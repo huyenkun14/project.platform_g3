@@ -3,11 +3,13 @@ package com.example.moneytrackerbackend.controllers;
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
+import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.JwtUtils;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
+import com.example.moneytrackerbackend.services.TransactionService;
 import com.example.moneytrackerbackend.services.UserServiceImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+
+import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
     private final UserServiceImp userService;
+    private final TransactionService transactionService;
 
     private final AuthenticationManager authenticationManager;
     @Autowired
@@ -66,6 +72,18 @@ public class AuthController {
     public ResponseEntity getUser(Principal principal){
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        return ResponseEntity.ok(userId);
+        User user = userService.getUser(userId);
+        List<Transaction> transactions = transactionService.getAllTransaction(userId);
+        int totalIncome = 0;
+        int totalSpending = 0;
+        for (Transaction transaction: transactions){
+            if(transaction.getCategory().isValue()){
+                totalIncome+= transaction.getAmount();
+            }
+            else {
+                totalSpending += transaction.getAmount();
+            }
+        }
+        return ResponseEntity.ok(convertUser(user, totalIncome, totalSpending));
     }
 }
