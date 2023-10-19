@@ -7,20 +7,38 @@ export const styles = StyleSheet.create({
         minHeight: SCREEN_HEIGHT,
     },
     option: {
-        width: SCREEN_WIDTH,
+        marginHorizontal: 15,
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 15,
     },
     optionTitle: {
         textAlign: 'center',
-        paddingVertical: 15,
-        width: SCREEN_WIDTH/3.2,
+        paddingVertical: 10,
+        width: (SCREEN_WIDTH-30)/3.3,
         fontSize: 16,
         borderRadius: 8,
         color: defaultColors.text_2,
         overflow: 'hidden',
+    },
+    lineChartContainer: {
+
+    },
+    lineChartNoteContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 25,
+        marginVertical: 20,
+    },
+    lineChartNoteItem: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    lineChartNoteIcon: {
+        width: 30,
+        height: 2,
+        marginRight: 10,
     },
     ChartContainer: {
         position: 'relative'
@@ -31,5 +49,18 @@ export const styles = StyleSheet.create({
         width: 80,
         borderRadius: 100,
         backgroundColor: defaultColors.backgroundColor
+    },
+    detailButton: {
+        textAlign: 'center',
+        width: 100,
+        color: '#fff',
+        paddingVertical: 10,
+        borderRadius: 10,
+        alignSelf: 'center',
+        backgroundColor: defaultColors.tabActive,
+    },
+    detailContentContainer: {
+        paddingHorizontal: 15,
+        marginVertical: 20,
     }
 })
