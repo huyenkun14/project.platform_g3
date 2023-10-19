@@ -11,5 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class CategoryResponse {
     private Long categoryId;
     private String title;
+    private String urlIcon;
     private boolean value;
 }

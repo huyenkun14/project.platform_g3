@@ -14,4 +14,5 @@ public interface TransactionService {
     Transaction updateTransaction(TransactionRequest transactionRequest);
     Transaction getTransaction(Long id);
     List<Transaction> getTransactionOfMonth(String monthAndYear, Long userId);
+    List<Transaction> getTransactionByCategory(Long categoryID);
 }

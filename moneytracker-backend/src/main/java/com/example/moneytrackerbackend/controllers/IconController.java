@@ -1,52 +1,57 @@
 package com.example.moneytrackerbackend.controllers;
 
+import com.example.moneytrackerbackend.dto.response.IconResponse;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.Icon;
-import com.example.moneytrackerbackend.entities.Image;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.services.IconService;
-import com.example.moneytrackerbackend.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
-@RestController
-public class ImageController {
+@Controller
+public class IconController {
     @Autowired
-    private ImageService imageService;
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/api/v1/image/upload")
-    public ResponseEntity uploadImage(@RequestParam("image") MultipartFile image)throws IOException {
-        Long imgId= imageService.saveUploadedFiles(image);
-        return ResponseEntity.ok( new MessageResponse("Success: "+imgId));
+    private IconService iconService;
+    @PostMapping("/api/icon/upload")
+    public ResponseEntity uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {
+        iconService.uploadFiles(icons);
+        return ResponseEntity.ok( new MessageResponse("Success"));
     }
-    @GetMapping ("/api/image")
-    public ResponseEntity<Resource> getImage(@RequestParam("imageId") Long imageId) throws IOException {
-        Path path = Paths.get(imageService.getPathImage(imageId));
-        Image media =imageService.getImage(imageId);
+    @GetMapping("/api/icon")
+    public ResponseEntity<Resource> getIcon(@RequestParam("iconId") Long iconId) throws IOException {
+        Path path = Paths.get(iconService.getPathIcon(iconId));
+        Icon media =iconService.getIcon(iconId);
         Resource resource = new UrlResource(path.toUri());
         if (resource.exists()) {
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.valueOf(media.getType()).toString())
                     .body(resource);
         } else {
-            throw new CustomException("Error: can open image");
+            throw new CustomException("Error: can open icon");
         }
     }
-
-
-
+    @GetMapping("/api/icon/get-all")
+    public ResponseEntity getAllIcon(){
+        List<Icon> icons = iconService.getAllIcon();
+        List<IconResponse> iconResponses = new ArrayList<>();
+        for(Icon icon: icons){
+            iconResponses.add(new IconResponse(icon.getId()));
+        }
+        return ResponseEntity.ok(iconResponses);
+    }
 }
