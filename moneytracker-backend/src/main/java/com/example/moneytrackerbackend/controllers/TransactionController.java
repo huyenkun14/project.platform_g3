@@ -1,16 +1,18 @@
 package com.example.moneytrackerbackend.controllers;
 
+import com.example.moneytrackerbackend.dto.ConvertToResponse;
 import com.example.moneytrackerbackend.dto.request.TransactionRequest;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.dto.response.TransactionResponse;
 import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.TransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -19,9 +21,9 @@ import java.util.List;
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertTransaction;
 
 @RestController
+@RequiredArgsConstructor
 public class TransactionController {
-    @Autowired
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/transaction/create")
@@ -68,6 +70,7 @@ public class TransactionController {
     public ResponseEntity updateTransaction(@RequestParam Long transactionId,
                                             @RequestParam Long categoryId,
                                             @RequestParam int amount,
+                                            @RequestParam MultipartFile image,
                                             @RequestParam String description,
                                             @RequestParam String date
                                             ) {
@@ -76,6 +79,7 @@ public class TransactionController {
                 .categoryId(categoryId)
                 .amount(amount)
                 .date(date)
+                .image(image)
                 .description(description)
                 .build();
         Transaction transaction = transactionService.updateTransaction(transactionRequest);
@@ -95,10 +99,6 @@ public class TransactionController {
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         List<Transaction> transactionsOfMonth = transactionService.getTransactionOfMonth(monthAndYear, userId);
-        List<TransactionResponse> transactionResponses = new ArrayList<>();
-        for (Transaction transaction : transactionsOfMonth) {
-            transactionResponses.add(convertTransaction(transaction));
-        }
-        return ResponseEntity.ok(transactionResponses);
+        return ResponseEntity.ok(transactionsOfMonth.stream().map(ConvertToResponse::convertTransaction).toList());
     }
 }

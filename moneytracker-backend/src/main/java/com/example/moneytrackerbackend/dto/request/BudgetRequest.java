@@ -1,13 +1,6 @@
 package com.example.moneytrackerbackend.dto.request;
 
-import com.example.moneytrackerbackend.entities.Category;
-import com.example.moneytrackerbackend.entities.User;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
-
-import java.time.LocalDate;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

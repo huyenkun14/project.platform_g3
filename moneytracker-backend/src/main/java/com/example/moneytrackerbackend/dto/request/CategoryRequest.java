@@ -11,6 +11,5 @@ public class CategoryRequest {
     private Long userId;
     private String title;
     private Long iconId;
-//    private String status;
     private boolean value;
 }

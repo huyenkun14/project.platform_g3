@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public interface IconService {
     Icon getIcon(Long id);
+
     String getPathIcon(Long id);
+
     Long saveUploadedIcon(MultipartFile file) throws IOException;
+
     void uploadFiles(MultipartFile[] files) throws IOException;
+
     List<Icon> getAllIcon();
 }

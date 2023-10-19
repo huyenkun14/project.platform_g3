@@ -8,7 +8,6 @@ import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.BudgetRepository;
 import com.example.moneytrackerbackend.repositories.CategoryRepository;
 import com.example.moneytrackerbackend.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,18 +15,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-public class BudgetServiceImp  implements BudgetService{
-    @Autowired
-    private BudgetRepository budgetRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private UserRepository userRepository;
+public class BudgetServiceImp implements BudgetService {
+    private final BudgetRepository budgetRepository;
+    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    public Budget createBudget(BudgetRequest budgetRequest){
+
+    public BudgetServiceImp(BudgetRepository budgetRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
+        this.budgetRepository = budgetRepository;
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+    }
+
+    public Budget createBudget(BudgetRequest budgetRequest) {
         Category category = categoryRepository.findById(budgetRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException("Error: no category"));
-        User user = userRepository.findById(budgetRequest.getUserId()).orElseThrow(()-> new CustomException("Error: no use"));
+        User user = userRepository.findById(budgetRequest.getUserId()).orElseThrow(() -> new CustomException("Error: no use"));
 
         Budget budget = Budget.builder()
                 .user(user)
@@ -41,37 +44,35 @@ public class BudgetServiceImp  implements BudgetService{
         return budget;
     }
 
-    public Budget updateBudget(BudgetRequest budgetRequest){
+    public Budget updateBudget(BudgetRequest budgetRequest) {
         Budget budget = getBudget(budgetRequest.getId());
         budget.setAmount(budgetRequest.getAmount());
         budget = budgetRepository.save(budget);
         return budget;
     }
 
-    public Budget getBudget(Long id){
-        Budget budget= budgetRepository.findById(id)
-                .orElseThrow(()-> new CustomException("Error: no budget"));
-        return budget;
+    public Budget getBudget(Long id) {
+        return budgetRepository.findById(id)
+                .orElseThrow(() -> new CustomException("Error: no budget"));
     }
 
-    public void deleteBudget(Long id){
+    public void deleteBudget(Long id) {
         budgetRepository.deleteById(id);
     }
 
-    public List<Budget> getAllBudget(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(()-> new CustomException("Error: no use"));
-        return budgetRepository.findAllByUser(user);
+    public List<Budget> getAllBudget(Long userId) {
+        return budgetRepository.findAllByUserId(userId);
     }
-    public List<Budget> getAllBudgetOfMonth(String monthAndYear, Long userId){
+
+    public List<Budget> getAllBudgetOfMonth(String monthAndYear, Long userId) {
         String[] monthYear = monthAndYear.split("/");
-        List<Budget> budgetsOfMonth = budgetRepository.findBudgetByOfMonth(userId, Integer.parseInt(monthYear[0]), Integer.parseInt(monthYear[1]));
-        return budgetsOfMonth;
+        return budgetRepository.findBudgetByOfMonth(userId, Integer.parseInt(monthYear[0]), Integer.parseInt(monthYear[1]));
     }
-    public List<Budget> getOverBudgets(Long userId){
+
+    public List<Budget> getOverBudgets(Long userId) {
         LocalDate now = LocalDate.now();
         int month = now.getMonthValue();
         int year = now.getYear();
-        List<Budget> overBudgets = budgetRepository.findOverBudget(userId, month, year);
-        return overBudgets;
+        return budgetRepository.findOverBudget(userId, month, year);
     }
 }

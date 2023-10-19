@@ -5,7 +5,6 @@ import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
-import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
@@ -37,19 +36,20 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+    @Autowired
+    PasswordEncoder encoder;
     private final UserServiceImp userService;
     private final TransactionService transactionService;
 
     private final AuthenticationManager authenticationManager;
-    @Autowired
-    PasswordEncoder encoder;
     private final JwtUtils tokenProvider;
     private final UserRepository userRepository;
     private final ImageService imageService;
     private final CategoryService categoryService;
+
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail());
+//        User user = userRepository.findByEmail(loginRequest.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -76,19 +76,19 @@ public class UserController {
         user = userService.saveUser(user);
         CategoryRequest defaultIncomeCategory = CategoryRequest.builder()
                 .userId(user.getId())
-                .title("Thu")
+                .title("Thu nhập khác")
                 .iconId(Long.parseLong( "1"))
                 .value(true)
                 .build();
         categoryService.createCategory(defaultIncomeCategory);
         CategoryRequest defaultSpendingCategory = CategoryRequest.builder()
                 .userId(user.getId())
-                .title("Chi")
+                .title("Chi tiêu khác")
                 .iconId(Long.parseLong( "1"))
                 .value(true)
                 .build();
         categoryService.createCategory(defaultSpendingCategory);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new MessageResponse("Success register account"));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("api/v1/user")

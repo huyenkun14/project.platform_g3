@@ -1,12 +1,10 @@
 package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
-import com.example.moneytrackerbackend.entities.Icon;
 import com.example.moneytrackerbackend.entities.Image;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
-import com.example.moneytrackerbackend.services.IconService;
 import com.example.moneytrackerbackend.services.ImageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -24,9 +22,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
+@RequiredArgsConstructor
 public class ImageController {
-    @Autowired
-    private ImageService imageService;
+    private final ImageService imageService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/image/upload")
     public ResponseEntity uploadImage(@RequestParam("image") MultipartFile image)throws IOException {

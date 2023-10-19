@@ -6,6 +6,7 @@ import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.Budget;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.BudgetService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,9 +20,10 @@ import java.util.List;
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertBudget;
 
 @RestController
+@RequiredArgsConstructor
 public class BudgetController {
-    @Autowired
-    private BudgetService budgetService;
+
+    private final BudgetService budgetService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/budget/create")
     public ResponseEntity createBudget(@RequestBody BudgetRequest budgetRequest, Principal principal){

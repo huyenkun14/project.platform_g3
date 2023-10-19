@@ -25,4 +25,5 @@ public class Transaction {
     private int amount;
     private String description;
     private LocalDate date;
+    private Long imageId;
 }

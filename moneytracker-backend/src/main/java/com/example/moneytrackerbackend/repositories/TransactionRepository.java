@@ -1,8 +1,6 @@
 package com.example.moneytrackerbackend.repositories;
 
-import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.entities.Transaction;
-import com.example.moneytrackerbackend.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,8 +10,10 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> findAllByUserOrderByDate(User user);
-    List<Transaction> findAllByCategoryOrderByDate(Category category);
+    List<Transaction> findAllByUserIdOrderByDate(Long userId);
+
+    List<Transaction> findAllByCategoryIdOrderByDate(Long categoryId);
+
     @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId AND MONTH(t.date) = :month AND YEAR(t.date) = :year ")
-    List<Transaction> findTransactionsOfMonth(@Param("userId") Long userId,@Param("month") int month, @Param("year") int year);
+    List<Transaction> findTransactionsOfMonth(@Param("userId") Long userId, @Param("month") int month, @Param("year") int year);
 }

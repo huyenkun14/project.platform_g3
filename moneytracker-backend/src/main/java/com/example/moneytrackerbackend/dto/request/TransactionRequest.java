@@ -2,8 +2,7 @@ package com.example.moneytrackerbackend.dto.request;
 
 
 import lombok.*;
-
-import java.time.LocalDate;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +14,7 @@ public class TransactionRequest {
     private Long userId;
     private Long categoryId;
     private int amount;
+    private MultipartFile image;
     private String description;
     private String date;
 }

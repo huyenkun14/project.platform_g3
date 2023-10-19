@@ -2,9 +2,11 @@ package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.request.CategoryRequest;
 import com.example.moneytrackerbackend.dto.response.CategoryResponse;
+import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,9 +20,10 @@ import java.util.List;
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertCategory;
 
 @RestController
+@RequiredArgsConstructor
 public class CategoryController {
-    @Autowired
-    private CategoryService categoryService;
+
+    private final CategoryService categoryService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/category/create")
     public ResponseEntity createCategory(@RequestBody CategoryRequest categoryRequest, Principal principal){
@@ -49,11 +52,12 @@ public class CategoryController {
         }
         return ResponseEntity.ok(responses);
     }
-//    @PreAuthorize("hasRole('ROLE_USER')")
-//    @DeleteMapping("/api/v1/category/delete")
-//    public ResponseEntity deleteCategory(@RequestParam("categoryId") Long id){
-//        categoryService.
-//    }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/api/v1/category/delete")
+    public ResponseEntity deleteCategory(@RequestParam("categoryId") Long id){
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok(new MessageResponse("Success delete category"));
+    }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/category/by-value")
     public ResponseEntity getAllCategory(@RequestParam("value") boolean value, Principal principal){

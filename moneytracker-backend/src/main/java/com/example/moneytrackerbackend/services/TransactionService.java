@@ -9,10 +9,11 @@ import java.util.List;
 @Service
 public interface TransactionService {
     Transaction createTransaction(TransactionRequest transactionRequest);
+
     void deleteTransaction(Long id);
     List<Transaction> getAllTransaction(Long userId);
     Transaction updateTransaction(TransactionRequest transactionRequest);
     Transaction getTransaction(Long id);
     List<Transaction> getTransactionOfMonth(String monthAndYear, Long userId);
-    List<Transaction> getTransactionByCategory(Long categoryID);
+    List<Transaction> getTransactionByCategory(Long categoryId);
 }
