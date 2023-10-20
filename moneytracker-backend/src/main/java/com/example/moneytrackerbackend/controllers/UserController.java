@@ -5,6 +5,7 @@ import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
+import com.example.moneytrackerbackend.dto.response.UserResponse;
 import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
@@ -48,7 +49,7 @@ public class UserController {
     private final CategoryService categoryService;
 
     @PostMapping("/api/auth/login")
-    public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -62,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("api/auth/register")
-    public ResponseEntity register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<MessageResponse> register(@RequestBody RegisterRequest registerRequest) {
         if(userRepository.existsByEmail(registerRequest.getEmail())){
             throw new CustomException("Error: Email is already taken!");
         }
@@ -91,7 +92,7 @@ public class UserController {
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("api/v1/user")
-    public ResponseEntity getUser(Principal principal){
+    public ResponseEntity<UserResponse> getUser(Principal principal){
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
@@ -110,7 +111,7 @@ public class UserController {
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("api/v1/user/set-avatar")
-    public ResponseEntity setAvatar(@RequestParam("image")MultipartFile image, Principal principal) throws IOException {
+    public ResponseEntity<MessageResponse> setAvatar(@RequestParam("image")MultipartFile image, Principal principal) throws IOException {
         Long imgId= imageService.saveUploadedFiles(image);
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();

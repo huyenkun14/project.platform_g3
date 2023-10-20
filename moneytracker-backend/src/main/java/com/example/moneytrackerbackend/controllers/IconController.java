@@ -28,7 +28,7 @@ import java.util.List;
 public class IconController {
     private final IconService iconService;
     @PostMapping("/api/icon/upload")
-    public ResponseEntity uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {
+    public ResponseEntity<MessageResponse> uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {
         iconService.uploadFiles(icons);
         return ResponseEntity.ok( new MessageResponse("Success"));
     }
@@ -46,7 +46,7 @@ public class IconController {
         }
     }
     @GetMapping("/api/icon/get-all")
-    public ResponseEntity getAllIcon(){
+    public ResponseEntity<List<IconResponse>> getAllIcon(){
         List<Icon> icons = iconService.getAllIcon();
         List<IconResponse> iconResponses = new ArrayList<>();
         for(Icon icon: icons){

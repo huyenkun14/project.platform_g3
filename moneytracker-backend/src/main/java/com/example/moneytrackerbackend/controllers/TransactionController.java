@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertTransaction;
@@ -28,7 +27,7 @@ public class TransactionController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/transaction/create")
-    public ResponseEntity createTransaction(@RequestParam Long categoryId,
+    public ResponseEntity<TransactionResponse> createTransaction(@RequestParam Long categoryId,
                                             @RequestParam MultipartFile image,
                                             @RequestParam int amount,
                                             @RequestParam String description,
@@ -47,7 +46,7 @@ public class TransactionController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/transaction/update")
-    public ResponseEntity updateTransaction(@RequestParam Long transactionId,
+    public ResponseEntity<TransactionResponse> updateTransaction(@RequestParam Long transactionId,
                                             @RequestParam Long categoryId,
                                             @RequestParam int amount,
                                             @RequestParam MultipartFile image,
@@ -68,34 +67,30 @@ public class TransactionController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/api/v1/transaction/delete")
-    public ResponseEntity deleteTransaction(@RequestParam("transactionId") Long id) {
+    public ResponseEntity<MessageResponse> deleteTransaction(@RequestParam("transactionId") Long id) {
         transactionService.deleteTransaction(id);
         return ResponseEntity.ok(new MessageResponse("Success delete transaction"));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/transaction/get-all")
-    public ResponseEntity getAllTransaction(Principal principal) {
+    public ResponseEntity<List<TransactionResponse>> getAllTransaction(Principal principal) {
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         List<Transaction> transactions = transactionService.getAllTransaction(userId);
-        List<TransactionResponse> transactionResponses = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            transactionResponses.add(convertTransaction(transaction));
-        }
-        return ResponseEntity.ok(transactionResponses);
+        return ResponseEntity.ok(transactions.stream().map(ConvertToResponse::convertTransaction).toList());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/transaction")
-    public ResponseEntity getTransaction(@RequestParam("transactionId") Long id) {
+    public ResponseEntity<TransactionResponse> getTransaction(@RequestParam("transactionId") Long id) {
         Transaction transaction = transactionService.getTransaction(id);
         return ResponseEntity.ok(convertTransaction(transaction));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/transaction/get-of-month")
-    public ResponseEntity getAllTransactionOfMonth(Principal principal, @RequestParam String monthAndYear) {
+    public ResponseEntity<List<TransactionResponse>> getAllTransactionOfMonth(Principal principal, @RequestParam String monthAndYear) {
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         List<Transaction> transactionsOfMonth = transactionService.getTransactionOfMonth(monthAndYear, userId);
