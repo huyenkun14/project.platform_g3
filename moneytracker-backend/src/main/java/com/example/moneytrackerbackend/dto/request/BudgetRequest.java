@@ -7,8 +7,8 @@ import lombok.*;
 @Setter
 @Builder
 public class BudgetRequest {
-    private Long id;
-    private Long userId;
+    private Long BudgetId;
+//    private Long userId;
     private Long categoryId;
     private int amount;
     private String startDate;

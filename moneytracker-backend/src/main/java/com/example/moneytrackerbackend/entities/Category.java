@@ -14,7 +14,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @Column(name = "image_id")
+    @Column(name = "icon_id")
     private Long iconId;
     //xác định khoản thu hay chi: true=0=thu, false=1=chi
     private boolean value;

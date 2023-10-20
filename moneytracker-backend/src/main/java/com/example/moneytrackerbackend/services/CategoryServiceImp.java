@@ -8,22 +8,17 @@ import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.CategoryRepository;
 import com.example.moneytrackerbackend.repositories.TransactionRepository;
 import com.example.moneytrackerbackend.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-
+@RequiredArgsConstructor
 public class CategoryServiceImp implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
-
-    public CategoryServiceImp(CategoryRepository categoryRepository, TransactionRepository transactionRepository, UserRepository userRepository) {
-        this.categoryRepository = categoryRepository;
-        this.transactionRepository = transactionRepository;
-        this.userRepository = userRepository;
-    }
 
     public Category createCategory(CategoryRequest categoryRequest) {
         if (categoryRepository.existsByTitle(categoryRequest.getTitle(), categoryRequest.getUserId()) > 0) {
@@ -34,9 +29,18 @@ public class CategoryServiceImp implements CategoryService {
         Category category = Category.builder()
                 .title(categoryRequest.getTitle())
                 .user(user)
+                .iconId(categoryRequest.getIconId())
                 .value(categoryRequest.isValue()).build();
         return categoryRepository.save(category);
     }
+    public Category updateCategory(CategoryRequest categoryRequest){
+        Category category = getCategoryById(categoryRequest.getCategoryId());
+        category.setIconId(categoryRequest.getIconId());
+        category.setTitle(categoryRequest.getTitle());
+        category.setValue(categoryRequest.isValue());
+        return categoryRepository.save(category);
+    }
+
 
     public List<Category> getAllCategory(Long userId) {
         return categoryRepository.findAllByUserId(userId);

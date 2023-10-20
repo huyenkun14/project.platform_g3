@@ -1,6 +1,4 @@
 package com.example.moneytrackerbackend.dto.request;
-
-
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class TransactionRequest {
     private Long transactionId;
-    private Long userId;
+//    private Long userId;
     private Long categoryId;
     private int amount;
     private MultipartFile image;

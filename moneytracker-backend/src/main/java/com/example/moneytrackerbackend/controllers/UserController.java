@@ -36,7 +36,7 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-    @Autowired
+     @Autowired
     PasswordEncoder encoder;
     private final UserServiceImp userService;
     private final TransactionService transactionService;
@@ -49,7 +49,6 @@ public class UserController {
 
     @PostMapping("/api/auth/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
-//        User user = userRepository.findByEmail(loginRequest.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -71,7 +70,7 @@ public class UserController {
                 .password(encoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
                 .phoneNumber(registerRequest.getPhoneNumber())
-                .money(0)
+//                .money(0)
                 .build();
         user = userService.saveUser(user);
         CategoryRequest defaultIncomeCategory = CategoryRequest.builder()
@@ -85,7 +84,7 @@ public class UserController {
                 .userId(user.getId())
                 .title("Chi tiêu khác")
                 .iconId(Long.parseLong( "1"))
-                .value(true)
+                .value(false)
                 .build();
         categoryService.createCategory(defaultSpendingCategory);
         return ResponseEntity.ok(new MessageResponse("Success register account"));

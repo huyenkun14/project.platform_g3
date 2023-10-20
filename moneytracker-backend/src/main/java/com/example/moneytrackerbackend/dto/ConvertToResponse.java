@@ -26,7 +26,7 @@ public class ConvertToResponse {
                 .urlImage("/image?imageId=" + user.getImageId())
                 .id(user.getId())
                 .username(user.getUsername())
-                .money(user.getMoney())
+//                .money(user.getMoney())
                 .totalIncomeMoney(totalIncome)
                 .totalSpendingMoney(totalSpending)
                 .build();
@@ -39,6 +39,7 @@ public class ConvertToResponse {
                 .description(transaction.getDescription())
                 .amount(transaction.getAmount())
                 .category(convertCategory(transaction.getCategory()))
+                .urlImage("/image?imageId=" + transaction.getImageId())
                 .build();
     }
 

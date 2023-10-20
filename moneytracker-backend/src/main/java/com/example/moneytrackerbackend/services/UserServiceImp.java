@@ -4,18 +4,16 @@ import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImp implements UserDetailsService {
     private final UserRepository userRepository;
-
-    public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByEmail(username);

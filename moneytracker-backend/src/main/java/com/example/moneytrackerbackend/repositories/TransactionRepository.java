@@ -10,10 +10,11 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    @Query("SELECT t FROM Transaction t WHERE t.category.user.id = :userId ORDER BY t.date")
     List<Transaction> findAllByUserIdOrderByDate(Long userId);
 
     List<Transaction> findAllByCategoryIdOrderByDate(Long categoryId);
 
-    @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId AND MONTH(t.date) = :month AND YEAR(t.date) = :year ")
+    @Query("SELECT t FROM Transaction t WHERE t.category.user.id = :userId AND MONTH(t.date) = :month AND YEAR(t.date) = :year ")
     List<Transaction> findTransactionsOfMonth(@Param("userId") Long userId, @Param("month") int month, @Param("year") int year);
 }

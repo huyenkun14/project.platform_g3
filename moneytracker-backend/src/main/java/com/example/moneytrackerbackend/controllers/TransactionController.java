@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +29,40 @@ public class TransactionController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/transaction/create")
     public ResponseEntity createTransaction(@RequestParam Long categoryId,
+                                            @RequestParam MultipartFile image,
                                             @RequestParam int amount,
                                             @RequestParam String description,
-                                            @RequestParam String date, Principal principal) {
+                                            @RequestParam String date) throws IOException {
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Long userId = userDetails.getId();
         TransactionRequest transactionRequest = TransactionRequest.builder()
-                .userId(userId)
                 .amount(amount)
+                .image(image)
                 .categoryId(categoryId)
                 .date(date)
                 .description(description)
                 .build();
         Transaction transaction = transactionService.createTransaction(transactionRequest);
+        return ResponseEntity.ok(convertTransaction(transaction));
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("/api/v1/transaction/update")
+    public ResponseEntity updateTransaction(@RequestParam Long transactionId,
+                                            @RequestParam Long categoryId,
+                                            @RequestParam int amount,
+                                            @RequestParam MultipartFile image,
+                                            @RequestParam String description,
+                                            @RequestParam String date
+    ) throws IOException {
+        TransactionRequest transactionRequest = TransactionRequest.builder()
+                .transactionId(transactionId)
+                .categoryId(categoryId)
+                .amount(amount)
+                .date(date)
+                .image(image)
+                .description(description)
+                .build();
+        Transaction transaction = transactionService.updateTransaction(transactionRequest);
         return ResponseEntity.ok(convertTransaction(transaction));
     }
 
@@ -63,27 +84,6 @@ public class TransactionController {
             transactionResponses.add(convertTransaction(transaction));
         }
         return ResponseEntity.ok(transactionResponses);
-    }
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PutMapping("/api/v1/transaction/update")
-    public ResponseEntity updateTransaction(@RequestParam Long transactionId,
-                                            @RequestParam Long categoryId,
-                                            @RequestParam int amount,
-                                            @RequestParam MultipartFile image,
-                                            @RequestParam String description,
-                                            @RequestParam String date
-                                            ) {
-        TransactionRequest transactionRequest = TransactionRequest.builder()
-                .transactionId(transactionId)
-                .categoryId(categoryId)
-                .amount(amount)
-                .date(date)
-                .image(image)
-                .description(description)
-                .build();
-        Transaction transaction = transactionService.updateTransaction(transactionRequest);
-        return ResponseEntity.ok(convertTransaction(transaction));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
