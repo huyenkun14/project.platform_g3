@@ -8,9 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryRequest {
+    private Long categoryId;
     private Long userId;
     private String title;
     private Long iconId;
-//    private String status;
     private boolean value;
 }

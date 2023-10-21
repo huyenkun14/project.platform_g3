@@ -16,13 +16,14 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
     private int amount;
     private String description;
     private LocalDate date;
+    private Long imageId;
 }

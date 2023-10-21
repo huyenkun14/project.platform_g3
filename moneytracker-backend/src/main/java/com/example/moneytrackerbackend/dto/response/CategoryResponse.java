@@ -1,7 +1,6 @@
 package com.example.moneytrackerbackend.dto.response;
 
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @NoArgsConstructor

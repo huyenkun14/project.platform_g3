@@ -9,6 +9,8 @@ import java.io.IOException;
 @Service
 public interface ImageService {
     Image getImage(Long id);
+
     String getPathImage(Long id);
+
     Long saveUploadedFiles(MultipartFile file) throws IOException;
 }
