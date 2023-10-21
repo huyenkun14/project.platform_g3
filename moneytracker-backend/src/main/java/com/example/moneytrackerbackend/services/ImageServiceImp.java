@@ -3,8 +3,8 @@ package com.example.moneytrackerbackend.services;
 import com.example.moneytrackerbackend.entities.Image;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.ImageRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,11 +17,11 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 @Service
-public class ImageServiceImp implements ImageService{
+@RequiredArgsConstructor
+public class ImageServiceImp implements ImageService {
     @Value("${media.img_path}")
     private String imgFolder;
-    @Autowired
-    private ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
 
     public Image getImage(Long id) {
         return imageRepository.findById(id).orElse(null);
@@ -35,10 +35,17 @@ public class ImageServiceImp implements ImageService{
         }
         return path;
     }
+
     public Long saveUploadedFiles(MultipartFile file) throws IOException {
-        File dir = new File( imgFolder);
+        File dir = new File(imgFolder);
         if (!dir.exists()) {
-            dir.mkdirs();
+            boolean created = dir.mkdirs();
+            if (created) {
+                System.out.println("Directory created successfully.");
+            } else {
+                throw  new CustomException("Error: Failed to create directory.");
+            }
+
         }
         Random rand = new Random();
         int ranNum = rand.nextInt();
@@ -51,10 +58,10 @@ public class ImageServiceImp implements ImageService{
             image.setType(file.getContentType());
             image = imageRepository.save(image);
             return image.getId();
-        }
-        else throw new CustomException("Error: File null, can not save!!");
+        } else throw new CustomException("Error: File null, can not save!!");
     }
-    public String getFileExtension(String fileName){
+
+    public String getFileExtension(String fileName) {
         return "." + FilenameUtils.getExtension(fileName);
     }
 }

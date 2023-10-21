@@ -5,16 +5,16 @@ import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.Icon;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.services.IconService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,12 +23,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class IconController {
-    @Autowired
-    private IconService iconService;
+    private final IconService iconService;
     @PostMapping("/api/icon/upload")
-    public ResponseEntity uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {
+    public ResponseEntity<MessageResponse> uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {
         iconService.uploadFiles(icons);
         return ResponseEntity.ok( new MessageResponse("Success"));
     }
@@ -46,7 +46,7 @@ public class IconController {
         }
     }
     @GetMapping("/api/icon/get-all")
-    public ResponseEntity getAllIcon(){
+    public ResponseEntity<List<IconResponse>> getAllIcon(){
         List<Icon> icons = iconService.getAllIcon();
         List<IconResponse> iconResponses = new ArrayList<>();
         for(Icon icon: icons){

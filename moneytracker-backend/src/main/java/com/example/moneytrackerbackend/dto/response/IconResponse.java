@@ -8,9 +8,10 @@ import lombok.*;
 public class IconResponse {
     private Long id;
     private String url;
-    public IconResponse(Long id){
+
+    public IconResponse(Long id) {
         this.id = id;
-        this.url = "/icon?iconId="+id;
+        this.url = "/icon?iconId=" + id;
     }
 }
 

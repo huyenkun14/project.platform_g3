@@ -18,6 +18,8 @@ public interface BudgetService {
     void deleteBudget(Long id);
 
     List<Budget> getAllBudget(Long userId);
+
     List<Budget> getAllBudgetOfMonth(String monthAndYear, Long userId);
+
     List<Budget> getOverBudgets(Long userId);
 }

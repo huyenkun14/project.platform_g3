@@ -1,6 +1,5 @@
 package com.example.moneytrackerbackend.dto.response;
 
-import com.example.moneytrackerbackend.entities.Category;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,4 +15,5 @@ public class TransactionResponse {
     private int amount;
     private String description;
     private LocalDate date;
+    private String urlImage;
 }

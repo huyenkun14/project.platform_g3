@@ -3,6 +3,7 @@ package com.example.moneytrackerbackend.services;
 import com.example.moneytrackerbackend.entities.Icon;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.IconRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +21,11 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class IconServiceImp implements IconService {
     @Value("${media.icon_path}")
     private String iconFolder;
-    //    private final Path root = Paths.get("uploads");
-    @Autowired
-    private IconRepository iconRepository;
+    private final IconRepository iconRepository;
 
     public Icon getIcon(Long id) {
         return iconRepository.findById(id).orElse(null);
@@ -72,7 +72,8 @@ public class IconServiceImp implements IconService {
     public String getFileExtension(String fileName) {
         return "." + FilenameUtils.getExtension(fileName);
     }
-    public List<Icon> getAllIcon(){
+
+    public List<Icon> getAllIcon() {
         return iconRepository.findAll();
     }
 

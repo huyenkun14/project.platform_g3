@@ -10,42 +10,41 @@ import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.entities.User;
 
 public class ConvertToResponse {
-    public static CategoryResponse convertCategory(Category category){
-        CategoryResponse categoryResponse = CategoryResponse.builder()
+    public static CategoryResponse convertCategory(Category category) {
+        return CategoryResponse.builder()
                 .categoryId(category.getId())
-                .urlIcon("/icon?iconId="+category.getIconId())
+                .urlIcon("/icon?iconId=" + category.getIconId())
                 .title(category.getTitle())
                 .value(category.isValue())
                 .build();
-        return categoryResponse;
     }
 
-    public static UserResponse convertUser(User user, int totalIncome, int totalSpending){
-        UserResponse userResponse = UserResponse.builder()
+    public static UserResponse convertUser(User user, int totalIncome, int totalSpending) {
+        return UserResponse.builder()
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .urlImage("/image?imageId="+user.getImageId())
+                .urlImage("/image?imageId=" + user.getImageId())
                 .id(user.getId())
                 .username(user.getUsername())
-                .money(user.getMoney())
+//                .money(user.getMoney())
                 .totalIncomeMoney(totalIncome)
                 .totalSpendingMoney(totalSpending)
                 .build();
-        return userResponse;
     }
 
-    public static TransactionResponse convertTransaction(Transaction transaction){
-        TransactionResponse transactionResponse = TransactionResponse.builder()
+    public static TransactionResponse convertTransaction(Transaction transaction) {
+        return TransactionResponse.builder()
                 .transactionId(transaction.getId())
                 .date(transaction.getDate())
                 .description(transaction.getDescription())
                 .amount(transaction.getAmount())
                 .category(convertCategory(transaction.getCategory()))
+                .urlImage("/image?imageId=" + transaction.getImageId())
                 .build();
-        return transactionResponse;
     }
-    public static BudgetResponse convertBudget(Budget budget){
-        BudgetResponse budgetResponse = BudgetResponse.builder()
+
+    public static BudgetResponse convertBudget(Budget budget) {
+        return BudgetResponse.builder()
                 .budgetId(budget.getId())
                 .startDate(budget.getStartDate())
                 .description(budget.getDescription())
@@ -53,6 +52,5 @@ public class ConvertToResponse {
                 .category(convertCategory(budget.getCategory()))
                 .endDate(budget.getEndDate())
                 .build();
-        return budgetResponse;
     }
 }
