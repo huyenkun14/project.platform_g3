@@ -16,11 +16,36 @@ export const styles = StyleSheet.create({
     optionTitle: {
         textAlign: 'center',
         paddingVertical: 10,
-        width: (SCREEN_WIDTH-30)/3.3,
+        width: (SCREEN_WIDTH - 30) / 3.3,
         fontSize: 16,
         borderRadius: 8,
         color: defaultColors.text_2,
         overflow: 'hidden',
+    },
+    timeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 20,
+    },
+    timeIconView: {
+        height: 40,
+        width: 40,
+        backgroundColor: defaultColors.flatListItem,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    timeIcon: {
+        height: 20,
+        width: 20,
+        resizeMode: 'contain',
+        tintColor: defaultColors.text_white
+    },
+    timeText: {
+        marginLeft: 20,
+        fontSize: 16,
+        color: defaultColors.text_1,
     },
     lineChartContainer: {
 

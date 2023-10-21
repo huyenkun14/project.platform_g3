@@ -10,6 +10,14 @@ export const getAllEntryAction = createAsyncThunk(
     }
 )
 
+export const getEntryByMonthAction = createAsyncThunk(
+    'entry/getEntryByMonthAction',
+    async (month: string) => {
+        const res = await httpClient.get(`${ENTRY.GET_BY_MONTH}?monthAndYear=${month}`)
+        return res.data
+    }
+)
+
 export const getEntryByIdAction = createAsyncThunk(
     'entry/getEntryByIdAction',
     async (id: number) => {

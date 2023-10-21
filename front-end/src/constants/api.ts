@@ -16,6 +16,7 @@ export const CLASSIFY = {
 export const ENTRY = {
     CREATE: "/v1/transaction/create",
     GET_ALL: "/v1/transaction/get-all",
+    GET_BY_MONTH: "/v1/transaction/get-of-month",
     GET_BY_ID: "/v1/transaction",
     UPDATE: "/v1/transaction/update",
     DELETE: "/v1/transaction/delete",

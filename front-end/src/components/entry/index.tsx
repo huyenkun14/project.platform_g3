@@ -23,9 +23,9 @@ const Entry = (props: any) => {
         </View>
         <View>
           {status ?
-            <Text style={[styles.title, styles.money, styles.alignRight]}>+ {money}</Text>
+            <Text style={[styles.title, styles.money, styles.alignRight]}>+ {money.toLocaleString()}</Text>
             :
-            <Text style={[styles.title, styles.money, styles.alignRight]}>- {money}</Text>
+            <Text style={[styles.title, styles.money, styles.alignRight]}>- {money.toLocaleString()}</Text>
           }
           <Text style={[styles.content, styles.alignRight]}>{time}</Text>
         </View>
