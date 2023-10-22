@@ -18,5 +18,5 @@ public interface TransactionService {
     List<Transaction> getTransactionByCategory(Long categoryId);
     List<Transaction> getTransactionByCategoryOnMonth(String monthAndYear, Long categoryId);
 
-    int getSumAmountByCategory(Long categoryId);
+    int getSumAmountByCategory(Long categoryId, String monthAndYear);
 }

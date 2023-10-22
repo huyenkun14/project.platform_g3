@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,19 +56,20 @@ public class CalculateController {
         return ResponseEntity.ok(yearlyData);
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/api/v1/financial-summary/each-category")
-    public ResponseEntity<List<AmountOfCategory>> calculateForEachCategory(@RequestParam boolean value, Principal principal){
+    @PostMapping("/api/v1/financial-summary/each-category")
+    public ResponseEntity<List<AmountOfCategory>> calculateForEachCategory(@RequestParam String value, @RequestParam String monthAndYear, Principal principal){
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
         Long userId = userDetails.getId();
-        List<Category> categories = categoryService.getAllByValue(value, userId);
+        boolean b = Boolean.getBoolean(value);
+        List<Category> categories = categoryService.getAllByValue(b, userId);
 
         List<AmountOfCategory> dataOfCategories = new ArrayList<>();
         for (Category category:categories){
             AmountOfCategory dataOfCategory = new AmountOfCategory();
             dataOfCategory.setCategory(convertCategory(category));
-            dataOfCategory.setTotalAmount(transactionService.getSumAmountByCategory(category.getId()));
+            dataOfCategory.setTotalAmount(transactionService.getSumAmountByCategory(category.getId(), monthAndYear));
             dataOfCategories.add(dataOfCategory);
         }
 

@@ -94,7 +94,10 @@ public class TransactionServiceImp implements TransactionService {
         String[] mothYear = monthAndYear.split("-");
         return transactionRepository.findTransactionByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
     }
-    public int getSumAmountByCategory(Long categoryId){
-        return transactionRepository.sumAmountByCategory(categoryId);
+    public int getSumAmountByCategory(Long categoryId, String monthAndYear){
+        String[] mothYear = monthAndYear.split("-");
+        List<Transaction> transactions= transactionRepository.findTransactionByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
+        return transactions.stream().mapToInt(Transaction::getAmount).sum();
+//        return transactionRepository.sumAmountByCategory(categoryId,Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
     }
 }
