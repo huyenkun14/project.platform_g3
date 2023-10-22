@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { getEntryByMonthAction } from '../../services/entry/actions';
 import DatePicker from '@react-native-community/datetimepicker';
+import { getFinancialValueAction, getFinancialYearlyAction } from '../../services/financialSummary/actions';
 
 const Chart = () => {
   const [chartType, setChartType] = useState('1')
@@ -17,6 +18,9 @@ const Chart = () => {
   const [date, setDate] = useState<Date>(new Date());
   const dispatch = useDispatch<any>()
   const [listEntry, setListEntry] = useState([])
+  const [listFinancialYearly, setListFinancialYearly] = useState([])
+  const [listFinancialYearlMonth, setListFinancialYearlMonth] = useState([])
+  const [isIncome, setIsIncome] = useState(false)
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
@@ -24,6 +28,8 @@ const Chart = () => {
   };
   useEffect(() => {
     getListEntry()
+    getFinancialList()
+    getFinancialValueList()
   }, [date]);
   const getListEntry = () => {
     const month = moment(date).format("MM-YYYY")
@@ -34,6 +40,26 @@ const Chart = () => {
         setListEntry(converListEntry)
       })
       .catch(err => console.log('err', err))
+  }
+  const getFinancialList = () => {
+    dispatch(getFinancialYearlyAction())
+      .then(res => {
+        console.log(res, 'yearly')
+        setListFinancialYearly(res?.payload)
+      })
+      .catch(err => console.log('erryearly', err))
+  }
+  const getFinancialValueList = () => {
+    const data = new FormData()
+    data.append('value', String(isIncome))
+    data.append('monthAndYear', moment(date).format("MM-YYYY"))
+    console.log(data, 'dataaaaaaaaaaaaaa')
+    dispatch(getFinancialValueAction(data))
+      .then(res => {
+        console.log(res, 'monthAndYear')
+        setListFinancialYearlMonth(res?.payload)
+      })
+      .catch(err => console.log('monthAndYear', err))
   }
 
   var floor = Math.floor, abs = Math.abs, log = Math.log, round = Math.round, min = Math.min;
@@ -104,6 +130,16 @@ const Chart = () => {
     )
   }
   const renderChart = () => {
+    const listIncomeYearly = listFinancialYearly?.length > 0 ? [...listFinancialYearly]?.map(item => item.incomeMoney) : [0]
+    const listExpenseYearly = listFinancialYearly?.length > 0 ? [...listFinancialYearly]?.map(item => item?.spendingMoney) : [0]
+    const dataPieChartIncome = listFinancialYearlMonth?.map(item=>({
+      name: item?.category?.title,
+      population: item?.totalAmount,
+      color: "rgba(131, 167, 234, 1)",
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15
+    }))
+    console.log(dataPieChartIncome, 'dataPieeeeeeeeeeeeee')
     switch (chartType) {
       case '1':
         return (
@@ -119,12 +155,14 @@ const Chart = () => {
                   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                   datasets: [
                     {
-                      data: [5200000, 5000000, 5500000, 6000000, 5800000, 5000000, 5200000, 5100000, 5400000, 6000000, 4900000, 5000000,],
+                      // data: [5200000, 5000000, 5500000, 6000000, 5800000, 5000000, 5200000, 5100000, 5400000, 6000000, 4900000, 5000000,],
+                      data: listIncomeYearly,
                       strokeWidth: 2,
                       color: (opacity = 1) => 'green',
                     },
                     {
-                      data: [4000000, 4500000, 3900000, 5000000, 6100000, 4000000, 4300000, 5200000, 5000000, 5600000, 6500000, 4100000,],
+                      // data: [4200000, 4000000, 4400000, 6000000, 4800000, 4000000, 4200000, 4100000, 4400000, 6000000, 4900000, 4000000,],
+                      data: listExpenseYearly,
                       strokeWidth: 2,
                       color: (opacity = 1) => 'orange',
                     }
@@ -222,7 +260,7 @@ const Chart = () => {
               <View>
                 <View>
                   <PieChart
-                    data={chartDataIncome}
+                    data={dataPieChartIncome}
                     width={SCREEN_WIDTH}
                     height={220}
                     chartConfig={pieChartConfig}
@@ -263,10 +301,10 @@ const Chart = () => {
           <TouchableOpacity onPress={() => { setChartType('1') }}>
             <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? defaultColors.flatListItem : '#d8d8d8' }]}>Tổng quan</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setChartType('2') }}>
+          <TouchableOpacity onPress={() => { setChartType('2'), setIsIncome(false) }}>
             <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? defaultColors.flatListItem : '#d8d8d8' }]}>Chi tiêu</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setChartType('3') }}>
+          <TouchableOpacity onPress={() => { setChartType('3'), setIsIncome(true) }}>
             <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? defaultColors.flatListItem : '#d8d8d8' }]}>Thu nhập</Text>
           </TouchableOpacity>
         </View>

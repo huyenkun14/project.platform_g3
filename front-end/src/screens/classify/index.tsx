@@ -50,8 +50,13 @@ const Classify = () => {
                         <Text style={styles.optionText}>Thu nhập</Text>
                     </View>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => { setAddNewClassifyOpen(true) }}>
+                    <View style={styles.searchImageView}>
+                        <Image style={styles.searchImage} source={require('../../../assets/images/icon/ic_plus.png')} />
+                    </View>
+                </TouchableOpacity>
             </View>
-            <View style={styles.searchContainer}>
+            {/* <View style={styles.searchContainer}>
                 <View style={styles.searchView}>
                     <TextInput style={styles.searchInput} placeholder='Tìm kiếm' />
                 </View>
@@ -60,7 +65,7 @@ const Classify = () => {
                         <Image style={styles.searchImage} source={require('../../../assets/images/icon/ic_plus.png')} />
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View> */}
             <ScrollView contentContainerStyle={{ paddingBottom: 250 }}>
                 {type.map((item, index) => (
                     <TypeItem

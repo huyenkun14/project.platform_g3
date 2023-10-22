@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 25,
     },
     optionBtn: {
-        width: 120,
+        width: 100,
         backgroundColor: defaultColors.flatListItem,
         borderRadius: 8,
         marginTop: 10,
@@ -52,9 +52,10 @@ export const styles = StyleSheet.create({
 
     },
     searchImageView: {
-        width: SCREEN_WIDTH*0.2,
+        width: 100,
+        marginTop: -10,
         backgroundColor: defaultColors.flatListItem,
-        height: 50,
+        height: 40,
         justifyContent: 'center',
         borderRadius: 10,
         alignItems: 'center',

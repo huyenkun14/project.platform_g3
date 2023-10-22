@@ -18,31 +18,33 @@ const EntryDetail = ({ route, navigation }) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [date, setDate] = useState<Date>(new Date());
     const [entryInfo, setEntryInfo] = useState({
-        transactionId: 1,
+        transactionId: "",
         category: {
-            categoryId: 1,
+            categoryId: "",
             title: "",
             value: false
         },
-        amount: 1,
+        amount: "",
         description: "",
         date: ""
     })
     const onChangeInfoEntry = (name) => {
         return (value: any) => {
             setEntryInfo({ ...entryInfo, [name]: value })
-          console.log('infoEntry', entryInfo)
+            console.log('infoEntry', entryInfo)
         }
-      }
+    }
 
-      const handleSave = () => {
+    const handleSave = () => {
         setIsEdit(false);
-        // console.log(entryInfo)
-        const updateEntry = {
-            ...entryInfo,
-            date: moment(date).format('DD-MM-YYYY'),
-        };  
-        dispatch(updateEntryAction(entryInfo))
+        const data = new FormData()
+        data.append('description', entryInfo?.description)
+        data.append('transactionId', entryInfo?.transactionId)
+        data.append('date', moment(entryInfo?.date).format("DD-MM-YYYY"))
+        data.append('amount', entryInfo?.amount)
+        data.append('categoryId', entryInfo?.category?.categoryId)
+        console.log(data)
+        dispatch(updateEntryAction(data))
             .then((res) => {
                 console.log(res)
                 // navigation.navigate('Add')
@@ -52,7 +54,7 @@ const EntryDetail = ({ route, navigation }) => {
             });
     }
 
-      const handleDelete = () => {
+    const handleDelete = () => {
         Alert.alert('Xóa thành công')
         dispatch(deleteEntryAction(entryId))
             .then(() => {
@@ -71,8 +73,6 @@ const EntryDetail = ({ route, navigation }) => {
         dispatch(getEntryByIdAction(entryId))
             .then(res => {
                 setEntryInfo(res?.payload)
-                console.log(res?.payload)
-                console.log('entryId', entryId)
             })
             .catch(err => console.log('err', err))
     }
@@ -101,7 +101,7 @@ const EntryDetail = ({ route, navigation }) => {
                 </View>
                 <View style={styles.titleContainer}>
                     <TextInput
-                        value={entryInfo.category.value ? 'Thu nhập' : 'Chi tiêu'}
+                        value={entryInfo?.category?.value ? 'Thu nhập' : 'Chi tiêu'}
                         style={styles.title}
                         editable={false}
                     />
@@ -115,14 +115,13 @@ const EntryDetail = ({ route, navigation }) => {
                         <Image
                             style={styles.boxIcon}
                             source={require('../../../assets/images/icon/ic_circle_ellipsis.png')}
-                            tintColor={'crimson'}
                         />
                         <View>
                             <Text style={styles.inputLabel}>Loại</Text>
                             <TextInput
                                 style={styles.input}
-                                value={String(entryInfo.category.title)}
-                                editable={isEdit}
+                                value={String(entryInfo?.category?.title)}
+                                editable={false}
                                 onChangeText={onChangeInfoEntry('title')}
                             />
                         </View>
@@ -131,13 +130,12 @@ const EntryDetail = ({ route, navigation }) => {
                         <Image
                             style={styles.boxIcon}
                             source={require('../../../assets/images/icon/ic_usd_circle.png')}
-                            tintColor={'green'}
                         />
                         <View>
                             <Text style={styles.inputLabel}>Số tiền</Text>
                             <TextInput
                                 style={styles.input}
-                                value={String(entryInfo.amount)}
+                                value={String(entryInfo?.amount)}
                                 editable={isEdit}
                                 onChangeText={onChangeInfoEntry('amount')}
                             />
@@ -149,13 +147,12 @@ const EntryDetail = ({ route, navigation }) => {
                         <Image
                             style={styles.boxIcon}
                             source={require('../../../assets/images/icon/ic_pen_circle.png')}
-                            tintColor={'orange'}
                         />
                         <View>
                             <Text style={styles.inputLabel}>Ghi chú</Text>
                             <TextInput
-                                style={[styles.input, { height: 80, verticalAlign: 'top', marginTop: 3 }]}
-                                value={String(entryInfo.description)}
+                                style={[styles.input, { height: 80, marginTop: 3 }]}
+                                value={String(entryInfo?.description)}
                                 multiline
                                 editable={isEdit}
                                 onChangeText={onChangeInfoEntry('description')}
@@ -166,22 +163,22 @@ const EntryDetail = ({ route, navigation }) => {
                 <View style={styles.buttonContainer}>
                     {isEdit ? (
                         <TouchableOpacity
-                        style={[styles.button, styles.buttonSave]}
-                        onPress={handleSave}
-                    >
-                        <Text style={[styles.buttonText, styles.buttonEditText]}>Lưu thay đổi</Text>
-                    </TouchableOpacity>
-                    ): (
+                            style={[styles.button, styles.buttonSave]}
+                            onPress={handleSave}
+                        >
+                            <Text style={[styles.buttonText, styles.buttonEditText]}>Lưu thay đổi</Text>
+                        </TouchableOpacity>
+                    ) : (
                         <TouchableOpacity
-                        style={[styles.button, styles.buttonEdit]}
-                        onPress={() => {
-                            setIsEdit(!isEdit)
-                        }}
-                    >
-                        <Text style={[styles.buttonText, styles.buttonEditText]}>Chỉnh sửa giao dịch</Text>
-                    </TouchableOpacity>
+                            style={[styles.button, styles.buttonEdit]}
+                            onPress={() => {
+                                setIsEdit(!isEdit)
+                            }}
+                        >
+                            <Text style={[styles.buttonText, styles.buttonEditText]}>Chỉnh sửa giao dịch</Text>
+                        </TouchableOpacity>
                     )}
-                    
+
                     <TouchableOpacity style={[styles.button, styles.buttonDel]} onPress={handleDelete}>
                         <Text style={[styles.buttonText, styles.buttonDelText]}>Xóa giao dịch</Text>
                     </TouchableOpacity>
