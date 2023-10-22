@@ -6,7 +6,6 @@ import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.BudgetRepository;
 import com.example.moneytrackerbackend.repositories.CategoryRepository;
-import com.example.moneytrackerbackend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,29 +22,35 @@ public class BudgetServiceImp implements BudgetService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public Budget createBudget(BudgetRequest budgetRequest) {
+
         Category category = categoryRepository.findById(budgetRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException("Error: no category"));
+
         Budget budget = Budget.builder()
                 .category(category)
                 .startDate(LocalDate.parse(budgetRequest.getStartDate(), formatter))
                 .endDate(LocalDate.parse(budgetRequest.getEndDate(), formatter))
                 .amount(budgetRequest.getAmount())
-                .description(budgetRequest.getDescription())
                 .build();
         budget = budgetRepository.save(budget);
+
         return budget;
     }
 
     public Budget updateBudget(BudgetRequest budgetRequest) {
+
         Budget budget = getBudget(budgetRequest.getBudgetId());
+
         Category category = categoryRepository.findById(budgetRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException("Error: no category"));
+
         budget.setCategory(category);
         budget.setAmount(budgetRequest.getAmount());
         budget.setEndDate(LocalDate.parse(budgetRequest.getEndDate(),formatter));
         budget.setStartDate(LocalDate.parse(budgetRequest.getStartDate(),formatter));
-        budget.setDescription(budgetRequest.getDescription());
+
         budget = budgetRepository.save(budget);
+
         return budget;
     }
 
@@ -63,11 +68,13 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     public List<Budget> getAllBudgetOfMonth(String monthAndYear, Long userId) {
+
         String[] monthYear = monthAndYear.split("-");
         return budgetRepository.findBudgetByOfMonth(userId, Integer.parseInt(monthYear[0]), Integer.parseInt(monthYear[1]));
     }
 
     public List<Budget> getOverBudgets(Long userId) {
+
         LocalDate today = LocalDate.now();
         return budgetRepository.findOverBudget(userId, today);
     }

@@ -26,7 +26,6 @@ public class ConvertToResponse {
                 .urlImage("/image?imageId=" + user.getImageId())
                 .id(user.getId())
                 .username(user.getUsername())
-//                .money(user.getMoney())
                 .totalIncomeMoney(totalIncome)
                 .totalSpendingMoney(totalSpending)
                 .build();
@@ -47,7 +46,6 @@ public class ConvertToResponse {
         return BudgetResponse.builder()
                 .budgetId(budget.getId())
                 .startDate(budget.getStartDate())
-                .description(budget.getDescription())
                 .amount(budget.getAmount())
                 .category(convertCategory(budget.getCategory()))
                 .endDate(budget.getEndDate())

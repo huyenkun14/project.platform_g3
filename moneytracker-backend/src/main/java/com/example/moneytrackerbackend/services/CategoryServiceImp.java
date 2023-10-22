@@ -21,9 +21,11 @@ public class CategoryServiceImp implements CategoryService {
     private final UserRepository userRepository;
 
     public Category createCategory(CategoryRequest categoryRequest) {
+
         if (categoryRepository.existsByTitle(categoryRequest.getTitle(), categoryRequest.getUserId()) > 0) {
             throw new CustomException("Error: Name category already exists!!!");
         }
+
         User user = userRepository.findById(categoryRequest.getUserId()).orElseThrow(() -> new CustomException("Error: no use"));
 
         Category category = Category.builder()
@@ -31,13 +33,16 @@ public class CategoryServiceImp implements CategoryService {
                 .user(user)
                 .iconId(categoryRequest.getIconId())
                 .value(categoryRequest.isValue()).build();
+
         return categoryRepository.save(category);
     }
     public Category updateCategory(CategoryRequest categoryRequest){
+
         Category category = getCategoryById(categoryRequest.getCategoryId());
         category.setIconId(categoryRequest.getIconId());
         category.setTitle(categoryRequest.getTitle());
         category.setValue(categoryRequest.isValue());
+
         return categoryRepository.save(category);
     }
 
@@ -56,7 +61,9 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     public void deleteCategory(Long id) {
+
         Category category = getCategoryById(id);
+
         List<Transaction> transactions = transactionRepository.findAllByCategoryIdOrderByDate(category.getId());
         if(!transactions.isEmpty()){
             throw new CustomException("Error: Have transaction of this category");

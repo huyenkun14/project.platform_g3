@@ -27,15 +27,18 @@ public class ImageController {
     private final ImageService imageService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/image/upload")
-    public ResponseEntity<MessageResponse> uploadImage(@RequestParam("image") MultipartFile image)throws IOException {
-        Long imgId= imageService.saveUploadedFiles(image);
+    public ResponseEntity<MessageResponse> uploadImage(@RequestParam("image") MultipartFile image) {
+
+        Long imgId= imageService.saveUploadedFile(image);
         return ResponseEntity.ok( new MessageResponse("Success: "+imgId));
     }
     @GetMapping ("/api/image")
     public ResponseEntity<Resource> getImage(@RequestParam("imageId") Long imageId) throws IOException {
+
         Path path = Paths.get(imageService.getPathImage(imageId));
         Image media =imageService.getImage(imageId);
         Resource resource = new UrlResource(path.toUri());
+
         if (resource.exists()) {
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.valueOf(media.getType()).toString())
