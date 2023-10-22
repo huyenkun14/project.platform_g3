@@ -43,8 +43,9 @@ public class TransactionServiceImp implements TransactionService {
     public void deleteTransaction(Long id) {
 
         Transaction transaction = getTransaction(id);
-
-        imageService.deleteImage(transaction.getImageId());
+        if(transaction.getImageId()!=null){
+            imageService.deleteImage(transaction.getImageId());
+        }
         transactionRepository.delete(transaction);
     }
 

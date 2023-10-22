@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 
@@ -145,7 +144,7 @@ public class UserController {
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
 
-        if(!Objects.equals(user.getEmail(), email)){
+        if(!user.getEmail().equals(email)){
             if(userRepository.existsByEmail(email)){
                 throw new CustomException("Error: Email is already taken!");
             }
@@ -153,7 +152,9 @@ public class UserController {
         }
 
         Long imgId= imageService.saveUploadedFile(avatar);
-        imageService.deleteImage(user.getImageId());
+        if(user.getImageId()!=null){
+            imageService.deleteImage(user.getImageId());
+        }
         user.setImageId(imgId);
 
         user.setPassword(encoder.encode(password));
