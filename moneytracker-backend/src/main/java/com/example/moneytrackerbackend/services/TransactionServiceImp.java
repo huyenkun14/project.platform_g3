@@ -26,15 +26,18 @@ public class TransactionServiceImp implements TransactionService {
         Category category = categoryRepository.findById(transactionRequest.getCategoryId()).orElseThrow(() -> new CustomException("Error: no category"));
 
         LocalDate date = LocalDate.parse(transactionRequest.getDate(), formatter);
-        Long imageId = imageService.saveUploadedFile(transactionRequest.getImage());
+
 
         Transaction transaction = Transaction.builder()
                 .amount(transactionRequest.getAmount())
                 .category(category)
-                .imageId(imageId)
                 .date(date)
                 .description(transactionRequest.getDescription())
                 .build();
+        if(transactionRequest.getImage()!= null){
+            Long imageId = imageService.saveUploadedFile(transactionRequest.getImage());
+            transaction.setImageId(imageId);
+        }
         transaction = transactionRepository.save(transaction);
 
         return transaction;
@@ -59,10 +62,11 @@ public class TransactionServiceImp implements TransactionService {
 
         Category category = categoryRepository.findById(transactionRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException("Error: no category"));
+        if(transactionRequest.getImage()!= null){
+            Long imageId = imageService.saveUploadedFile(transactionRequest.getImage());
+            transaction.setImageId(imageId);
+        }
 
-        Long imageId = imageService.saveUploadedFile(transactionRequest.getImage());
-
-        transaction.setImageId(imageId);
         transaction.setAmount(transactionRequest.getAmount());
         transaction.setCategory(category);
         transaction.setDescription(transactionRequest.getDescription());
