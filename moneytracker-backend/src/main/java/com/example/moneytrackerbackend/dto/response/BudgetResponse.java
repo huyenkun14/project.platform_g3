@@ -15,5 +15,4 @@ public class BudgetResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private int amount;
-    private String description;
 }

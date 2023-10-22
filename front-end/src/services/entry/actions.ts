@@ -36,8 +36,8 @@ export const createEntryAction = createAsyncThunk(
 
 export const updateEntryAction = createAsyncThunk(
     'entry/updateEntryAction',
-    async (id: number) => {
-        const res = await httpClient.put(`${ENTRY.UPDATE}?transactionId=${id}`)
+    async (data: {}) => {
+        const res = await httpClient.put(ENTRY.UPDATE, data)
         return res.data
     }
 )

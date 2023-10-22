@@ -8,10 +8,8 @@ import lombok.*;
 @Builder
 public class BudgetRequest {
     private Long BudgetId;
-//    private Long userId;
     private Long categoryId;
     private int amount;
     private String startDate;
     private String endDate;
-    private String description;
 }

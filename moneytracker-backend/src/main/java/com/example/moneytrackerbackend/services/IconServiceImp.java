@@ -5,7 +5,6 @@ import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.IconRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -32,21 +30,30 @@ public class IconServiceImp implements IconService {
     }
 
     public String getPathIcon(Long id) {
+
         Icon icon = iconRepository.findById(id).orElse(null);
         String path = "";
+
         if (icon != null) {
             path = iconFolder + File.separator + icon.getFilename();
         }
+
         return path;
     }
 
     public Long saveUploadedIcon(MultipartFile file) throws IOException {
+
         File dirIcon = new File(iconFolder);
         if (!dirIcon.exists()) {
-            dirIcon.mkdirs();
+            boolean created = dirIcon.mkdirs();
+            if (!created) {
+                throw new CustomException("Error: Failed to create directory.");
+            }
         }
+
         Random rand = new Random();
         int ranNum = rand.nextInt();
+
         if (!file.isEmpty()) {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(dirIcon + "//" + file.getName() + ranNum + getFileExtension(file.getOriginalFilename()));
@@ -59,8 +66,9 @@ public class IconServiceImp implements IconService {
         } else throw new CustomException("Error: File null, can not save!!");
     }
 
-    public void uploadFiles(MultipartFile[] files) throws IOException {
-        Arrays.asList(files).stream().forEach(file -> {
+    public void uploadFiles(MultipartFile[] files) {
+
+        Arrays.stream(files).forEach(file -> {
             try {
                 saveUploadedIcon(file);
             } catch (IOException e) {

@@ -99,6 +99,10 @@ export const styles = StyleSheet.create({
         elevation: 7,
         color: defaultColors.text_1,
     },
+
+    buttonSave: {
+        backgroundColor: defaultColors.tabActive,
+    },
     buttonText: {
         fontSize: 16,
         fontWeight: '600',
