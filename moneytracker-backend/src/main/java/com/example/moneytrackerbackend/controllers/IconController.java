@@ -29,14 +29,17 @@ public class IconController {
     private final IconService iconService;
     @PostMapping("/api/icon/upload")
     public ResponseEntity<MessageResponse> uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {
+
         iconService.uploadFiles(icons);
         return ResponseEntity.ok( new MessageResponse("Success"));
     }
     @GetMapping("/api/icon")
     public ResponseEntity<Resource> getIcon(@RequestParam("iconId") Long iconId) throws IOException {
+
         Path path = Paths.get(iconService.getPathIcon(iconId));
         Icon media =iconService.getIcon(iconId);
         Resource resource = new UrlResource(path.toUri());
+
         if (resource.exists()) {
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.valueOf(media.getType()).toString())
@@ -47,11 +50,14 @@ public class IconController {
     }
     @GetMapping("/api/icon/get-all")
     public ResponseEntity<List<IconResponse>> getAllIcon(){
+
         List<Icon> icons = iconService.getAllIcon();
         List<IconResponse> iconResponses = new ArrayList<>();
+
         for(Icon icon: icons){
             iconResponses.add(new IconResponse(icon.getId()));
         }
+
         return ResponseEntity.ok(iconResponses);
     }
 }

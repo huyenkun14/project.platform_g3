@@ -12,5 +12,6 @@ public interface ImageService {
 
     String getPathImage(Long id);
 
-    Long saveUploadedFiles(MultipartFile file) throws IOException;
+    Long saveUploadedFile(MultipartFile file) throws IOException;
+    void deleteImage(Long id);
 }

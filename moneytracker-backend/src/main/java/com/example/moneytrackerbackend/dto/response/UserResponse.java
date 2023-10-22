@@ -14,7 +14,6 @@ public class UserResponse {
     private String urlImage;
     private String email;
     private String phoneNumber;
-//    private int money;
     private int totalIncomeMoney;
     private int totalSpendingMoney;
 }

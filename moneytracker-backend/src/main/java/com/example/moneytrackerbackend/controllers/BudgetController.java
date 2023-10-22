@@ -26,24 +26,28 @@ public class BudgetController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/budget/create")
     public ResponseEntity<BudgetResponse> createBudget(@RequestBody BudgetRequest budgetRequest){
+
         Budget budget = budgetService.createBudget(budgetRequest);
         return ResponseEntity.ok(convertBudget(budget));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/budget/update")
     public ResponseEntity<BudgetResponse> updateBudget(@RequestBody BudgetRequest budgetRequest){
+
         Budget budget = budgetService.updateBudget(budgetRequest);
         return ResponseEntity.ok(convertBudget(budget));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/api/v1/budget/delete")
     public ResponseEntity<MessageResponse> deleteBudget(@RequestParam("budgetId") Long id){
+
         budgetService.deleteBudget(id);
         return ResponseEntity.ok(new MessageResponse("Success delete budget"));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/budget/get-all")
     public ResponseEntity<List<BudgetResponse>> getAllBudget(Principal principal){
+
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         List<Budget> budgets = budgetService.getAllBudget(userId);
@@ -52,14 +56,17 @@ public class BudgetController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/budget")
     public ResponseEntity<BudgetResponse> getTransaction(@RequestParam("budgetId") Long id){
+
         Budget budget = budgetService.getBudget(id);
         return ResponseEntity.ok(convertBudget(budget));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/budget/get-of-month")
     public ResponseEntity<List<BudgetResponse>> getAllBudgetOfMonth(Principal principal, @RequestParam String monthAndYear){
+
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
+
         List<Budget> budgetsOfMonth = budgetService.getAllBudgetOfMonth(monthAndYear, userId);
         return ResponseEntity.ok(budgetsOfMonth.stream().map(ConvertToResponse::convertBudget).toList());
     }
@@ -67,8 +74,10 @@ public class BudgetController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/budget/get-over")
     public ResponseEntity<List<BudgetResponse>> getAllBudgetOfMonth(Principal principal){
+
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
+
         List<Budget> overBudgets = budgetService.getOverBudgets( userId);
         return ResponseEntity.ok(overBudgets.stream().map(ConvertToResponse::convertBudget).toList());
     }

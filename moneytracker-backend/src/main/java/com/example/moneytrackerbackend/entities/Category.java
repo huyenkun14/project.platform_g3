@@ -16,7 +16,7 @@ public class Category {
     private String title;
     @Column(name = "icon_id")
     private Long iconId;
-    //xác định khoản thu hay chi: true=0=thu, false=1=chi
+    //true=0=thu, false=1=chi
     private boolean value;
     @ManyToOne
     @JoinColumn(name = "user_id")

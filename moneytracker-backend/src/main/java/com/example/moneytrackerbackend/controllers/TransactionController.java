@@ -28,10 +28,10 @@ public class TransactionController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/transaction/create")
     public ResponseEntity<TransactionResponse> createTransaction(@RequestParam Long categoryId,
-                                            @RequestParam MultipartFile image,
-                                            @RequestParam int amount,
-                                            @RequestParam String description,
-                                            @RequestParam String date) throws IOException {
+                                                                 @RequestParam MultipartFile image,
+                                                                 @RequestParam int amount,
+                                                                 @RequestParam String description,
+                                                                 @RequestParam String date) throws IOException {
 
         TransactionRequest transactionRequest = TransactionRequest.builder()
                 .amount(amount)
@@ -40,6 +40,7 @@ public class TransactionController {
                 .date(date)
                 .description(description)
                 .build();
+
         Transaction transaction = transactionService.createTransaction(transactionRequest);
         return ResponseEntity.ok(convertTransaction(transaction));
     }
@@ -47,12 +48,12 @@ public class TransactionController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/transaction/update")
     public ResponseEntity<TransactionResponse> updateTransaction(@RequestParam Long transactionId,
-                                            @RequestParam Long categoryId,
-                                            @RequestParam int amount,
-                                            @RequestParam MultipartFile image,
-                                            @RequestParam String description,
-                                            @RequestParam String date
-    ) throws IOException {
+                                                                 @RequestParam Long categoryId,
+                                                                 @RequestParam int amount,
+                                                                 @RequestParam MultipartFile image,
+                                                                 @RequestParam String description,
+                                                                 @RequestParam String date) throws IOException {
+
         TransactionRequest transactionRequest = TransactionRequest.builder()
                 .transactionId(transactionId)
                 .categoryId(categoryId)
@@ -61,6 +62,7 @@ public class TransactionController {
                 .image(image)
                 .description(description)
                 .build();
+
         Transaction transaction = transactionService.updateTransaction(transactionRequest);
         return ResponseEntity.ok(convertTransaction(transaction));
     }
@@ -73,15 +75,6 @@ public class TransactionController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/api/v1/transaction/get-all")
-    public ResponseEntity<List<TransactionResponse>> getAllTransaction(Principal principal) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Long userId = userDetails.getId();
-        List<Transaction> transactions = transactionService.getAllTransaction(userId);
-        return ResponseEntity.ok(transactions.stream().map(ConvertToResponse::convertTransaction).toList());
-    }
-
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/transaction")
     public ResponseEntity<TransactionResponse> getTransaction(@RequestParam("transactionId") Long id) {
         Transaction transaction = transactionService.getTransaction(id);
@@ -89,11 +82,27 @@ public class TransactionController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/api/v1/transaction/get-of-month")
-    public ResponseEntity<List<TransactionResponse>> getAllTransactionOfMonth(Principal principal, @RequestParam String monthAndYear) {
+    @GetMapping("/api/v1/transaction/get-transactions")
+    public ResponseEntity<List<TransactionResponse>> getAllTransactionOfMonth(Principal principal,
+                                                                              @RequestParam(value = "monthAndYear", required = false) String monthAndYear,
+                                                                              @RequestParam(value = "categoryId", required = false) Long categoryId) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        List<Transaction> transactionsOfMonth = transactionService.getTransactionOfMonth(monthAndYear, userId);
-        return ResponseEntity.ok(transactionsOfMonth.stream().map(ConvertToResponse::convertTransaction).toList());
+
+        List<Transaction> transactions;
+
+        if (monthAndYear != null && categoryId != null) {
+            transactions = transactionService.getTransactionByCategoryOnMonth(monthAndYear, categoryId);
+        } else if (monthAndYear != null) {
+            transactions = transactionService.getTransactionOfMonth(monthAndYear, userId);
+        } else if (categoryId != null) {
+            transactions = transactionService.getTransactionByCategory(categoryId);
+        } else {
+            transactions = transactionService.getAllTransaction(userId);
+        }
+
+        return ResponseEntity.ok(transactions.stream().map(ConvertToResponse::convertTransaction).toList());
     }
+
 }

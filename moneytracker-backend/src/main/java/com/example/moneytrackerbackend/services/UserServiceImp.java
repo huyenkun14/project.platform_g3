@@ -5,7 +5,6 @@ import com.example.moneytrackerbackend.exceptiones.CustomException;
 import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -14,22 +13,27 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImp implements UserDetailsService {
     private final UserRepository userRepository;
-
     public UserDetails loadUserByUsername(String username) {
+
         User user = userRepository.findByEmail(username);
         if (user == null) {
             throw new CustomException("User not found with username: " + username);
         }
+
         return UserDetailsImpl.build(user);
     }
 
     public User getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new CustomException("Error: no use"));
-        return user;
+
+        return userRepository.findById(id).orElseThrow(() -> new CustomException("Error: no use"));
     }
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public void deleteUser(Long useId){
+        userRepository.deleteById(useId);
     }
 
 }

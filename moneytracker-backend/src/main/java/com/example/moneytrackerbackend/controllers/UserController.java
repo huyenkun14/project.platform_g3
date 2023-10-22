@@ -2,7 +2,7 @@ package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.request.CategoryRequest;
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
-import com.example.moneytrackerbackend.dto.request.RegisterRequest;
+import com.example.moneytrackerbackend.dto.request.UserRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.dto.response.UserResponse;
@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 
@@ -63,42 +64,49 @@ public class UserController {
     }
 
     @PostMapping("api/auth/register")
-    public ResponseEntity<MessageResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<MessageResponse> register(@RequestBody UserRequest registerRequest) {
+
         if(userRepository.existsByEmail(registerRequest.getEmail())){
             throw new CustomException("Error: Email is already taken!");
         }
+
         User user = User.builder().username(registerRequest.getUsername())
                 .password(encoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
                 .phoneNumber(registerRequest.getPhoneNumber())
-//                .money(0)
                 .build();
         user = userService.saveUser(user);
+
         CategoryRequest defaultIncomeCategory = CategoryRequest.builder()
                 .userId(user.getId())
-                .title("Thu nhập khác")
+                .title("Default Income")
                 .iconId(Long.parseLong( "1"))
                 .value(true)
                 .build();
         categoryService.createCategory(defaultIncomeCategory);
+
         CategoryRequest defaultSpendingCategory = CategoryRequest.builder()
                 .userId(user.getId())
-                .title("Chi tiêu khác")
+                .title("Default Expenditure")
                 .iconId(Long.parseLong( "1"))
                 .value(false)
                 .build();
         categoryService.createCategory(defaultSpendingCategory);
+
         return ResponseEntity.ok(new MessageResponse("Success register account"));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("api/v1/user")
     public ResponseEntity<UserResponse> getUser(Principal principal){
+
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
+
         List<Transaction> transactions = transactionService.getAllTransaction(userId);
         int totalIncome = 0;
         int totalSpending = 0;
+
         for (Transaction transaction: transactions){
             if(transaction.getCategory().isValue()){
                 totalIncome+= transaction.getAmount();
@@ -107,17 +115,56 @@ public class UserController {
                 totalSpending += transaction.getAmount();
             }
         }
+
         return ResponseEntity.ok(convertUser(user, totalIncome, totalSpending));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("api/v1/user/set-avatar")
     public ResponseEntity<MessageResponse> setAvatar(@RequestParam("image")MultipartFile image, Principal principal) throws IOException {
-        Long imgId= imageService.saveUploadedFiles(image);
+
+        Long imgId= imageService.saveUploadedFile(image);
+
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
+
         user.setImageId(imgId);
         userService.saveUser(user);
+
         return ResponseEntity.ok( new MessageResponse("Success set avatar"));
     }
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("api/v1/user/update")
+    public ResponseEntity<MessageResponse> updateUser(Principal principal,
+                                                   @RequestParam("avatar") MultipartFile avatar,
+                                                   @RequestParam("username") String username,
+                                                   @RequestParam("password") String password,
+                                                   @RequestParam("email") String email,
+                                                   @RequestParam("phoneNumber") String phoneNumber) throws IOException {
+
+        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        User user = userService.getUser(userId);
+
+        if(!Objects.equals(user.getEmail(), email)){
+            if(userRepository.existsByEmail(email)){
+                throw new CustomException("Error: Email is already taken!");
+            }
+            user.setEmail(email);
+        }
+
+        Long imgId= imageService.saveUploadedFile(avatar);
+        imageService.deleteImage(user.getImageId());
+        user.setImageId(imgId);
+
+        user.setPassword(encoder.encode(password));
+        user.setUsername(username);
+        user.setPhoneNumber(phoneNumber);
+        userService.saveUser(user);
+
+        return ResponseEntity.ok(new MessageResponse("Success update your account."));
+    }
+
+
+    
 }

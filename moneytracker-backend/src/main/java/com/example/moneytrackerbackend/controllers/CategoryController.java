@@ -27,25 +27,29 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/category/create")
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest, Principal principal) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         categoryRequest.setUserId(userId);
+
         Category category = categoryService.createCategory(categoryRequest);
-        CategoryResponse categoryResponse = convertCategory(category);
-        return ResponseEntity.ok(categoryResponse);
+
+        return ResponseEntity.ok(convertCategory(category));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/category/update")
     public ResponseEntity<CategoryResponse> updateCategory(@RequestBody CategoryRequest categoryRequest) {
+
         Category category = categoryService.updateCategory(categoryRequest);
-        CategoryResponse categoryResponse = convertCategory(category);
-        return ResponseEntity.ok(categoryResponse);
+
+        return ResponseEntity.ok(convertCategory(category));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/api/v1/category/delete")
     public ResponseEntity<MessageResponse> deleteCategory(@RequestParam("categoryId") Long id) {
+
         categoryService.deleteCategory(id);
         return ResponseEntity.ok(new MessageResponse("Success delete category"));
     }
@@ -53,6 +57,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/category")
     public ResponseEntity<CategoryResponse> getCategory(@RequestParam Long categoryId) {
+
         Category category = categoryService.getCategoryById(categoryId);
         return ResponseEntity.ok(convertCategory(category));
     }
@@ -60,8 +65,10 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/category/get-all")
     public ResponseEntity<List<CategoryResponse>> getAllCategory(Principal principal) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
+
         List<Category> categories = categoryService.getAllCategory(userId);
         return ResponseEntity.ok(categories.stream().map(ConvertToResponse::convertCategory).toList());
     }
@@ -69,8 +76,10 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/category/by-value")
     public ResponseEntity<List<CategoryResponse>> getAllCategory(@RequestParam("value") boolean value, Principal principal) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
+
         List<Category> categories = categoryService.getAllByValue(value, userId);
         return ResponseEntity.ok(categories.stream().map(ConvertToResponse::convertCategory).toList());
     }
