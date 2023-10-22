@@ -2,6 +2,8 @@ import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid } f
 import React, { useState } from 'react'
 import { styles } from './styles'
 import { useDispatch } from 'react-redux'
+import { createClassifyAction } from '../../../../services/classify/actions'
+import { createBudgetAction } from '../../../../services/budget/actions'
 
 const DetailClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
     const dispatch = useDispatch<any>()
@@ -19,16 +21,31 @@ const DetailClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
     }
     // const handleCreateClassify = () => {
     //     dispatch(createClassifyAction({
-    //       title: infoClassify.title,
-    //       value: infoClassify.value
+    //         title: infoClassify.title,
+    //         value: infoClassify.value
     //     }))
-    //       .then(res => {
-    //         console.log(res)
-    //         ToastAndroid.show('Thêm danh mục thành công',ToastAndroid.SHORT)
-    //         setModalVisible(false)
-    //       })
-    //       .catch(err => console.log('err', err))
-    //   }
+    //         .then(res => {
+    //             console.log(res)
+    //             ToastAndroid.show('Thêm danh mục thành công', ToastAndroid.SHORT)
+    //             setModalVisible(false)
+    //         })
+    //         .catch(err => console.log('err', err))
+    // }
+    // const handleCreateBudget = () => {
+    //     let date_today = new Date()
+    //     let firstDay = new Date(date_today.getFullYear(), date_today.getMonth(), 1);
+    //     let lastDay = new Date(date_today.getFullYear(), date_today.getMonth() + 1, 0);
+    //     dispatch(createBudgetAction({
+    //         title: infoClassify.title,
+    //         value: infoClassify.value
+    //     }))
+    //         .then(res => {
+    //             console.log(res)
+    //             ToastAndroid.show('Thêm danh mục thành công', ToastAndroid.SHORT)
+    //             setModalVisible(false)
+    //         })
+    //         .catch(err => console.log('err', err))
+    // }
     return (
         <View>
             <Modal
@@ -57,7 +74,7 @@ const DetailClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
                                 placeholder='Nhập tên danh mục'
                             />
                         </View>
-                        {isIncomeStatus && <>
+                        {isIncomeStatus && <View>
                             <Text style={styles.inputLabel}>Ngân sách</Text>
                             <View style={styles.shadow}>
                                 <TextInput
@@ -67,7 +84,7 @@ const DetailClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
                                     placeholder='Nhập ngân sách cho danh mục'
                                 />
                             </View>
-                        </>
+                        </View>
                         }
                         <TouchableOpacity>
                             <View style={styles.addImage}>

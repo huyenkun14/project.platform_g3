@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createEntryAction } from '../../../../services/entry/actions';
 
-const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) => {
+const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
   const [infoEntry, setInfoEntry] = useState({
@@ -30,9 +30,9 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) =
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
       .then(res => {
-        const convertListClassify = res?.payload.map((item, index) => ({ label: item.title, value: item.categoryId }))
+        const convertListClassify = res?.payload.filter(item => item?.value === isIncome).map((item, index) => ({ label: item.title, value: item.categoryId }))
         setListClassify(convertListClassify)
-        console.log(res)
+        console.log(res, 'listClassify')
       })
       .catch(err => console.log('err', err))
   }
@@ -46,7 +46,7 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) =
     }))
       .then(res => {
         console.log(res)
-        if(res.payload) {
+        if (res.payload) {
           setInfoEntry({
             time: String(date.toLocaleDateString()),
             title: '',
@@ -192,7 +192,6 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) =
         </View>
       </Modal>
       <AddNewClassify
-        isIncomeStatus={isIncomeStatus}
         modalVisible={addNewClassifyOpen}
         setModalVisible={setAddNewClassifyOpen}
       />

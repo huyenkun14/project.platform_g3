@@ -11,7 +11,6 @@ import { getEntryByMonthAction } from '../../services/entry/actions';
 import DatePicker from '@react-native-community/datetimepicker';
 
 const Chart = () => {
-
   const [chartType, setChartType] = useState('1')
   const [isShowDetail, setIsshowDetail] = useState(false)
   const [showDatePicker, setShowDatePicker] = useState(false);

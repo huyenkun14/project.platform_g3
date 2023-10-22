@@ -27,12 +27,12 @@ const Add = () => {
   }
   const toAddIncome = () => {
     setAddIncome(true);
-    setIsIncome(false)
+    setIsIncome(true)
   };
 
   const toAddExpense = () => {
     setAddExpenses(true);
-    setIsIncome(!isIncome)
+    setIsIncome(false)
   };
   return (
     <SafeAreaView>
@@ -88,16 +88,16 @@ const Add = () => {
 
         {/* Expense Modal */}
         <AddNewEntry
+          isIncome={isIncome}
           title='Thêm chi tiêu'
           modalVisible={addExpenses}
           setModalVisible={setAddExpenses}
-          isIncomeStatus={isIncome}
         />
         <AddNewEntry
+          isIncome={isIncome}
           title='Thêm thu nhập'
           modalVisible={addIncome}
           setModalVisible={setAddIncome}
-          isIncomeStatus={isIncome}
         />
       </ScrollView>
     </SafeAreaView>

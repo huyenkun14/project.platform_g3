@@ -21,3 +21,13 @@ export const ENTRY = {
     UPDATE: "/v1/transaction/update",
     DELETE: "/v1/transaction/delete",
 }
+
+export const BUDGET = {
+    CREATE: "/v1/budget/create",
+    GET_ALL: "/v1/budget/get-all",
+    GET_BY_MONTH: "/v1/budget/get-of-month",
+    GET_BY_ID: "/v1/budget",
+    GET_OVER: "/v1/budget/get-over",
+    UPDATE: "/v1/budget/update",
+    DELETE: "/v1/budget/delete",
+}

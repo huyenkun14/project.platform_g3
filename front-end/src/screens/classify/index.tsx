@@ -12,9 +12,7 @@ import { useDispatch } from 'react-redux';
 import DetailClassify from './component/detailClassify';
 
 const Classify = () => {
-    const incomeType = typeData.filter(item => item.status === 'thu nhập')
-    const expenseType = typeData.filter(item => item.status === 'chi tiêu')
-    const [type, setType] = useState(expenseType)
+    const [type, setType] = useState([])
     const [isIncome, setIsIncome] = useState(false)
     const [searchText, setSearchText] = useState<string>('')
     const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
@@ -23,27 +21,33 @@ const Classify = () => {
     const [listClassify, setListClassify] = useState([]);
     useEffect(() => {
         getListClassify()
+        setType(listClassify?.filter(item => item?.value === false))
     }, [])
     const getListClassify = () => {
         dispatch(getAllClassifyAction())
             .then(res => {
                 setListClassify(res?.payload)
-                console.log(listClassify)
             })
             .catch(err => console.log('err', err))
     }
     return (
         <SafeAreaView style={styles.container}>
-            <Header title="Phân loại" isBack={false} />
+            <Header title="Danh mục" isBack={false} />
             <View style={styles.option}>
-                <TouchableOpacity onPress={() => setType(expenseType)}>
+                <TouchableOpacity onPress={() => {
+                    setType(listClassify?.filter(item => item?.value === false))
+                    setIsIncome(false)
+                }}>
                     <View style={styles.optionBtn}>
-                        <Text style={styles.optionText}>Chi tiêu ({expenseType.length})</Text>
+                        <Text style={styles.optionText}>Chi tiêu</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setType(incomeType)}>
+                <TouchableOpacity onPress={() => {
+                    setType(listClassify?.filter(item => item?.value === true))
+                    setIsIncome(true)
+                }}>
                     <View style={styles.optionBtn}>
-                        <Text style={styles.optionText}>Thu nhập ({incomeType.length})</Text>
+                        <Text style={styles.optionText}>Thu nhập</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -70,14 +74,13 @@ const Classify = () => {
                 ))}
             </ScrollView>
             <AddNewClassify
-                isIncomeStatus={false}
                 modalVisible={addNewClassifyOpen}
                 setModalVisible={setAddNewClassifyOpen}
             />
             <DetailClassify
                 modalVisible={detailClassifyOpen}
                 setModalVisible={setDetailClassifyOpen}
-                isIncomeStatus={false}
+                isIncomeStatus={isIncome}
             />
         </SafeAreaView>
     )
