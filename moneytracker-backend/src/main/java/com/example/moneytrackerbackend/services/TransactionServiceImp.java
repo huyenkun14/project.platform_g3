@@ -9,7 +9,6 @@ import com.example.moneytrackerbackend.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,7 +21,7 @@ public class TransactionServiceImp implements TransactionService {
     private final ImageService imageService;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public Transaction createTransaction(TransactionRequest transactionRequest) throws IOException {
+    public Transaction createTransaction(TransactionRequest transactionRequest) {
 
         Category category = categoryRepository.findById(transactionRequest.getCategoryId()).orElseThrow(() -> new CustomException("Error: no category"));
 
@@ -53,7 +52,7 @@ public class TransactionServiceImp implements TransactionService {
         return transactionRepository.findAllByUserIdOrderByDate(userId);
     }
 
-    public Transaction updateTransaction(TransactionRequest transactionRequest) throws IOException {
+    public Transaction updateTransaction(TransactionRequest transactionRequest){
 
         Transaction transaction = transactionRepository.findById(transactionRequest.getTransactionId()).orElseThrow(() -> new CustomException("no transaction"));
 

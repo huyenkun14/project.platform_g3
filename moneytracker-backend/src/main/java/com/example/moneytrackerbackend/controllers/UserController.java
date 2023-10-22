@@ -28,7 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
@@ -120,7 +119,7 @@ public class UserController {
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("api/v1/user/set-avatar")
-    public ResponseEntity<MessageResponse> setAvatar(@RequestParam("image")MultipartFile image, Principal principal) throws IOException {
+    public ResponseEntity<MessageResponse> setAvatar(@RequestParam("image")MultipartFile image, Principal principal) {
 
         Long imgId= imageService.saveUploadedFile(image);
 
@@ -134,13 +133,13 @@ public class UserController {
         return ResponseEntity.ok( new MessageResponse("Success set avatar"));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("api/v1/user/update")
+    @PutMapping("api/v1/user/update")
     public ResponseEntity<MessageResponse> updateUser(Principal principal,
                                                    @RequestParam("avatar") MultipartFile avatar,
                                                    @RequestParam("username") String username,
                                                    @RequestParam("password") String password,
                                                    @RequestParam("email") String email,
-                                                   @RequestParam("phoneNumber") String phoneNumber) throws IOException {
+                                                   @RequestParam("phoneNumber") String phoneNumber){
 
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
@@ -165,6 +164,4 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse("Success update your account."));
     }
 
-
-    
 }

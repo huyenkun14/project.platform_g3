@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class TransactionController {
                                                                  @RequestParam MultipartFile image,
                                                                  @RequestParam int amount,
                                                                  @RequestParam String description,
-                                                                 @RequestParam String date) throws IOException {
+                                                                 @RequestParam String date) {
 
         TransactionRequest transactionRequest = TransactionRequest.builder()
                 .amount(amount)
@@ -52,7 +51,7 @@ public class TransactionController {
                                                                  @RequestParam int amount,
                                                                  @RequestParam MultipartFile image,
                                                                  @RequestParam String description,
-                                                                 @RequestParam String date) throws IOException {
+                                                                 @RequestParam String date)  {
 
         TransactionRequest transactionRequest = TransactionRequest.builder()
                 .transactionId(transactionId)

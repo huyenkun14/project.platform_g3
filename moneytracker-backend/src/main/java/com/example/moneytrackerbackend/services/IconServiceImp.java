@@ -45,7 +45,10 @@ public class IconServiceImp implements IconService {
 
         File dirIcon = new File(iconFolder);
         if (!dirIcon.exists()) {
-            dirIcon.mkdirs();
+            boolean created = dirIcon.mkdirs();
+            if (!created) {
+                throw new CustomException("Error: Failed to create directory.");
+            }
         }
 
         Random rand = new Random();

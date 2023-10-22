@@ -62,26 +62,6 @@ public class ImageServiceImp implements ImageService {
             throw new CustomException("Error: File size exceeds the allowed limit, cannot save!!");
         }
 
-//        File dir = new File(imgFolder);
-//        if (!dir.exists()) {
-//            boolean created = dir.mkdirs();
-//            if (created) {
-//                System.out.println("Directory created successfully.");
-//            } else {
-//                throw new CustomException("Error: Failed to create directory.");
-//            }
-//        }
-//
-//        Random rand = new Random();
-//        int ranNum = rand.nextInt();
-//
-//        byte[] bytes = file.getBytes();
-//        Path path = Paths.get(dir + "//" + file.getName() + ranNum + getFileExtension(file.getOriginalFilename()));
-//        Files.write(path, bytes);
-//        Image image = new Image();
-//        image.setFilename(path.getFileName().toString());
-//        image.setType(file.getContentType());
-//        image = imageRepository.save(image);
         try {
             File dir = new File(imgFolder);
             if (!dir.exists()) {
