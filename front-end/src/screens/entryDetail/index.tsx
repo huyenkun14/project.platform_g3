@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import DatePicker from '@react-native-community/datetimepicker';
 import { styles } from './styles'
@@ -7,8 +7,11 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { deleteEntryAction, getEntryByIdAction, updateEntryAction } from '../../services/entry/actions';
 import { IEntryInfo } from './type';
+import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit';
+import navigation from '../../navigation';
+// import navigation from '../../navigation';
 
-const EntryDetail = ({ route }) => {
+const EntryDetail = ({ route, navigation }) => {
     const { entryId } = route.params
     const dispatch = useDispatch<any>()
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -18,12 +21,12 @@ const EntryDetail = ({ route }) => {
         transactionId: 1,
         category: {
             categoryId: 1,
-            title: '',
+            title: "",
             value: false
         },
         amount: 1,
-        description: '',
-        date: ''
+        description: "",
+        date: ""
     })
     const onChangeInfoEntry = (name) => {
         return (value: any) => {
@@ -34,10 +37,15 @@ const EntryDetail = ({ route }) => {
 
       const handleSave = () => {
         setIsEdit(false);
-        console.log((entryInfo))
+        // console.log(entryInfo)
+        const updateEntry = {
+            ...entryInfo,
+            date: moment(date).format('DD-MM-YYYY'),
+        };  
         dispatch(updateEntryAction(entryInfo))
             .then((res) => {
                 console.log(res)
+                // navigation.navigate('Add')
             })
             .catch(err => {
                 console.log('Save error', err);
@@ -45,8 +53,10 @@ const EntryDetail = ({ route }) => {
     }
 
       const handleDelete = () => {
+        Alert.alert('Xóa thành công')
         dispatch(deleteEntryAction(entryId))
             .then(() => {
+                navigation.navigate('Add')
             })
             .catch(err => {
                 console.log('Delete error', err);
@@ -70,6 +80,7 @@ const EntryDetail = ({ route }) => {
         const currentDate = selectedDate || date;
         setShowDatePicker(false);
         setDate(currentDate);
+        setEntryInfo({ ...entryInfo, date: moment(currentDate).format('DD-MM-YYYY') });
     };
     return (
         <SafeAreaView style={styles.container}>
@@ -189,3 +200,7 @@ const EntryDetail = ({ route }) => {
 }
 
 export default EntryDetail
+
+function dispatch(arg0: AsyncThunkAction<any, number, { state?: unknown; dispatch?: Dispatch<AnyAction>; extra?: unknown; rejectValue?: unknown; serializedErrorType?: unknown; pendingMeta?: unknown; fulfilledMeta?: unknown; rejectedMeta?: unknown; }>) {
+    throw new Error('Function not implemented.');
+}
