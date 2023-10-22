@@ -27,7 +27,7 @@ public class TransactionController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/transaction/create")
     public ResponseEntity<TransactionResponse> createTransaction(@RequestParam Long categoryId,
-                                                                 @RequestParam(required = false) MultipartFile image,
+                                                                 @RequestParam(value = "image", required = false) MultipartFile image,
                                                                  @RequestParam int amount,
                                                                  @RequestParam String description,
                                                                  @RequestParam String date) {
@@ -49,9 +49,9 @@ public class TransactionController {
     public ResponseEntity<TransactionResponse> updateTransaction(@RequestParam Long transactionId,
                                                                  @RequestParam Long categoryId,
                                                                  @RequestParam int amount,
-                                                                 @RequestParam(required = false) MultipartFile image,
+                                                                 @RequestParam(value = "image", required = false) MultipartFile image,
                                                                  @RequestParam String description,
-                                                                 @RequestParam String date)  {
+                                                                 @RequestParam String date) {
 
         TransactionRequest transactionRequest = TransactionRequest.builder()
                 .transactionId(transactionId)
