@@ -25,7 +25,7 @@ const AddNewClassify = ({ modalVisible, setModalVisible }) => {
     const handleCreateClassify = () => {
         dispatch(createClassifyAction({
             title: infoClassify.title,
-            value: infoClassify.value
+            value: isIncomeChecked
         }))
             .then(res => {
                 console.log(res)
@@ -68,12 +68,12 @@ const AddNewClassify = ({ modalVisible, setModalVisible }) => {
                                 <Checkbox
                                     style={styles.checkbox}
                                     value={isIncomeChecked}
-                                    onValueChange={onChangeInfoClassify('value')}
+                                    onValueChange={setIncomeChecked}
                                     color={isIncomeChecked ? '#4630EB' : undefined}
                                 />
                                 <Text>Thu nhập</Text>
                             </View>
-                            <View style={styles.checkboxView}>
+                            {/* <View style={styles.checkboxView}>
                                 <Checkbox
                                     style={styles.checkbox}
                                     value={isExpenseChecked}
@@ -81,7 +81,7 @@ const AddNewClassify = ({ modalVisible, setModalVisible }) => {
                                     color={isExpenseChecked ? '#4630EB' : undefined}
                                 />
                                 <Text>Chi tiêu</Text>
-                            </View>
+                            </View> */}
                         </View>
                         <TouchableOpacity>
                             <View style={styles.addImage}>

@@ -1,4 +1,4 @@
-export const BASE_URL = "http://10.0.2.2:3000/api"
+export const BASE_URL = "http://192.168.10.104:3000/api"
 
 export const AUTH = {
     REGISTER: "/auth/register",
@@ -15,8 +15,7 @@ export const CLASSIFY = {
 
 export const ENTRY = {
     CREATE: "/v1/transaction/create",
-    GET_ALL: "/v1/transaction/get-all",
-    GET_BY_MONTH: "/v1/transaction/get-of-month",
+    GET_ALL: "/v1/transaction/get-transactions",
     GET_BY_ID: "/v1/transaction",
     UPDATE: "/v1/transaction/update",
     DELETE: "/v1/transaction/delete",
@@ -30,4 +29,9 @@ export const BUDGET = {
     GET_OVER: "/v1/budget/get-over",
     UPDATE: "/v1/budget/update",
     DELETE: "/v1/budget/delete",
+}
+
+export const CHART = {
+    YEARLY: "/v1/financial-summary/yearly",
+    EACH_CATEGORY: "/v1/financial-summary/each-category",
 }

@@ -79,6 +79,7 @@ export const styles = StyleSheet.create({
     input: {
         fontSize: 15,
         paddingRight: 40,
+        verticalAlign: 'top',
     },
     buttonContainer:{
         marginHorizontal: 25,

@@ -26,8 +26,7 @@ const History = () => {
     dispatch(getEntryByMonthAction(month))
       .then(res => {
         console.log(res)
-        const converListEntry = res?.payload.slice(-3)
-        setListEntry(converListEntry)
+        setListEntry(res?.payload)
       })
       .catch(err => console.log('err', err))
   }
@@ -57,7 +56,7 @@ const History = () => {
             note={item.description}
             status={item.category.value}
           />
-        )) : <Text>Không có giao dịch.</Text>}
+        )) : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch.</Text>}
 
       </View>
       {showDatePicker &&

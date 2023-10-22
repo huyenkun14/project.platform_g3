@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import httpClient from "../../httpClient";
 import { ENTRY } from "../../constants/api";
+import formdata from "../../httpClient/formData";
 
 export const getAllEntryAction = createAsyncThunk(
     'entry/getAllEntryAction',
@@ -13,7 +14,7 @@ export const getAllEntryAction = createAsyncThunk(
 export const getEntryByMonthAction = createAsyncThunk(
     'entry/getEntryByMonthAction',
     async (month: string) => {
-        const res = await httpClient.get(`${ENTRY.GET_BY_MONTH}?monthAndYear=${month}`)
+        const res = await httpClient.get(`${ENTRY.GET_ALL}?monthAndYear=${month}`)
         return res.data
     }
 )
@@ -29,7 +30,7 @@ export const getEntryByIdAction = createAsyncThunk(
 export const createEntryAction = createAsyncThunk(
     'entry/createEntryAction',
     async (payload: {}) => {
-        const res = await httpClient.post(ENTRY.CREATE, payload)
+        const res = await formdata.post(ENTRY.CREATE, payload)
         return res.data
     }
 )
@@ -37,7 +38,7 @@ export const createEntryAction = createAsyncThunk(
 export const updateEntryAction = createAsyncThunk(
     'entry/updateEntryAction',
     async (data: {}) => {
-        const res = await httpClient.put(ENTRY.UPDATE, data)
+        const res = await formdata.put(ENTRY.UPDATE, data)
         return res.data
     }
 )

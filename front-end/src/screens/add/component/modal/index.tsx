@@ -8,12 +8,13 @@ import AddNewClassify from '../../../../components/addNewClassify';
 import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createEntryAction } from '../../../../services/entry/actions';
+import moment from 'moment';
 
 const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
   const [infoEntry, setInfoEntry] = useState({
-    time: String(date.toLocaleDateString()),
+    time: moment(date).format("DD-MM-YYYY"),
     title: '',
     note: '',
     money: '',
@@ -30,25 +31,24 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
       .then(res => {
-        const convertListClassify = res?.payload.filter(item => item?.value === isIncome).map((item, index) => ({ label: item.title, value: item.categoryId }))
+        const convertListClassify = res?.payload?.filter(item => item?.value === isIncome).map((item, index) => ({ label: item.title, value: item.categoryId }))
         setListClassify(convertListClassify)
         console.log(res, 'listClassify')
       })
       .catch(err => console.log('err', err))
   }
   const handleCreateEntry = () => {
-    dispatch(createEntryAction({
-      categoryId: classifyValue,
-      amount: infoEntry.money,
-      // image: null,
-      date: infoEntry.time,
-      description: infoEntry.note
-    }))
+    const data = new FormData()
+    data.append('categoryId', classifyValue)
+    data.append('amount', infoEntry.money)
+    data.append('date', infoEntry.time)
+    data.append('description', infoEntry.note)
+    dispatch(createEntryAction(data))
       .then(res => {
         console.log(res)
-        if (res.payload) {
+        if (res?.payload) {
           setInfoEntry({
-            time: String(date.toLocaleDateString()),
+            time: moment(date).format("DD-MM-YYYY"),
             title: '',
             note: '',
             money: '',
@@ -74,7 +74,7 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
     setDate(currentDate);
-    setInfoEntry({ ...infoEntry, time: String(currentDate.toLocaleDateString()) })
+    setInfoEntry({ ...infoEntry, time: moment(date).format("DD-MM-YYYY") })
   };
 
   return (
