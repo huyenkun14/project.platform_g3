@@ -3,14 +3,18 @@ import React, { useState } from 'react'
 import { styles } from './styles'
 import { useDispatch } from 'react-redux'
 import { createClassifyAction } from '../../services/classify/actions'
+import { createBudgetAction } from '../../services/budget/actions'
+import Checkbox from 'expo-checkbox';
 
-const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
+const AddNewClassify = ({ modalVisible, setModalVisible }) => {
     const dispatch = useDispatch<any>()
+    const [isIncomeChecked, setIncomeChecked] = useState(false);
+    const [isExpenseChecked, setExpenseChecked] = useState(false);
+
     const [infoClassify, setInfoClassify] = useState({
         title: '',
         image: '',
-        budget: '',
-        value: isIncomeStatus,
+        value: false
     })
     const onChangeInfoClassify = (name) => {
         return (value: any) => {
@@ -20,16 +24,17 @@ const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
     }
     const handleCreateClassify = () => {
         dispatch(createClassifyAction({
-          title: infoClassify.title,
-          value: infoClassify.value
+            title: infoClassify.title,
+            value: infoClassify.value
         }))
-          .then(res => {
-            console.log(res)
-            ToastAndroid.show('Thêm danh mục thành công',ToastAndroid.SHORT)
-            setModalVisible(false)
-          })
-          .catch(err => console.log('err', err))
-      }
+            .then(res => {
+                console.log(res)
+                ToastAndroid.show('Thêm danh mục thành công', ToastAndroid.SHORT)
+                setModalVisible(false)
+            })
+            .catch(err => console.log('err', err))
+    }
+
     return (
         <View>
             <Modal
@@ -58,18 +63,26 @@ const AddNewClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
                                 placeholder='Nhập tên danh mục'
                             />
                         </View>
-                        {isIncomeStatus && <>
-                            <Text style={styles.inputLabel}>Ngân sách</Text>
-                            <View style={styles.shadow}>
-                                <TextInput
-                                    value={infoClassify.budget}
-                                    onChangeText={onChangeInfoClassify('budget')}
-                                    style={styles.input}
-                                    placeholder='Nhập ngân sách cho danh mục'
+                        <View style={styles.checkboxContainer}>
+                            <View style={styles.checkboxView}>
+                                <Checkbox
+                                    style={styles.checkbox}
+                                    value={isIncomeChecked}
+                                    onValueChange={onChangeInfoClassify('value')}
+                                    color={isIncomeChecked ? '#4630EB' : undefined}
                                 />
+                                <Text>Thu nhập</Text>
                             </View>
-                        </>
-                        }
+                            <View style={styles.checkboxView}>
+                                <Checkbox
+                                    style={styles.checkbox}
+                                    value={isExpenseChecked}
+                                    onValueChange={onChangeInfoClassify('value')}
+                                    color={isExpenseChecked ? '#4630EB' : undefined}
+                                />
+                                <Text>Chi tiêu</Text>
+                            </View>
+                        </View>
                         <TouchableOpacity>
                             <View style={styles.addImage}>
                                 <Image

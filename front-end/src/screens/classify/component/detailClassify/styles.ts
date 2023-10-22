@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from "../../theme";
+import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from "../../../../theme";
 
 export const styles = StyleSheet.create({
     modalContainer: {
@@ -53,19 +53,6 @@ export const styles = StyleSheet.create({
         overflow: 'hidden',
         backgroundColor: defaultColors.backgroundColor,
     },
-    checkboxContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 30,
-        paddingHorizontal: 30
-    },
-    checkboxView:{
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    checkbox: {
-        marginRight: 8,
-    },
     addImage: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -79,7 +66,7 @@ export const styles = StyleSheet.create({
     addImageIcon: {
         height: 25,
         width: 25,
-        resizeMode: 'contain',
+        resizeMode:'contain',
     },
     addImageText: {
         marginLeft: 10,

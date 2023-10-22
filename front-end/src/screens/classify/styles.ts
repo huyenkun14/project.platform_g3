@@ -36,19 +36,28 @@ export const styles = StyleSheet.create({
     },
     searchContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginHorizontal: 25,
     },
     searchView: {
         height: 50,
-        width: SCREEN_WIDTH*0.5
+        width: SCREEN_WIDTH*0.6,
+        justifyContent: 'center',
+        borderRadius: 10,
+        borderColor: defaultColors.borderColor,
+        borderWidth: 1,
+        paddingHorizontal: 10,
     },
     searchInput: {
 
     },
     searchImageView: {
-        width: SCREEN_WIDTH*0.3,
+        width: SCREEN_WIDTH*0.2,
         backgroundColor: defaultColors.flatListItem,
         height: 50,
+        justifyContent: 'center',
+        borderRadius: 10,
+        alignItems: 'center',
     },
     searchImage:{
         height: 25,

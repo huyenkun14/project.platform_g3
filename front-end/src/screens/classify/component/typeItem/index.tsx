@@ -5,12 +5,12 @@ import { SCREEN_WIDTH } from '../../../../theme'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 const TypeItem = (props) => {
-    const { title, status, budget, current } = props
+    const { title, status, budget, current, openDetailClassify } = props
     const rangeWidth = SCREEN_WIDTH / 2
     const itemWidth = (Number(current) / Number(budget)) * rangeWidth
 
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={openDetailClassify}>
             <View style={styles.container}>
                 <View style={styles.typeContainer}>
                     <View style={styles.image} />

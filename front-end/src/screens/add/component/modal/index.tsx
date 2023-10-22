@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createEntryAction } from '../../../../services/entry/actions';
 
-const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) => {
+const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
   const [infoEntry, setInfoEntry] = useState({
@@ -26,12 +26,13 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) =
   const [listOpen, setListOpen] = useState(false);
   useEffect(() => {
     getListClassify()
-  }, [])
+  }, [listClassifyOpen])
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
       .then(res => {
-        const convertListClassify = res?.payload.map((item, index) => ({ label: item.title, value: item.id }))
+        const convertListClassify = res?.payload.filter(item => item?.value === isIncome).map((item, index) => ({ label: item.title, value: item.categoryId }))
         setListClassify(convertListClassify)
+        console.log(res, 'listClassify')
       })
       .catch(err => console.log('err', err))
   }
@@ -39,19 +40,24 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) =
     dispatch(createEntryAction({
       categoryId: classifyValue,
       amount: infoEntry.money,
+      // image: null,
       date: infoEntry.time,
       description: infoEntry.note
     }))
       .then(res => {
         console.log(res)
-        setInfoEntry({
-          time: String(date.toLocaleDateString()),
-          title: '',
-          note: '',
-          money: '',
-        })
-        ToastAndroid.show('Thêm giao dịch thành công', ToastAndroid.SHORT)
-        setModalVisible(false)
+        if (res.payload) {
+          setInfoEntry({
+            time: String(date.toLocaleDateString()),
+            title: '',
+            note: '',
+            money: '',
+          })
+          ToastAndroid.show('Thêm giao dịch thành công', ToastAndroid.SHORT)
+          setModalVisible(false)
+        } else {
+          ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
+        }
       })
       .catch(err => console.log('err', err))
   }
@@ -186,7 +192,6 @@ const AddNewEntry = ({ isIncomeStatus, title, modalVisible, setModalVisible }) =
         </View>
       </Modal>
       <AddNewClassify
-        isIncomeStatus={isIncomeStatus}
         modalVisible={addNewClassifyOpen}
         setModalVisible={setAddNewClassifyOpen}
       />

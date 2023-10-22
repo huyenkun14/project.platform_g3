@@ -1,16 +1,73 @@
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import { LineChart, PieChart } from "react-native-chart-kit";
 import { chartDataExpense, chartDataIncome } from '../../mock/chart';
 import Header from '../../components/header';
 import { SCREEN_WIDTH, defaultColors } from '../../theme';
+import { useDispatch } from 'react-redux';
+import moment from 'moment';
+import { getEntryByMonthAction } from '../../services/entry/actions';
+import DatePicker from '@react-native-community/datetimepicker';
 
 const Chart = () => {
-
   const [chartType, setChartType] = useState('1')
+  const [isShowDetail, setIsshowDetail] = useState(false)
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [date, setDate] = useState<Date>(new Date());
+  const dispatch = useDispatch<any>()
+  const [listEntry, setListEntry] = useState([])
+  const onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(false);
+    setDate(currentDate);
+  };
+  useEffect(() => {
+    getListEntry()
+  }, [date]);
+  const getListEntry = () => {
+    const month = moment(date).format("MM-YYYY")
+    dispatch(getEntryByMonthAction(month))
+      .then(res => {
+        console.log(res)
+        const converListEntry = res?.payload.slice(-3)
+        setListEntry(converListEntry)
+      })
+      .catch(err => console.log('err', err))
+  }
 
-  const chartConfig = {
+  var floor = Math.floor, abs = Math.abs, log = Math.log, round = Math.round, min = Math.min;
+  var abbrev = ['k', 'M', 'B']; // abbreviations in steps of 1000x; extensible if need to edit
+
+  function rnd(n, precision) {
+    var prec = 10 ** precision;
+    return round(n * prec) / prec;
+  }
+
+  function format(n) {
+    var base = floor(log(abs(n)) / log(1000));
+    var suffix = abbrev[min(abbrev.length - 1, base - 1)];
+    base = abbrev.indexOf(suffix) + 1;
+    return suffix ? rnd(n / 1000 ** base, 2) + suffix : '' + n;
+  }
+  const lineChartConfig = {
+    backgroundColor: "blue",
+    backgroundGradientFrom: "#0083b0",
+    backgroundGradientTo: "#00b4db",
+    decimalPlaces: 2, // optional, defaults to 2dp
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    style: {
+      borderRadius: 10,
+      paddingTop: 20,
+    },
+    propsForDots: {
+      r: "1",
+      strokeWidth: "1",
+      stroke: "#fff"
+    }
+  }
+  const pieChartConfig = {
     backgroundGradientFrom: "#1E2923",
     backgroundGradientFromOpacity: 0,
     backgroundGradientTo: "#08130D",
@@ -20,100 +77,178 @@ const Chart = () => {
     barPercentage: 0.5,
     useShadowColorFromDataset: false // optional
   };
-
+  const renderDate = () => {
+    return (
+      <View>
+        <View style={styles.timeContainer}>
+          <TouchableOpacity
+            style={styles.timeIconView}
+            onPress={() => { setShowDatePicker(true) }}
+          >
+            <Image
+              style={styles.timeIcon}
+              source={require('../../../assets/images/icon/ic_calendar.png')}
+            />
+          </TouchableOpacity>
+          <Text style={styles.timeText}>{moment(date).format("MM-YYYY")}</Text>
+        </View>
+        {showDatePicker &&
+          <DatePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onChangeDate}
+          />
+        }
+      </View>
+    )
+  }
   const renderChart = () => {
     switch (chartType) {
       case '1':
         return (
           <View>
-            <LineChart
-              data={{
-                labels: ["January", "February", "March", "April", "May", "June", "Junly"],
-                datasets: [
-                  {
-                    data: [
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                    ]
-                  },
-                  {
-                    data: [
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                    ]
-                  }
-                ]
-              }}
-              width={SCREEN_WIDTH}
-              height={220}
-              yAxisLabel="$"
-              yAxisSuffix="k"
-              yAxisInterval={1} // optional, defaults to 1
-              chartConfig={{
-                backgroundColor: "#e26a00",
-                backgroundGradientFrom: "#fb8c00",
-                backgroundGradientTo: "#ffa726",
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 16
-                },
-                propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
-                  stroke: "#ffa726"
-                }
-              }}
-              bezier
+            <View
               style={{
-                marginVertical: 8,
-                borderRadius: 16
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-            />
+            >
+              <LineChart
+                data={{
+                  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                  datasets: [
+                    {
+                      data: [5200000, 5000000, 5500000, 6000000, 5800000, 5000000, 5200000, 5100000, 5400000, 6000000, 4900000, 5000000,],
+                      strokeWidth: 2,
+                      color: (opacity = 1) => 'green',
+                    },
+                    {
+                      data: [4000000, 4500000, 3900000, 5000000, 6100000, 4000000, 4300000, 5200000, 5000000, 5600000, 6500000, 4100000,],
+                      strokeWidth: 2,
+                      color: (opacity = 1) => 'orange',
+                    }
+                  ]
+                }}
+                width={SCREEN_WIDTH - 30}
+                height={300}
+                // verticalLabelRotation={20}
+                yAxisInterval={1} // optional, defaults to 1
+                formatYLabel={(yLabelIterator) => format(yLabelIterator)}
+                chartConfig={lineChartConfig}
+                bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 16
+                }}
+              />
+            </View>
+            <View style={styles.lineChartNoteContainer}>
+              <View style={styles.lineChartNoteItem}>
+                <View style={[styles.lineChartNoteIcon, { backgroundColor: 'green' }]} />
+                <Text>Thu nhập</Text>
+              </View>
+              <View style={styles.lineChartNoteItem}>
+                <View style={[styles.lineChartNoteIcon, { backgroundColor: 'orange' }]} />
+                <Text>Chi tiêu</Text>
+              </View>
+            </View>
+            <TouchableOpacity onPress={() => { setIsshowDetail(!isShowDetail) }}>
+              <Text style={styles.detailButton}>Chi tiết</Text>
+            </TouchableOpacity>
+            {isShowDetail ? <View style={styles.detailContentContainer}>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+              <Text>Hehe</Text>
+            </View> : ''}
           </View>
         )
       case '2':
         return (
-          <View style={styles.ChartContainer}>
-            <PieChart
-              data={chartDataExpense}
-              width={SCREEN_WIDTH}
-              height={220}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-              style={{
-                flexDirection: 'column',
-              }}
-            // hasLegend={false}
-            />
-            {/* <View style={styles.pieChartCircle} /> */}
+          <View>
+            {renderDate()}
+            {listEntry.length > 0 ? <View>
+              <View style={styles.ChartContainer}>
+                <PieChart
+                  data={chartDataExpense}
+                  width={SCREEN_WIDTH}
+                  height={220}
+                  chartConfig={pieChartConfig}
+                  accessor={"population"}
+                  backgroundColor={"transparent"}
+                  paddingLeft={"15"}
+                  style={{
+                    flexDirection: 'column',
+                  }}
+                // hasLegend={false}
+                />
+                {/* <View style={styles.pieChartCircle} /> */}
+              </View>
+              <TouchableOpacity onPress={() => { setIsshowDetail(!isShowDetail) }}>
+                <Text style={styles.detailButton}>Chi tiết</Text>
+              </TouchableOpacity>
+              {isShowDetail ? <View style={styles.detailContentContainer}>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+                <Text>Hehe</Text>
+              </View> : ''}
+            </View> : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch trong {moment(date).format("MM-YYYY")}</Text>}
           </View>
+
         )
       case '3':
         return (
           <View>
-            <PieChart
-              data={chartDataIncome}
-              width={SCREEN_WIDTH}
-              height={220}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-            />
+            {renderDate()}
+            {listEntry.length > 0 ?
+              <View>
+                <View>
+                  <PieChart
+                    data={chartDataIncome}
+                    width={SCREEN_WIDTH}
+                    height={220}
+                    chartConfig={pieChartConfig}
+                    accessor={"population"}
+                    backgroundColor={"transparent"}
+                    paddingLeft={"15"}
+                  />
+                </View>
+                <TouchableOpacity onPress={() => { setIsshowDetail(!isShowDetail) }}>
+                  <Text style={styles.detailButton}>Chi tiết</Text>
+                </TouchableOpacity>
+                {isShowDetail ? <View style={styles.detailContentContainer}>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                  <Text>Hehe</Text>
+                </View> : ''}
+              </View> : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch trong {moment(date).format("MM-YYYY")}</Text>}
           </View>
         )
     }
@@ -121,20 +256,22 @@ const Chart = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title='Biểu đồ' />
-      {/* options */}
-      <View style={styles.option}>
-        <TouchableOpacity onPress={() => { setChartType('1') }}>
-          <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? defaultColors.flatListItem : '#d8d8d8' }]}>Tổng quan</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setChartType('2') }}>
-          <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? defaultColors.flatListItem : '#d8d8d8' }]}>Chi tiêu</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setChartType('3') }}>
-          <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? defaultColors.flatListItem : '#d8d8d8' }]}>Thu nhập</Text>
-        </TouchableOpacity>
-      </View>
-      {renderChart()}
+      <ScrollView>
+        <Header title='Biểu đồ' />
+        {/* options */}
+        <View style={styles.option}>
+          <TouchableOpacity onPress={() => { setChartType('1') }}>
+            <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? defaultColors.flatListItem : '#d8d8d8' }]}>Tổng quan</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { setChartType('2') }}>
+            <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? defaultColors.flatListItem : '#d8d8d8' }]}>Chi tiêu</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { setChartType('3') }}>
+            <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? defaultColors.flatListItem : '#d8d8d8' }]}>Thu nhập</Text>
+          </TouchableOpacity>
+        </View>
+        {renderChart()}
+      </ScrollView>
     </SafeAreaView>
   )
 }
