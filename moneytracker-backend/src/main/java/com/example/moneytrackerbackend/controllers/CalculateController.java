@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertCategory;
 
@@ -67,6 +68,7 @@ public class CalculateController {
         List<AmountOfCategory> dataOfCategories = new ArrayList<>();
         for (Category category:categories){
             AmountOfCategory dataOfCategory = new AmountOfCategory();
+            dataOfCategory.setColor(randomColor());
             dataOfCategory.setCategory(convertCategory(category));
             dataOfCategory.setTotalAmount(transactionService.getSumAmountByCategory(category.getId(), monthAndYear));
             dataOfCategories.add(dataOfCategory);
@@ -74,5 +76,11 @@ public class CalculateController {
 
         return ResponseEntity.ok(dataOfCategories);
     }
-
+    public String randomColor() {
+        Random random = new Random();
+        int red = random.nextInt(256);
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+        return String.format("#%02x%02x%02x", red, green, blue);
+    }
 }
