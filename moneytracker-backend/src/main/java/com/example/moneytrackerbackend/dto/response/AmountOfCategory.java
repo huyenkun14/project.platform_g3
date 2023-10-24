@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AmountOfCategory {
+    private String color;
     private CategoryResponse category;
     private int totalAmount;
 }
