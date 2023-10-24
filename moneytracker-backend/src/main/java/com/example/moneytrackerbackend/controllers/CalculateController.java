@@ -57,13 +57,12 @@ public class CalculateController {
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/financial-summary/each-category")
-    public ResponseEntity<List<AmountOfCategory>> calculateForEachCategory(@RequestParam String value, @RequestParam String monthAndYear, Principal principal){
+    public ResponseEntity<List<AmountOfCategory>> calculateForEachCategory(@RequestParam boolean value, @RequestParam String monthAndYear, Principal principal){
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
         Long userId = userDetails.getId();
-        boolean b = Boolean.getBoolean(value);
-        List<Category> categories = categoryService.getAllByValue(b, userId);
+        List<Category> categories = categoryService.getAllByValue(value, userId);
 
         List<AmountOfCategory> dataOfCategories = new ArrayList<>();
         for (Category category:categories){

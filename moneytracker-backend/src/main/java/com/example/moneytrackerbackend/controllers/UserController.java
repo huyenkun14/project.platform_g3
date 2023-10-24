@@ -134,7 +134,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("api/v1/user/update")
     public ResponseEntity<MessageResponse> updateUser(Principal principal,
-                                                   @RequestParam("avatar") MultipartFile avatar,
+                                                   @RequestParam(value = "avatar", required = false) MultipartFile avatar,
                                                    @RequestParam("username") String username,
                                                    @RequestParam("password") String password,
                                                    @RequestParam("email") String email,
@@ -150,12 +150,13 @@ public class UserController {
             }
             user.setEmail(email);
         }
-
-        Long imgId= imageService.saveUploadedFile(avatar);
-        if(user.getImageId()!=null){
-            imageService.deleteImage(user.getImageId());
+        if(!avatar.isEmpty()){
+            Long imgId= imageService.saveUploadedFile(avatar);
+            if(user.getImageId()!=null){
+                imageService.deleteImage(user.getImageId());
+            }
+            user.setImageId(imgId);
         }
-        user.setImageId(imgId);
 
         user.setPassword(encoder.encode(password));
         user.setUsername(username);
