@@ -150,7 +150,7 @@ public class UserController {
             }
             user.setEmail(email);
         }
-        if(!avatar.isEmpty()){
+        if(avatar!=null){
             Long imgId= imageService.saveUploadedFile(avatar);
             if(user.getImageId()!=null){
                 imageService.deleteImage(user.getImageId());
