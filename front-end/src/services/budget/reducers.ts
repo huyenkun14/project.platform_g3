@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { createBudgetAction, getAllBudgetAction } from "./actions"
+import { createBudgetAction, getAllBudgetAction, getBudgetByMonthAction } from "./actions"
 
 interface IBudget {
     loading: boolean,
@@ -50,6 +50,25 @@ export const authSlice = createSlice({
               };
         })
         builder.addCase(getAllBudgetAction.rejected, (state) => {
+            return {
+                ...state,
+                loading: true,
+              };
+        })
+        builder.addCase(getBudgetByMonthAction.pending, (state) => {
+            return {
+                ...state,
+                loading: true,
+              };
+        })
+        builder.addCase(getBudgetByMonthAction.fulfilled, (state, action) => {
+            return {
+                ...state,
+                loading: false,
+                res: action.payload.data
+              };
+        })
+        builder.addCase(getBudgetByMonthAction.rejected, (state) => {
             return {
                 ...state,
                 loading: true,

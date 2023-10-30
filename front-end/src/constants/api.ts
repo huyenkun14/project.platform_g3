@@ -1,8 +1,13 @@
-export const BASE_URL = "http://192.168.10.104:3000/api"
+export const BASE_URL = "http://10.0.2.2:3000/api"
 
 export const AUTH = {
     REGISTER: "/auth/register",
     LOGIN: "/auth/login",
+}
+
+export const USER = {
+    GET: "/v1/user",
+    UPDATE: "/v1/user/update",
 }
 
 export const CLASSIFY = {

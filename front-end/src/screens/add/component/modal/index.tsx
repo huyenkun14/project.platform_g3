@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ToastAndroid } from 'react-native';
+import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ToastAndroid, KeyboardAvoidingView } from 'react-native';
 import { styles } from './styles';
 import DatePicker from '@react-native-community/datetimepicker';
-import Header from '../../../../components/header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AddNewClassify from '../../../../components/addNewClassify';
 import { useDispatch } from 'react-redux';
@@ -74,16 +73,17 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
     setDate(currentDate);
-    setInfoEntry({ ...infoEntry, time: moment(date).format("DD-MM-YYYY") })
+    setInfoEntry({ ...infoEntry, time: moment(currentDate).format("DD-MM-YYYY") })
   };
 
   return (
-    <View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-      >
+
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+    >
+      <KeyboardAvoidingView behavior={"padding"}>
         <View style={styles.modalContainer}>
           <Image
             style={styles.bg}
@@ -190,12 +190,12 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
             />
           }
         </View>
-      </Modal>
-      <AddNewClassify
-        modalVisible={addNewClassifyOpen}
-        setModalVisible={setAddNewClassifyOpen}
-      />
-    </View>
+        <AddNewClassify
+          modalVisible={addNewClassifyOpen}
+          setModalVisible={setAddNewClassifyOpen}
+        />
+      </KeyboardAvoidingView>
+    </Modal>
   )
 }
 export default AddNewEntry;

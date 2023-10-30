@@ -9,6 +9,8 @@ import Login from '../screens/auth/login';
 import Register from '../screens/auth/register';
 import { NAVIGATION_TITLE } from '../constants/navigation';
 import Account from '../screens/account';
+import Budget from '../screens/budget';
+import InfoUser from '../screens/infoUser';
 
 const Stack = () => {
     const Stack = createNativeStackNavigator();
@@ -19,7 +21,8 @@ const Stack = () => {
             <Stack.Screen name={NAVIGATION_TITLE.LOGIN} component={Login} />
             <Stack.Screen name={NAVIGATION_TITLE.REGISTER} component={Register} />
             <Stack.Screen name={NAVIGATION_TITLE.ACCOUNT} component={Account} />
-            
+            <Stack.Screen name={NAVIGATION_TITLE.BUDGET} component={Budget} />
+            <Stack.Screen name={NAVIGATION_TITLE.INFO_USER} component={InfoUser} />
         </Stack.Navigator>
     )
 }

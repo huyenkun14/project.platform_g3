@@ -65,6 +65,16 @@ export const styles = StyleSheet.create({
         height: 2,
         marginRight: 10,
     },
+    ChartTable: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: "center",
+        paddingVertical: 15,
+        paddingHorizontal: 15,
+        marginHorizontal: 15,
+        borderColor: defaultColors.borderColor,
+        borderBottomWidth: 1,
+    },
     ChartContainer: {
         position: 'relative'
     },
@@ -78,11 +88,12 @@ export const styles = StyleSheet.create({
     detailButton: {
         textAlign: 'center',
         width: 100,
-        color: '#fff',
+        color: defaultColors.text_1,
+        fontSize: 18,
         paddingVertical: 10,
-        borderRadius: 10,
+        marginVertical: 10,
         alignSelf: 'center',
-        backgroundColor: defaultColors.tabActive,
+        textDecorationLine: 'underline'
     },
     detailContentContainer: {
         paddingHorizontal: 15,
