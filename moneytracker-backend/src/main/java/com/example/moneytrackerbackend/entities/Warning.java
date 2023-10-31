@@ -1,16 +1,16 @@
 package com.example.moneytrackerbackend.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table
 public class Warning {
     @Id
@@ -19,8 +19,6 @@ public class Warning {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-    private String content;
+    private String message;
+    private LocalDateTime date;
 }
