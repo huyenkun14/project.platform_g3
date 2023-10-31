@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     backgroundColor: defaultColors.borderColor,
     paddingVertical: 20,
     position: 'relative',
+    minHeight:SCREEN_HEIGHT
   },
   logo: {
     height: 120,

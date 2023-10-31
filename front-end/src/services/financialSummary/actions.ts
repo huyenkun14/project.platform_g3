@@ -5,8 +5,8 @@ import formdata from "../../httpClient/formData";
 
 export const getFinancialYearlyAction = createAsyncThunk(
     'financial/getFinancialYearlyAction',
-    async () => {
-        const res = await httpClient.get(`${CHART.YEARLY}?year=2023`)
+    async (year: String) => {
+        const res = await httpClient.get(`${CHART.YEARLY}?year=${year}`)
         return res.data
     }
 )

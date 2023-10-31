@@ -11,29 +11,20 @@ import { getItemObjectAsyncStorage } from '../../../utils/asyncStorage'
 import { KEY_STORAGE } from '../../constants/storage'
 import { useDispatch } from 'react-redux'
 import { getAllEntryAction } from '../../services/entry/actions'
+import { getInfoUserAction } from '../../services/user/actions'
 
 const Home = () => {
   const dispatch = useDispatch<any>()
   const [listEntry, setListEntry] = useState([])
-
-  useEffect(() => {
-    getUserInfoSaved();
-    getListEntry()
-  }, []);
-
-  const getUserInfoSaved = async () => {
-    const userInfo = await getItemObjectAsyncStorage(KEY_STORAGE.SAVED_INFO);
-    console.log('user info', userInfo);
-  };
-  const getListEntry = () => {
-    dispatch(getAllEntryAction())
-      .then(res => {
-        console.log(res)
-        const converListEntry = res?.payload.slice(-3)
-        setListEntry(converListEntry)
-      })
-      .catch(err => console.log('err', err))
-  }
+  const [infoUser, setInfoUser] = useState({
+    id: "",
+    email: "",
+    phoneNumber: "",
+    totalIncomeMoney: "",
+    totalSpendingMoney: "",
+    urlImage: "",
+    username: ""
+  })
   const optionsData = [
     {
       id: 1,
@@ -48,7 +39,8 @@ const Home = () => {
     {
       id: 3,
       title: 'Ngân sách',
-      icon: require('../../../assets/images/icon/ic_coins.png')
+      icon: require('../../../assets/images/icon/ic_coins.png'),
+      router: NAVIGATION_TITLE.BUDGET
     },
     {
       id: 4,
@@ -67,6 +59,53 @@ const Home = () => {
       router: NAVIGATION_TITLE.ACCOUNT
     }
   ]
+  const overview = [
+    {
+      id: '1',
+      title: 'Tổng thu nhập',
+      money: infoUser?.totalIncomeMoney,
+      unit: 'VNĐ'
+    },
+    {
+      id: '2',
+      title: 'Tổng chi tiêu',
+      money: infoUser?.totalSpendingMoney,
+      unit: 'VNĐ'
+    },
+    {
+      id: '3',
+      title: 'Số dư',
+      money: Number(infoUser?.totalIncomeMoney) - Number(infoUser?.totalSpendingMoney),
+      unit: 'VNĐ'
+    },
+  ]
+  useEffect(() => {
+    getUserInfoSaved();
+    getListEntry()
+    getInfoUser()
+  }, []);
+
+  const getUserInfoSaved = async () => {
+    const userInfo = await getItemObjectAsyncStorage(KEY_STORAGE.SAVED_INFO);
+    console.log('user info', userInfo);
+  };
+  const getListEntry = () => {
+    dispatch(getAllEntryAction())
+      .then(res => {
+        console.log(res)
+        const converListEntry = res?.payload.slice(-3)
+        setListEntry(converListEntry)
+      })
+      .catch(err => console.log('err', err))
+  }
+  const getInfoUser = () => {
+    dispatch(getInfoUserAction())
+      .then(res => {
+        console.log(res, "info userrrrrrrr")
+        setInfoUser(res?.payload)
+      })
+      .catch(err => console.log('err', err))
+  }
   const renderOverviewList = ({ item }) => (
     <View style={styles.overviewItem}>
       <View>
@@ -119,7 +158,7 @@ const Home = () => {
         <Text style={styles.title}>Ads</Text>
         <Banner />
         {/* last entries */}
-        <View>
+        <View style={{ paddingBottom: 100 }}>
           <Text style={styles.title}>Gần đây</Text>
           {listEntry.length >= 1 ?
             listEntry.map((item, index) =>

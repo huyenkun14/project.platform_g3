@@ -25,18 +25,18 @@ const Account = () => {
                         <Text style={[styles.itemText]}>Trang chủ</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setUserInfoModal(true) }}>
+                <TouchableOpacity onPress={() => { navigation.navigate(NAVIGATION_TITLE.INFO_USER) }}>
                     <View style={styles.item}>
                         <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_info.png')} />
                         <Text style={[styles.itemText]}>Thông tin</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { }}>
+                {/* <TouchableOpacity onPress={() => { }}>
                     <View style={styles.item}>
                         <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_setting.png')} />
                         <Text style={[styles.itemText]}>Cài đặt</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity onPress={() => { }}>
                     <View style={styles.item}>
                         <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_comment.png')} />

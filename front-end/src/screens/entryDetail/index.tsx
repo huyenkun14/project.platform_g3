@@ -8,11 +8,11 @@ import { useDispatch } from 'react-redux';
 import { deleteEntryAction, getEntryByIdAction, updateEntryAction } from '../../services/entry/actions';
 import { IEntryInfo } from './type';
 import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit';
-import navigation from '../../navigation';
-// import navigation from '../../navigation';
+import { useNavigation } from '@react-navigation/native';
 
-const EntryDetail = ({ route, navigation }) => {
+const EntryDetail = ({ route }) => {
     const { entryId } = route.params
+    const navigation = useNavigation<any>()
     const dispatch = useDispatch<any>()
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -55,10 +55,10 @@ const EntryDetail = ({ route, navigation }) => {
     }
 
     const handleDelete = () => {
-        Alert.alert('Xóa thành công')
         dispatch(deleteEntryAction(entryId))
             .then(() => {
-                navigation.navigate('Add')
+                Alert.alert('Xóa thành công')
+                navigation.goBack()
             })
             .catch(err => {
                 console.log('Delete error', err);

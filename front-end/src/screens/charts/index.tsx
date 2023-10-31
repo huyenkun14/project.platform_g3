@@ -2,49 +2,39 @@ import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'r
 import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
 import { LineChart, PieChart } from "react-native-chart-kit";
-import { chartDataExpense, chartDataIncome } from '../../mock/chart';
 import Header from '../../components/header';
 import { SCREEN_WIDTH, defaultColors } from '../../theme';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
-import { getEntryByMonthAction } from '../../services/entry/actions';
 import DatePicker from '@react-native-community/datetimepicker';
 import { getFinancialValueAction, getFinancialYearlyAction } from '../../services/financialSummary/actions';
+import { formatMoney } from '../../../utils/formatMoney';
 
 const Chart = () => {
   const [chartType, setChartType] = useState('1')
   const [isShowDetail, setIsshowDetail] = useState(false)
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [date, setDate] = useState<Date>(new Date());
-  const dispatch = useDispatch<any>()
-  const [listEntry, setListEntry] = useState([])
   const [listFinancialYearly, setListFinancialYearly] = useState([])
-  const [listFinancialYearlMonth, setListFinancialYearlMonth] = useState([])
-  const [isIncome, setIsIncome] = useState(false)
+  const [listFinancialCategory, setListFinancialCategory] = useState([])
+  const [isIncome, setIsIncome] = useState<boolean>()
+  const dispatch = useDispatch<any>()
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
     setDate(currentDate);
   };
   useEffect(() => {
-    getListEntry()
     getFinancialList()
-    getFinancialValueList()
   }, [date]);
-  const getListEntry = () => {
-    const month = moment(date).format("MM-YYYY")
-    dispatch(getEntryByMonthAction(month))
-      .then(res => {
-        console.log(res)
-        const converListEntry = res?.payload.slice(-3)
-        setListEntry(converListEntry)
-      })
-      .catch(err => console.log('err', err))
-  }
+  useEffect(() => {
+    getFinancialValueList()
+  }, [date, isIncome])
+
   const getFinancialList = () => {
-    dispatch(getFinancialYearlyAction())
+    const year = moment(date).format("YYYY")
+    dispatch(getFinancialYearlyAction(year))
       .then(res => {
-        console.log(res, 'yearly')
         setListFinancialYearly(res?.payload)
       })
       .catch(err => console.log('erryearly', err))
@@ -53,29 +43,14 @@ const Chart = () => {
     const data = new FormData()
     data.append('value', String(isIncome))
     data.append('monthAndYear', moment(date).format("MM-YYYY"))
-    console.log(data, 'dataaaaaaaaaaaaaa')
     dispatch(getFinancialValueAction(data))
       .then(res => {
-        console.log(res, 'monthAndYear')
-        setListFinancialYearlMonth(res?.payload)
+        console.log(res, 'incomeeeeeeeeeeeeeeeee')
+        setListFinancialCategory(res?.payload)
       })
       .catch(err => console.log('monthAndYear', err))
   }
 
-  var floor = Math.floor, abs = Math.abs, log = Math.log, round = Math.round, min = Math.min;
-  var abbrev = ['k', 'M', 'B']; // abbreviations in steps of 1000x; extensible if need to edit
-
-  function rnd(n, precision) {
-    var prec = 10 ** precision;
-    return round(n * prec) / prec;
-  }
-
-  function format(n) {
-    var base = floor(log(abs(n)) / log(1000));
-    var suffix = abbrev[min(abbrev.length - 1, base - 1)];
-    base = abbrev.indexOf(suffix) + 1;
-    return suffix ? rnd(n / 1000 ** base, 2) + suffix : '' + n;
-  }
   const lineChartConfig = {
     backgroundColor: "blue",
     backgroundGradientFrom: "#0083b0",
@@ -132,14 +107,20 @@ const Chart = () => {
   const renderChart = () => {
     const listIncomeYearly = listFinancialYearly?.length > 0 ? [...listFinancialYearly]?.map(item => item.incomeMoney) : [0]
     const listExpenseYearly = listFinancialYearly?.length > 0 ? [...listFinancialYearly]?.map(item => item?.spendingMoney) : [0]
-    const dataPieChartIncome = listFinancialYearlMonth?.map(item=>({
+    const dataPieChartIncome = listFinancialCategory?.length > 0 ? [...listFinancialCategory]?.map(item => ({
       name: item?.category?.title,
       population: item?.totalAmount,
-      color: "rgba(131, 167, 234, 1)",
+      color: item?.color,
       legendFontColor: "#7F7F7F",
       legendFontSize: 15
-    }))
-    console.log(dataPieChartIncome, 'dataPieeeeeeeeeeeeee')
+    })) : [0]
+    const dataPieChartExpense = listFinancialCategory?.length > 0 ? [...listFinancialCategory]?.map(item => ({
+      name: item?.category?.title,
+      population: item?.totalAmount,
+      color: item?.color,
+      legendFontColor: "#7F7F7F",
+      legendFontSize: 15
+    })) : [0]
     switch (chartType) {
       case '1':
         return (
@@ -155,13 +136,11 @@ const Chart = () => {
                   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                   datasets: [
                     {
-                      // data: [5200000, 5000000, 5500000, 6000000, 5800000, 5000000, 5200000, 5100000, 5400000, 6000000, 4900000, 5000000,],
                       data: listIncomeYearly,
                       strokeWidth: 2,
                       color: (opacity = 1) => 'green',
                     },
                     {
-                      // data: [4200000, 4000000, 4400000, 6000000, 4800000, 4000000, 4200000, 4100000, 4400000, 6000000, 4900000, 4000000,],
                       data: listExpenseYearly,
                       strokeWidth: 2,
                       color: (opacity = 1) => 'orange',
@@ -170,9 +149,8 @@ const Chart = () => {
                 }}
                 width={SCREEN_WIDTH - 30}
                 height={300}
-                // verticalLabelRotation={20}
-                yAxisInterval={1} // optional, defaults to 1
-                formatYLabel={(yLabelIterator) => format(yLabelIterator)}
+                yAxisInterval={1}
+                formatYLabel={(yLabelIterator) => formatMoney(yLabelIterator)}
                 chartConfig={lineChartConfig}
                 bezier
                 style={{
@@ -191,33 +169,31 @@ const Chart = () => {
                 <Text>Chi tiêu</Text>
               </View>
             </View>
-            <TouchableOpacity onPress={() => { setIsshowDetail(!isShowDetail) }}>
-              <Text style={styles.detailButton}>Chi tiết</Text>
-            </TouchableOpacity>
-            {isShowDetail ? <View style={styles.detailContentContainer}>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-              <Text>Hehe</Text>
-            </View> : ''}
+            <Text style={styles.detailButton}>Thống kê</Text>
+            <View style={styles.ChartTable}>
+              <Text style={{ fontSize: 16, fontWeight: '500' }}>Tháng</Text>
+              <Text style={{ fontSize: 16, fontWeight: '500' }}>Thu nhập</Text>
+              <Text style={{ fontSize: 16, fontWeight: '500' }}>Chi tiêu</Text>
+            </View>
+            <View style={{ paddingBottom: 100 }}>
+              {listFinancialYearly?.map((item, index) => (
+                <View style={styles.ChartTable} key={index}>
+                  <Text>{item?.month}</Text>
+                  <Text>{item?.incomeMoney}</Text>
+                  <Text>{item?.spendingMoney}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         )
       case '2':
         return (
           <View>
             {renderDate()}
-            {listEntry.length > 0 ? <View>
+            {listFinancialCategory?.length > 0 ? <View>
               <View style={styles.ChartContainer}>
                 <PieChart
-                  data={chartDataExpense}
+                  data={dataPieChartExpense}
                   width={SCREEN_WIDTH}
                   height={220}
                   chartConfig={pieChartConfig}
@@ -231,23 +207,19 @@ const Chart = () => {
                 />
                 {/* <View style={styles.pieChartCircle} /> */}
               </View>
-              <TouchableOpacity onPress={() => { setIsshowDetail(!isShowDetail) }}>
-                <Text style={styles.detailButton}>Chi tiết</Text>
-              </TouchableOpacity>
-              {isShowDetail ? <View style={styles.detailContentContainer}>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-                <Text>Hehe</Text>
-              </View> : ''}
+              <Text style={styles.detailButton}>Thống kê</Text>
+              <View style={styles.ChartTable}>
+                <Text style={{ fontSize: 16, fontWeight: '500' }}>Danh mục</Text>
+                <Text style={{ fontSize: 16, fontWeight: '500' }}>VNĐ</Text>
+              </View>
+              {
+                dataPieChartIncome?.map((item, index) => (
+                  <View style={[styles.ChartTable,{backgroundColor: item?.color}]} key={index}>
+                    <Text style={{color: "#fff"}}>{item?.name}</Text>
+                    <Text style={{color: "#fff"}}>{item?.population}</Text>
+                  </View>
+                ))
+              }
             </View> : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch trong {moment(date).format("MM-YYYY")}</Text>}
           </View>
 
@@ -256,7 +228,7 @@ const Chart = () => {
         return (
           <View>
             {renderDate()}
-            {listEntry.length > 0 ?
+            {listFinancialCategory?.length > 0 ?
               <View>
                 <View>
                   <PieChart
@@ -269,32 +241,29 @@ const Chart = () => {
                     paddingLeft={"15"}
                   />
                 </View>
-                <TouchableOpacity onPress={() => { setIsshowDetail(!isShowDetail) }}>
-                  <Text style={styles.detailButton}>Chi tiết</Text>
-                </TouchableOpacity>
-                {isShowDetail ? <View style={styles.detailContentContainer}>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                  <Text>Hehe</Text>
-                </View> : ''}
-              </View> : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch trong {moment(date).format("MM-YYYY")}</Text>}
+                <Text style={styles.detailButton}>Thống kê</Text>
+                <View style={styles.ChartTable}>
+                  <Text style={{ fontSize: 16, fontWeight: '500' }}>Danh mục</Text>
+                  <Text style={{ fontSize: 16, fontWeight: '500' }}>VNĐ</Text>
+                </View>
+                {
+                  dataPieChartIncome?.map((item, index) => (
+                    <View key={index} style={[styles.ChartTable,{backgroundColor: item?.color}]}>
+                      <Text style={{color: "#fff"}}>{item?.name}</Text>
+                      <Text style={{color: "#fff"}}>{item?.population}</Text>
+                    </View>
+                  ))
+                }
+              </View> : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch trong {moment(date).format("MM-YYYY")}</Text>
+            }
           </View>
         )
     }
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    <SafeAreaView>
+      <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:100}}>
         <Header title='Biểu đồ' />
         {/* options */}
         <View style={styles.option}>
