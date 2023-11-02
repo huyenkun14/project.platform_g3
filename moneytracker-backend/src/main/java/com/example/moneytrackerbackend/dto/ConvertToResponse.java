@@ -13,6 +13,7 @@ public class ConvertToResponse {
     public static CategoryResponse convertCategory(Category category) {
         return CategoryResponse.builder()
                 .categoryId(category.getId())
+                .iconId(category.getIconId())
                 .urlIcon("/icon?iconId=" + category.getIconId())
                 .title(category.getTitle())
                 .value(category.isValue())
