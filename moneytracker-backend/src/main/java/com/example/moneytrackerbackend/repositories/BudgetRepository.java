@@ -13,7 +13,7 @@ import java.util.List;
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
     @Query("SELECT b FROM Budget b WHERE b.category.id = :categoryId AND MONTH(b.startDate) = :month AND YEAR(b.startDate) = :year")
-    Budget findByCategoryId(@Param("CategoryId") Long categoryId,  @Param("month") int month, @Param("year") int year);
+    Budget findByCategoryId(@Param("categoryId") Long categoryId,  @Param("month") int month, @Param("year") int year);
     @Query("SELECT b FROM Budget b WHERE b.category.user.id = :userId")
     List<Budget> findAllByUserId(Long userId);
 
