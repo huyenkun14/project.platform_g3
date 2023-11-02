@@ -10,8 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static com.example.moneytrackerbackend.utils.TimeUtil.formatterDate;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class BudgetServiceImp implements BudgetService {
     private final BudgetRepository budgetRepository;
     private final CategoryRepository categoryRepository;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
 
     public Budget createBudget(BudgetRequest budgetRequest) {
 
@@ -28,8 +29,8 @@ public class BudgetServiceImp implements BudgetService {
 
         Budget budget = Budget.builder()
                 .category(category)
-                .startDate(LocalDate.parse(budgetRequest.getStartDate(), formatter))
-                .endDate(LocalDate.parse(budgetRequest.getEndDate(), formatter))
+                .startDate(formatterDate(budgetRequest.getStartDate()))
+                .endDate(formatterDate(budgetRequest.getEndDate()))
                 .amount(budgetRequest.getAmount())
                 .build();
         budget = budgetRepository.save(budget);
@@ -46,8 +47,8 @@ public class BudgetServiceImp implements BudgetService {
 
         budget.setCategory(category);
         budget.setAmount(budgetRequest.getAmount());
-        budget.setEndDate(LocalDate.parse(budgetRequest.getEndDate(),formatter));
-        budget.setStartDate(LocalDate.parse(budgetRequest.getStartDate(),formatter));
+        budget.setEndDate(formatterDate(budgetRequest.getEndDate()));
+        budget.setStartDate(formatterDate(budgetRequest.getStartDate()));
 
         budget = budgetRepository.save(budget);
 

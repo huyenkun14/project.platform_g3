@@ -23,7 +23,6 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertTrans
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/transaction/create")
     public ResponseEntity<TransactionResponse> createTransaction(@RequestParam Long categoryId,
@@ -41,6 +40,7 @@ public class TransactionController {
                 .build();
 
         Transaction transaction = transactionService.createTransaction(transactionRequest);
+
         return ResponseEntity.ok(convertTransaction(transaction));
     }
 
@@ -63,6 +63,7 @@ public class TransactionController {
                 .build();
 
         Transaction transaction = transactionService.updateTransaction(transactionRequest);
+
         return ResponseEntity.ok(convertTransaction(transaction));
     }
 
