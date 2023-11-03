@@ -12,10 +12,13 @@ import { KEY_STORAGE } from '../../constants/storage'
 import { useDispatch } from 'react-redux'
 import { getAllEntryAction } from '../../services/entry/actions'
 import { getInfoUserAction } from '../../services/user/actions'
+import Loading from '../../../utils/loading/Loading'
+import { formatMoneyNotVND } from '../../../utils/formatMoney'
 
 const Home = () => {
   const dispatch = useDispatch<any>()
   const [listEntry, setListEntry] = useState([])
+  const [loading, setLoading] = useState<boolean>(false)
   const [infoUser, setInfoUser] = useState({
     id: "",
     email: "",
@@ -63,19 +66,19 @@ const Home = () => {
     {
       id: '1',
       title: 'Tổng thu nhập',
-      money: infoUser?.totalIncomeMoney,
+      money: formatMoneyNotVND(Number(infoUser?.totalIncomeMoney)),
       unit: 'VNĐ'
     },
     {
       id: '2',
       title: 'Tổng chi tiêu',
-      money: infoUser?.totalSpendingMoney,
+      money: formatMoneyNotVND(Number(infoUser?.totalSpendingMoney)),
       unit: 'VNĐ'
     },
     {
       id: '3',
       title: 'Số dư',
-      money: Number(infoUser?.totalIncomeMoney) - Number(infoUser?.totalSpendingMoney),
+      money: formatMoneyNotVND(Number(Number(infoUser?.totalIncomeMoney) - Number(infoUser?.totalSpendingMoney))),
       unit: 'VNĐ'
     },
   ]
@@ -90,21 +93,30 @@ const Home = () => {
     console.log('user info', userInfo);
   };
   const getListEntry = () => {
+    setLoading(true)
     dispatch(getAllEntryAction())
       .then(res => {
+        setLoading(false)
         console.log(res)
         const converListEntry = res?.payload.slice(-3)
         setListEntry(converListEntry)
       })
-      .catch(err => console.log('err', err))
+      .catch(err => {
+        setLoading(false)
+        console.log('err', err)
+      })
   }
   const getInfoUser = () => {
+    setLoading(true)
     dispatch(getInfoUserAction())
       .then(res => {
-        console.log(res, "info userrrrrrrr")
+        setLoading(false)
         setInfoUser(res?.payload)
       })
-      .catch(err => console.log('err', err))
+      .catch(err => {
+        setLoading(false)
+        console.log('err', err)
+      })
   }
   const renderOverviewList = ({ item }) => (
     <View style={styles.overviewItem}>
@@ -117,7 +129,7 @@ const Home = () => {
       </View>
       <View>
         <Text style={styles.overviewItemUnit}>{item.unit}</Text>
-        <Text style={styles.overviewItemMoney}>{Number(item.money).toLocaleString('en')}</Text>
+        <Text style={styles.overviewItemMoney}>{item.money}</Text>
       </View>
     </View>
   )
@@ -175,6 +187,7 @@ const Home = () => {
           }
         </View>
       </ScrollView>
+      <Loading visiable={loading} />
     </SafeAreaView>
   )
 }

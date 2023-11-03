@@ -1,80 +1,146 @@
-import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid } from 'react-native'
-import React, { useState } from 'react'
-import { styles } from './styles'
-import { useDispatch } from 'react-redux'
-import { createClassifyAction } from '../../../../services/classify/actions'
-import { createBudgetAction } from '../../../../services/budget/actions'
+import {
+  View,
+  Text,
+  Modal,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  ScrollView,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { styles } from "./styles";
+import { useDispatch } from "react-redux";
+import { createClassifyAction } from "../../../../services/classify/actions";
+import { createBudgetAction } from "../../../../services/budget/actions";
+import { defaultColors } from "../../../../theme";
+import DropDownPicker from "react-native-dropdown-picker";
+import { BASE_URL } from "../../../../constants/api";
+import { deleteCategory, updateCategory } from "../../../../services/classify";
 
-const DetailClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
-    const dispatch = useDispatch<any>()
-    const [infoClassify, setInfoClassify] = useState({
-        title: '',
-        image: '',
-        budget: '',
-        value: isIncomeStatus,
-    })
-    const onChangeInfoClassify = (name) => {
-        return (value: any) => {
-            setInfoClassify({ ...infoClassify, [name]: value })
-            console.log('infoClassify', infoClassify)
+interface Iprops {
+  modalVisible?: boolean;
+  setModalVisible?: (value?: boolean) => void;
+  item?: any;
+  listIcon?: { id: number; url: string }[];
+  setLoading?: (value?: boolean) => void;
+  handleGetlist?: () => void
+}
+
+const DetailClassify = (props: Iprops) => {
+  const { modalVisible, setModalVisible, item, listIcon, setLoading, handleGetlist } = props;
+  const dispatch = useDispatch<any>();
+  const [value, setValue] = useState<any>(item?.value);
+  const [infoClassify, setInfoClassify] = useState({
+    title: item?.title
+  });
+  const [iconCurrent, setIconCurrent] = useState<number>(item?.iconId);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setInfoClassify({ title: item?.title });
+    setValue(item?.value);
+    setIconCurrent(item?.iconId);
+    setOpen(false);
+  }, [item]);
+  const [items, setItems] = useState([
+    { label: "Thu nhập", value: true },
+    { label: "Chi tiêu", value: false },
+  ]);
+
+  const onChangeInfoClassify = (name) => {
+    return (value: any) => {
+      setInfoClassify({ ...infoClassify, [name]: value });
+      console.log("infoClassify", infoClassify);
+    };
+  };
+
+  const handleUpdateCategory = async() => {
+    setLoading(true)
+    const res = await updateCategory(
+        {
+            categoryId: item?.categoryId, 
+            iconId: iconCurrent,
+            title: infoClassify.title,
+            value: value,
         }
+        )
+    setLoading(false)
+    if (res?.status === 200) {
+        setModalVisible(false)
+        handleGetlist?.()
+        ToastAndroid.show("Sửa danh mục thành công", ToastAndroid.SHORT)
     }
-    // const handleCreateClassify = () => {
-    //     dispatch(createClassifyAction({
-    //         title: infoClassify.title,
-    //         value: infoClassify.value
-    //     }))
-    //         .then(res => {
-    //             console.log(res)
-    //             ToastAndroid.show('Thêm danh mục thành công', ToastAndroid.SHORT)
-    //             setModalVisible(false)
-    //         })
-    //         .catch(err => console.log('err', err))
-    // }
-    // const handleCreateBudget = () => {
-    //     let date_today = new Date()
-    //     let firstDay = new Date(date_today.getFullYear(), date_today.getMonth(), 1);
-    //     let lastDay = new Date(date_today.getFullYear(), date_today.getMonth() + 1, 0);
-    //     dispatch(createBudgetAction({
-    //         title: infoClassify.title,
-    //         value: infoClassify.value
-    //     }))
-    //         .then(res => {
-    //             console.log(res)
-    //             ToastAndroid.show('Thêm danh mục thành công', ToastAndroid.SHORT)
-    //             setModalVisible(false)
-    //         })
-    //         .catch(err => console.log('err', err))
-    // }
-    return (
-        <View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
+    else {
+        setModalVisible(false)
+        ToastAndroid.show("Sửa danh mục không thành công", ToastAndroid.SHORT)
+    }
+  }
+
+  const handleDeleteCategory = async (id: number) => {
+    setLoading(true)
+    const res = await deleteCategory(id)
+    setLoading(false)
+    if (res?.status === 200) {
+      setModalVisible(false)
+      handleGetlist?.()
+      ToastAndroid.show("Xóa danh mục thành công", ToastAndroid.SHORT)
+    }
+    else {
+      setModalVisible(false)
+      handleGetlist?.()
+      ToastAndroid.show("Xóa danh mục không thành công", ToastAndroid.SHORT)
+    }
+  } 
+  return (
+    <View>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalInner}>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(false);
+              }}
+              style={{ position: "absolute", top: 20, right: 20, padding: 10 }}
             >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalInner}>
-                        <View style={styles.headerContainer}>
-                            <View style={styles.empty} />
-                            <Text style={styles.title}>Chi tiết danh mục</Text>
-                            <TouchableOpacity onPress={() => { setModalVisible(false) }}>
-                                <Image
-                                    source={require('../../../../../assets/images/icon/ic_close.png')}
-                                    style={styles.closeIcon}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <Text style={styles.inputLabel}>Tên</Text>
-                        <View style={styles.shadow}>
-                            <TextInput
-                                value={infoClassify.title}
-                                onChangeText={onChangeInfoClassify('title')}
-                                style={styles.input}
-                                placeholder='Nhập tên danh mục'
-                            />
-                        </View>
-                        {isIncomeStatus && <View>
+              <Image
+                source={require("../../../../../assets/images/icon/ic_close.png")}
+                style={styles.closeIcon}
+              />
+            </TouchableOpacity>
+            <View
+              style={[
+                styles.headerContainer,
+                { alignItems: "center", justifyContent: "center" },
+              ]}
+            >
+              {/* <View style={styles.empty} /> */}
+              <Text style={styles.title}>Chi tiết danh mục</Text>
+            </View>
+            <Text style={styles.inputLabel}>Tên</Text>
+            <View style={styles.shadow}>
+              <TextInput
+                value={infoClassify.title}
+                onChangeText={onChangeInfoClassify("title")}
+                style={styles.input}
+                placeholder="Nhập tên danh mục"
+              />
+            </View>
+            <Text style={styles.inputLabel}>Loại tiền</Text>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              style={{ borderWidth: 1, borderColor: defaultColors.borderColor }}
+              customItemContainerStyle={{
+                borderWidth: 0,
+                backgroundColor: "red",
+              }}
+            />
+            {/* {isIncomeStatus && <View>
                             <Text style={styles.inputLabel}>Ngân sách</Text>
                             <View style={styles.shadow}>
                                 <TextInput
@@ -85,27 +151,103 @@ const DetailClassify = ({ modalVisible, setModalVisible, isIncomeStatus }) => {
                                 />
                             </View>
                         </View>
-                        }
-                        <TouchableOpacity>
-                            <View style={styles.addImage}>
-                                <Image
-                                    source={require('../../../../../assets/images/icon/ic_camera.png')}
-                                    style={styles.addImageIcon}
-                                />
-                                <Text style={styles.addImageText}>Chọn ảnh</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { }}>
-                            <Text style={styles.button}>Chỉnh sửa danh mục</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => { }}>
-                            <Text style={styles.button}>Xóa danh mục</Text>
-                        </TouchableOpacity>
-                    </View>
+                        } */}
+            <Text style={styles.inputLabel}>Icon</Text>
+            <View style={styles.addImage}>
+              {/* <Image
+                                source={require('../../../../../assets/images/icon/ic_camera.png')}
+                                style={styles.addImageIcon}
+                            />
+                            <Text style={styles.addImageText}>Chọn ảnh</Text> */}
+              <ScrollView style={{ width: "100%", height: "100%" }}>
+                <View
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  {listIcon &&
+                    listIcon.length > 0 &&
+                    listIcon.map((it) => {
+                      return (
+                        <View
+                          style={{
+                            padding: 10,
+                            marginTop: 5,
+                            borderColor:
+                              it?.id !== iconCurrent
+                                ? defaultColors.borderColor
+                                : defaultColors.tabActive,
+                            borderWidth: 1,
+                            borderRadius: 5,
+                          }}
+                        >
+                          <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
+                            <Image
+                                source={{ uri: `${BASE_URL}${it?.url}` }}
+                                style={{ width: 50, height: 50 }}
+                                resizeMode="stretch"
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    })}
                 </View>
-            </Modal>
+              </ScrollView>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: 40,
+              }}
+            >
+              <TouchableOpacity
+                onPress={handleUpdateCategory}
+                style={{
+                  backgroundColor: defaultColors.tabActive,
+                  padding: 12,
+                  borderRadius: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: defaultColors.WHITE,
+                  }}
+                >
+                  Chỉnh sửa danh mục
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleDeleteCategory(item?.categoryId)}
+                style={{
+                  backgroundColor: defaultColors.CANCEL_BACKGROUNG,
+                  padding: 12,
+                  borderRadius: 5,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: defaultColors.WHITE,
+                  }}
+                >
+                  Xóa danh mục
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-    )
-}
+      </Modal>
+    </View>
+  );
+};
 
-export default DetailClassify
+export default DetailClassify;

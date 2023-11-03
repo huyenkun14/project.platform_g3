@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
         height: 40,
         width: 40,
         borderRadius: 8,
-        backgroundColor: defaultColors.backgroundType,
+        // backgroundColor: defaultColors.backgroundType,
         marginRight: 15,
     },
     title: {

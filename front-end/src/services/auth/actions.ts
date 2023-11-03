@@ -14,6 +14,7 @@ export const loginActions = createAsyncThunk(
     'auth/loginActions',
     async (payload: {}) => {
         const res = await httpClient.post(AUTH.LOGIN, payload)
+        console.log("payload", res)
         return res.data
     }
 )
