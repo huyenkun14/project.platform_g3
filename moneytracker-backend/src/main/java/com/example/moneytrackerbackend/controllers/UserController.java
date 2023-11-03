@@ -17,7 +17,6 @@ import com.example.moneytrackerbackend.services.ImageService;
 import com.example.moneytrackerbackend.services.TransactionService;
 import com.example.moneytrackerbackend.services.UserServiceImp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,8 +35,7 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-     @Autowired
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
     private final UserServiceImp userService;
     private final TransactionService transactionService;
 
