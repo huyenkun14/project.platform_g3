@@ -11,7 +11,6 @@ const Entry = (props: any) => {
 
   const { title, time, price, note, status, entryId } = props
   const navigation = useNavigation<any>()
-  // const money = Number(price).toLocaleString('en-US')
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate(NAVIGATION_TITLE.DETAIL, { entryId })}>
@@ -29,7 +28,7 @@ const Entry = (props: any) => {
             :
             <Text style={[styles.title, styles.money, styles.alignRight]}>- {formatMoneyWithVND(price)}</Text>
           }
-          <Text style={[styles.content, styles.alignRight]}>{moment(time).format('DD/MM/YYYY')}</Text>
+          <Text style={[styles.content, styles.alignRight]}>{moment(time).format('DD-MM-YYYY')}</Text>
         </View>
       </View>
     </TouchableOpacity>
