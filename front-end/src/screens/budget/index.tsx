@@ -19,7 +19,6 @@ const Budget = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [listFinancialCategory, setListFinancialCategory] = useState([])
     const rangeWidth = SCREEN_WIDTH / 2
-    // const itemWidth = (Number(current) / Number(budget)) * rangeWidth
     useEffect(() => {
         getListBudget()
         getFinancialValueList()
@@ -28,7 +27,7 @@ const Budget = () => {
         dispatch(getBudgetByMonthAction(moment(date).format('MM-YYYY')))
             .then(res => {
                 setListBudget(res?.payload)
-                console.log(res?.payload, 'budgetttttttt')
+                console.log(res, 'budgetttttttt')
             })
             .catch(err => console.log('err', err))
     }
@@ -38,7 +37,6 @@ const Budget = () => {
         data.append('monthAndYear', moment(date).format("MM-YYYY"))
         dispatch(getFinancialValueAction(data))
             .then(res => {
-                console.log(res, 'expenseeeeeeeeeeeeee')
                 setListFinancialCategory(res?.payload)
             })
             .catch(err => console.log('monthAndYear', err))

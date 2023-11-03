@@ -105,7 +105,7 @@ export const styles = StyleSheet.create({
         marginBottom: 16,
     },
     input: {
-        borderEndColor: defaultColors.borderEndColor,
+        borderEndColor: defaultColors.borderColor,
         borderRadius: 10,
         borderWidth: 1,
         paddingVertical: 10,

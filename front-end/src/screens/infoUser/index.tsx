@@ -33,7 +33,22 @@ const InfoUser = () => {
             .catch(err => console.log('err', err))
     }
     const handleEditInfoUser = () => {
-        dispatch(updateInfoUserAction(infoUser))
+        const imageToUpload = image
+        const imageName = imageToUpload?.split('/').pop()
+        const imageType = imageToUpload?.split('.').pop()
+        console.log(`image/${imageType}`)
+        const formdata = new FormData()
+        formdata.append('urlImage', {
+            uri: imageToUpload,
+            type: `image/${imageType}`,
+            name: imageName
+        });
+        formdata.append('id', infoUser.id)
+        formdata.append('email', infoUser.email)
+        formdata.append('phoneNumber', infoUser.phoneNumber)
+        formdata.append('username', infoUser.username)
+        console.log('formdata', formdata)
+        dispatch(updateInfoUserAction(formdata))
             .then((res) => {
                 if (res?.payload) {
                     Alert.alert('Cập nhật thành công')
