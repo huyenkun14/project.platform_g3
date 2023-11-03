@@ -6,11 +6,14 @@ import { getInfoUserAction, updateInfoUserAction } from '../../services/user/act
 import Header from '../../components/header'
 import { useNavigation } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
+import { BASE_URL } from '../../constants/api'
+import Loading from '../../../utils/loading/Loading'
 
 const InfoUser = () => {
     const dispatch = useDispatch<any>()
     const navigation = useNavigation<any>()
     const [modalVisible, setModalVisible] = useState(false)
+    const [isLoading, setLoading] = useState(false)
     const [image, setImage] = useState(null);
     const [infoUser, setInfoUser] = useState({
         id: "",
@@ -38,19 +41,20 @@ const InfoUser = () => {
         const imageType = imageToUpload?.split('.').pop()
         console.log(`image/${imageType}`)
         const formdata = new FormData()
-        formdata.append('urlImage', {
+        formdata.append('avatar', {
             uri: imageToUpload,
             type: `image/${imageType}`,
             name: imageName
         });
-        formdata.append('id', infoUser.id)
         formdata.append('email', infoUser.email)
         formdata.append('phoneNumber', infoUser.phoneNumber)
         formdata.append('username', infoUser.username)
+        formdata.append('password', '12345678')
         console.log('formdata', formdata)
         dispatch(updateInfoUserAction(formdata))
             .then((res) => {
                 if (res?.payload) {
+                    setLoading(false)
                     Alert.alert('Cập nhật thành công')
                     console.log(res, 'update userrrr')
                     setModalVisible(false)
@@ -97,10 +101,17 @@ const InfoUser = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.avatarContainer}>
-                <Image
-                    style={styles.avatar}
-                    source={require('../../../assets/images/icon/ic_user.png')}
-                />
+                {infoUser?.urlImage ?
+                    <Image
+                        style={styles.avatar}
+                        source={{ uri: `${BASE_URL}${infoUser?.urlImage}` }}
+                    />
+                    :
+                    <Image
+                        style={styles.avatar}
+                        source={require('../../../assets/images/icon/ic_user.png')}
+                    />
+                }
             </View>
             <Text style={styles.usernameText}>{infoUser?.username}</Text>
             <View style={styles.infoContainer}>
@@ -144,13 +155,20 @@ const InfoUser = () => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalInner}>
                         <View>
-                            <Image
-                                style={styles.modalAvatar}
-                                source={require('../../../assets/images/icon/ic_user.png')}
-                            />
+                            {infoUser?.urlImage ?
+                                <Image
+                                    style={styles.modalAvatar}
+                                    source={{ uri: `${BASE_URL}${infoUser?.urlImage}` }}
+                                />
+                                :
+                                <Image
+                                    style={styles.modalAvatar}
+                                    source={require('../../../assets/images/icon/ic_user.png')}
+                                />
+                            }
                             <TouchableOpacity
                                 style={[styles.modalAvatar, { position: 'absolute', backgroundColor: 'rgba(0,0,0,0.5)' }]}
-                                onPress={() => { pickImage }}>
+                                onPress={pickImage}>
                                 <Image
                                     style={{ height: 15, width: 15, position: 'absolute', bottom: 10, left: 10, tintColor: '#fff' }}
                                     source={require('../../../assets/images/icon/ic_pencil.png')}
@@ -179,13 +197,18 @@ const InfoUser = () => {
                             <TouchableOpacity onPress={() => { setModalVisible(false) }}>
                                 <Text style={styles.button}>Hủy Bỏ</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleEditInfoUser}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    handleEditInfoUser()
+                                    setLoading(true)
+                                }}>
                                 <Text style={styles.button}>Lưu thay đổi</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
             </Modal>
+            <Loading visiable={isLoading} />
         </View>
     )
 }

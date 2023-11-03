@@ -1,5 +1,5 @@
 import { Modal, View, Image, Text, ActivityIndicator } from "react-native"
-import styles from './styles.ts'
+import styles from './styles'
 
 const Loading = ({visiable, description}:{visiable: boolean, description?: string}) => {
     return (

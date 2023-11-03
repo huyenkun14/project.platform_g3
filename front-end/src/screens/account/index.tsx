@@ -7,10 +7,10 @@ import { defaultColors } from '../../theme'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { useNavigation } from '@react-navigation/native'
 import { clearAllAsyncStorage } from '../../../utils/asyncStorage'
-import UserInfoModal from './component/userInfo'
+// import UserInfoModal from './component/userInfo'
 
 const Account = () => {
-    const [userInfoModal, setUserInfoModal] = useState<boolean>(false)
+//     const [userInfoModal, setUserInfoModal] = useState<boolean>(false)
     const navigation = useNavigation<any>()
     return (
         <SafeAreaView>
@@ -53,10 +53,10 @@ const Account = () => {
                     </View>
                 </TouchableOpacity>
             </ScrollView>
-            <UserInfoModal
+            {/* <UserInfoModal
                 modalVisible={userInfoModal}
                 setModalVisible={setUserInfoModal}
-            />
+            /> */}
         </SafeAreaView >
     )
 }
