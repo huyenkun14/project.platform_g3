@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     },
     dropdownView: {
         // width: SCREEN_WIDTH * 0.5,
-        paddingHorizontal: 25
+        paddingHorizontal: 25,
     },
     dropdown: {
         // borderColor: defaultColors.backgroundColor,
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         marginBottom: 12,
         fontWeight: '500',
-        color: defaultColors.text_3,
+        color: defaultColors.BLACK,
         marginLeft: 10
     },
     input: {
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
         height: 20,
         width: 20,
         resizeMode: 'contain',
-        tintColor: defaultColors.text_3,
+        tintColor: defaultColors.BLACK,
     },
     moneyText: {
         position: 'absolute',
@@ -85,14 +85,16 @@ export const styles = StyleSheet.create({
         color: defaultColors.text_3,
     },
     addBtn: {
-        textAlign: 'center',
-        marginVertical: 20,
-        paddingVertical: 15,
-        marginHorizontal: 25,
-        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: "center",
+        height: 50,
+        backgroundColor: defaultColors.tabActive,
+        borderRadius: 8,
+        marginHorizontal: 16
+    },
+    addBtnText: {
         fontSize: 16,
         fontWeight:'600',
-        backgroundColor: defaultColors.tabActive,
         color: defaultColors.text_white
     },
     shadow: {
