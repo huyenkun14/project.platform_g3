@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from "../../theme";
+import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from "../../../../theme";
 
 export const styles = StyleSheet.create({
     modalContainer: {
@@ -72,7 +72,8 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 30,
-        height: 50,
+        marginBottom: 30,
+        height: 150,
         borderColor: defaultColors.borderColor,
         borderWidth: 2,
         borderStyle: 'dotted',
@@ -87,12 +88,18 @@ export const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: defaultColors.tabActive,
-        paddingVertical: 15,
+        // paddingVertical: 15,
+        height: 40,
         borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    buttonText: {
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 14,
+        fontWeight: "500",
         color: defaultColors.text_white,
-        marginTop: 30,
 
     },
     shadow: {

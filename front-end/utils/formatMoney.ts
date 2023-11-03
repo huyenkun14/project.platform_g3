@@ -13,3 +13,21 @@ export const formatMoney = (money) => {
     base = abbrev.indexOf(suffix) + 1;
     return suffix ? rnd(money / 1000 ** base, 2) + suffix : '' + money;
 }
+
+export const formatMoneyWithVND = (amount: number) => {
+  if (!amount || amount === 0) {
+    return '0 đ';
+  }
+  return `${Math.ceil(Number(amount))
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VND`;
+}
+
+export const formatMoneyNotVND = (amount: number) => {
+  if (!amount || amount === 0) {
+    return '0 đ';
+  }
+  return `${Math.ceil(Number(amount))
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`;
+}

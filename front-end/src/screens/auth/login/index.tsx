@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { loginActions } from '../../../services/auth/actions';
 import { getItemObjectAsyncStorage, setItemAsyncStorage } from '../../../../utils/asyncStorage';
 import { KEY_STORAGE } from '../../../constants/storage';
+import Loading from '../../../../utils/loading/Loading';
 
 const Login = () => {
     const [account, setAccount] = useState({
@@ -15,6 +16,7 @@ const Login = () => {
     });
     const navigation = useNavigation<any>()
     const dispatch = useDispatch<any>()
+    const [loading, setLoading] = useState<boolean>(false)
 
     const handleChangeAccount = (textInputName) => {
         return (value: any) => {
@@ -23,9 +25,10 @@ const Login = () => {
     }
 
     const handleLogin = () => {
+        setLoading(true)
         dispatch(loginActions(account))
             .then(res => {
-                console.log("res", res)
+                setLoading(false)
                 if (res.payload) {
                     setItemAsyncStorage(KEY_STORAGE.SAVED_INFO, JSON.stringify(res.payload));
                     navigation.navigate(NAVIGATION_TITLE.TAB, { screen: NAVIGATION_TITLE.HOME })
@@ -38,7 +41,8 @@ const Login = () => {
                 }
             })
             .catch(err => {
-                console.log(err)
+                setLoading(false)
+                console.log('hello', err)
                 ToastAndroid.show('Xem lại thông tin đăng nhập!', ToastAndroid.SHORT)
             })
         // }
@@ -82,6 +86,7 @@ const Login = () => {
                 style={styles.bg}
                 source={require('../../../../assets/images/background-auth.png')}
             />
+            <Loading visiable={loading} />
         </KeyboardAvoidingView>
 
     );

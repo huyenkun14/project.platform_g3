@@ -25,7 +25,7 @@ httpClient.interceptors.request.use(function (config) {
 
 httpClient.interceptors.response.use(
   function (response) {
-    // console.log('response', response);
+    console.log('API', response);
 
     return response;
   },
