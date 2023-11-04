@@ -31,12 +31,12 @@ const Account = () => {
                         <Text style={[styles.itemText]}>Thông tin</Text>
                     </View>
                 </TouchableOpacity>
-                {/* <TouchableOpacity onPress={() => { }}>
+                <TouchableOpacity onPress={() => { setUserInfoModal(true) }}>
                     <View style={styles.item}>
-                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_setting.png')} />
-                        <Text style={[styles.itemText]}>Cài đặt</Text>
+                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_lock.png')} />
+                        <Text style={[styles.itemText]}>Đổi mật khẩu</Text>
                     </View>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => { }}>
                     <View style={styles.item}>
                         <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_comment.png')} />
@@ -48,7 +48,7 @@ const Account = () => {
                     clearAllAsyncStorage()
                 }}>
                     <View style={styles.item}>
-                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_exit.png')} />
+                        <Image style={[styles.itemIcon, { tintColor: 'crimson' }]} source={require('../../../assets/images/icon/ic_exit.png')} />
                         <Text style={[styles.itemText, styles.logoutText]}>Đăng xuất</Text>
                     </View>
                 </TouchableOpacity>
