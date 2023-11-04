@@ -47,7 +47,7 @@ const History = () => {
           <Text style={styles.timeText}>{moment(date).format("MM-YYYY")}</Text>
         </View>
         <View>
-          {listEntry.length > 0 ? listEntry?.map((item, index) => (
+          {listEntry?.length > 0 ? listEntry?.map((item, index) => (
             <Entry
               entryId={item.transactionId}
               key={index}
@@ -56,6 +56,7 @@ const History = () => {
               price={item.amount}
               note={item.description}
               status={item.category.value}
+              imageUrl={item.category.urlIcon}
             />
           )) : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch.</Text>}
 

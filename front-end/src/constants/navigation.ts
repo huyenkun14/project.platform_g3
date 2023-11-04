@@ -10,5 +10,6 @@ export const NAVIGATION_TITLE = {
   CLASSIFY: 'classify',
   ACCOUNT: 'account',
   BUDGET: 'budget',
-  INFO_USER: 'info'
+  INFO_USER: 'info',
+  NOTIFICATION: 'notification'
 };

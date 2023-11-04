@@ -9,10 +9,8 @@ const Option = (props) => {
     const { icon, title, router } = props
     return (
         <View style={styles.optionContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate(router)}>
-                <View style={styles.optionIconContainer}>
-                    <Image source={icon} style={styles.optionIcon} />
-                </View>
+            <TouchableOpacity style={styles.optionIconContainer} onPress={() => navigation.navigate(router)}>
+                <Image source={icon} style={styles.optionIcon} />
             </TouchableOpacity>
             <Text style={styles.optionText}>{title}</Text>
         </View>

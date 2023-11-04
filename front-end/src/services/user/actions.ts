@@ -18,3 +18,11 @@ export const updateInfoUserAction = createAsyncThunk(
         return res.data
     }
 )
+
+export const resetPasswordAction = createAsyncThunk(
+    'user/resetPasswordAction',
+    async (data: {}) => {
+        const res = await httpClient.put(USER.RESET_PASSWORD, data)
+        return res.data
+    }
+)

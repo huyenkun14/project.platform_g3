@@ -21,7 +21,7 @@ const Classify = () => {
     const [chooseItem, setChooseItem] = useState<any>()
     const dispatch = useDispatch<any>()
     const [listClassify, setListClassify] = useState([]);
-    const [listIcon, setListIcon] = useState<{id: number, url: string}[]>([])
+    const [listIcon, setListIcon] = useState<{ id: number, url: string }[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [firstMount, setFirstMount] = useState<boolean>(true)
 
@@ -32,10 +32,10 @@ const Classify = () => {
 
     const handleGetIcon = async () => {
         setLoading(true)
-        const res = await getAllIcon() 
+        const res = await getAllIcon()
         setLoading(false)
         console.log("res nè", res)
-        if(res?.status === 200) {
+        if (res?.status === 200) {
             setListIcon(res?.data)
         }
     }
@@ -77,21 +77,21 @@ const Classify = () => {
         <SafeAreaView style={styles.container}>
             <Header title="Danh mục" isBack={false} />
             <View style={styles.option}>
-                <TouchableOpacity onPress={() => {
-                    setType(listClassify?.filter(item => item?.value === false))
-                    setIsIncome(false)
-                }}>
-                    <View style={[styles.optionBtn, {backgroundColor: !isIncome ? defaultColors.flatListItem : defaultColors.borderColor}]}>
-                        <Text style={styles.optionText}>Chi tiêu</Text>
-                    </View>
+                <TouchableOpacity
+                    style={[styles.optionBtn, { backgroundColor: !isIncome ? defaultColors.flatListItem : defaultColors.borderColor }]}
+                    onPress={() => {
+                        setType(listClassify?.filter(item => item?.value === false))
+                        setIsIncome(false)
+                    }}>
+                    <Text style={styles.optionText}>Chi tiêu</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    setType(listClassify?.filter(item => item?.value === true))
-                    setIsIncome(true)
-                }}>
-                    <View style={[styles.optionBtn, {backgroundColor: isIncome ? defaultColors.flatListItem : defaultColors.borderColor}]}>
-                        <Text style={styles.optionText}>Thu nhập</Text>
-                    </View>
+                <TouchableOpacity
+                    style={[styles.optionBtn, { backgroundColor: isIncome ? defaultColors.flatListItem : defaultColors.borderColor }]}
+                    onPress={() => {
+                        setType(listClassify?.filter(item => item?.value === true))
+                        setIsIncome(true)
+                    }}>
+                    <Text style={styles.optionText}>Thu nhập</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { setAddNewClassifyOpen(true) }}>
                     <View style={styles.searchImageView}>

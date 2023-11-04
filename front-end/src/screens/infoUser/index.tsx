@@ -49,7 +49,6 @@ const InfoUser = () => {
         formdata.append('email', infoUser.email)
         formdata.append('phoneNumber', infoUser.phoneNumber)
         formdata.append('username', infoUser.username)
-        formdata.append('password', '12345678')
         console.log('formdata', formdata)
         dispatch(updateInfoUserAction(formdata))
             .then((res) => {

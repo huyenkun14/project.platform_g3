@@ -48,7 +48,8 @@ const Home = () => {
     {
       id: 4,
       title: 'Nhắc nhở',
-      icon: require('../../../assets/images/icon/ic_bell.png')
+      icon: require('../../../assets/images/icon/ic_bell.png'),
+      router: NAVIGATION_TITLE.NOTIFICATION
     },
     {
       id: 5,
@@ -181,7 +182,9 @@ const Home = () => {
               time={item.date}
               price={item.amount}
               note={item.description}
-              status={item.category.value} />))
+              status={item.category.value}
+              imageUrl={item.category.urlIcon}
+            />))
             :
             <Text style={{ textAlign: 'center', paddingBottom: 50 }}>Không có giao dịch gần đây</Text>
           }

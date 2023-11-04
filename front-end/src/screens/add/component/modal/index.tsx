@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ToastAndroid, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ToastAndroid, KeyboardAvoidingView, Alert } from 'react-native';
 import { styles } from './styles';
 import DatePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createEntryAction } from '../../../../services/entry/actions';
 import moment from 'moment';
+import { checkWarningAction } from '../../../../services/notification/actions';
 
 const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
@@ -24,6 +25,8 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const [classifyValue, setClassifyValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [listOpen, setListOpen] = useState(false);
+  const [newEntry, setNewEntry] = useState<any>([]);
+  const [warning, setWarning] = useState<any>({});
   useEffect(() => {
     getListClassify()
   }, [listClassifyOpen])
@@ -32,7 +35,6 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
       .then(res => {
         const convertListClassify = res?.payload?.filter(item => item?.value === isIncome).map((item, index) => ({ label: item.title, value: item.categoryId }))
         setListClassify(convertListClassify)
-        console.log(res, 'listClassify')
       })
       .catch(err => console.log('err', err))
   }
@@ -44,8 +46,8 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
     data.append('description', infoEntry.note)
     dispatch(createEntryAction(data))
       .then(res => {
-        console.log(res)
         if (res?.payload) {
+          setNewEntry(res?.payload)
           setInfoEntry({
             time: moment(date).format("DD-MM-YYYY"),
             title: '',
@@ -60,13 +62,22 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
       })
       .catch(err => console.log('err', err))
   }
+  const checkWarning = () => {
+    dispatch(checkWarningAction({
+      transactionId: newEntry?.transactionId
+    }))
+      .then(res => {
+        console.log(res, 'warninggggggg')
+        setWarning(res?.payload)
+      })
+      .catch(err => console.log(err))
+  }
   const onListClassifyOpen = useCallback(() => {
     setListOpen(false);
   }, []);
   const onChangeInfoEntry = (name) => {
     return (value: any) => {
       setInfoEntry({ ...infoEntry, [name]: value })
-      console.log('infoEntry', infoEntry)
     }
   }
   const onChangeDate = (event, selectedDate) => {
@@ -77,7 +88,6 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   };
 
   return (
-
     <Modal
       animationType="slide"
       transparent={true}
@@ -177,7 +187,13 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
                 placeholder='Nhập ghi chú...'
               />
             </View>
-            <TouchableOpacity onPress={handleCreateEntry}>
+            <TouchableOpacity onPress={() => {
+              handleCreateEntry()
+              checkWarning()
+              if (warning?.message) {
+                Alert.alert(`${warning?.message}`)
+              }
+            }}>
               <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
             </TouchableOpacity>
           </View>
