@@ -26,6 +26,7 @@ public class WarningController {
     private final WarningService warningService;
     private final UserServiceImp userService;
 
+    private final EmailService emailService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/warning/check")
     public ResponseEntity warning(@RequestParam Long transactionId, Principal principal) {
@@ -35,13 +36,17 @@ public class WarningController {
             UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
             Long userId = userDetails.getId();
             User user = userService.getUser(userId);
+
             Category category = transaction.getCategory();
             String content = "Chi tiêu của bạn cho " + category.getTitle() + " đã vượt mức ngân sách là " + (-check) + ".";
+
             Warning warning = Warning.builder()
                     .user(user)
                     .message(content)
                     .date(LocalDateTime.now())
                     .build();
+
+            emailService.sendEmail(user.getEmail(), "Cảnh bảo từ Moly", warning.getMessage());
             return ResponseEntity.ok(warning);
         }
         return ResponseEntity.ok().build();
