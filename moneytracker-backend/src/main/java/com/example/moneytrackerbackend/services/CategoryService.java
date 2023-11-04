@@ -9,6 +9,7 @@ import java.util.List;
 @Service
 public interface CategoryService {
     Category createCategory(CategoryRequest categoryRequest);
+    void createDefaultCategory(Long userId);
 
     List<Category> getAllCategory(Long userId);
 
