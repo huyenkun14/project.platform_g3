@@ -26,7 +26,7 @@ public class WarningController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/warning/check")
     public ResponseEntity<Warning> warning(@RequestParam Long transactionId){
-        
+
         Transaction transaction = transactionService.getTransaction(transactionId);
 
         int check = warningService.checkBudget(transaction.getCategory().getId(), transaction.getDate());
