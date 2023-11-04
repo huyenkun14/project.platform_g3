@@ -1,6 +1,5 @@
 package com.example.moneytrackerbackend.controllers;
 
-import com.example.moneytrackerbackend.dto.request.CategoryRequest;
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.UserRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
@@ -75,22 +74,7 @@ public class UserController {
                 .phoneNumber(registerRequest.getPhoneNumber())
                 .build();
         user = userService.saveUser(user);
-
-        CategoryRequest defaultIncomeCategory = CategoryRequest.builder()
-                .userId(user.getId())
-                .title("Default Income")
-                .iconId(Long.parseLong("1"))
-                .value(true)
-                .build();
-        categoryService.createCategory(defaultIncomeCategory);
-
-        CategoryRequest defaultSpendingCategory = CategoryRequest.builder()
-                .userId(user.getId())
-                .title("Default Expenditure")
-                .iconId(Long.parseLong("1"))
-                .value(false)
-                .build();
-        categoryService.createCategory(defaultSpendingCategory);
+        categoryService.createDefaultCategory(user.getId());
 
         return ResponseEntity.ok(new MessageResponse("Success register account"));
     }
@@ -176,6 +160,7 @@ public class UserController {
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
+
         if(encoder.matches(prePassword, user.getPassword())){
             user.setPassword(encoder.encode(password));
             userService.saveUser(user);

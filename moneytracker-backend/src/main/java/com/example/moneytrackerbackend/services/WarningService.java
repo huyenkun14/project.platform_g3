@@ -10,4 +10,5 @@ import java.util.List;
 public interface WarningService {
     int checkBudget(Long categoryId, LocalDate date);
     List<Warning> getAllWarning(Long userId);
+    Warning createWarning(Long transactionId, int amount);
 }
