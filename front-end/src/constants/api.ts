@@ -1,4 +1,4 @@
-export const BASE_URL = "https://0bef-1-53-8-23.ngrok-free.app/api"
+export const BASE_URL = "https://5d40-116-96-47-4.ngrok-free.app/api"
 
 export const AUTH = {
     REGISTER: "/auth/register",

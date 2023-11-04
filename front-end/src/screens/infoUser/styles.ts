@@ -82,5 +82,48 @@ export const styles = StyleSheet.create({
     amountText: {
         fontSize: 16,
         color: defaultColors.text_white,
+    },
+    modalContainer: {
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+    },
+    modalInner: {
+        paddingHorizontal: 25,
+        paddingVertical: 30,
+        borderRadius: 10,
+        backgroundColor: defaultColors.backgroundColor,
+        width: SCREEN_WIDTH-40,
+    },
+    modalAvatar: {
+        height: 60,
+        width: 60,
+        borderRadius: 10,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        marginBottom: 16,
+    },
+    input: {
+        borderEndColor: defaultColors.borderColor,
+        borderRadius: 10,
+        borderWidth: 1,
+        paddingVertical: 10,
+        marginTop: 8,
+        marginBottom: 16,
+        paddingHorizontal: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 5
+    },
+    button: {
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        backgroundColor: defaultColors.flatListItem,
+        color: defaultColors.text_white,
+        borderRadius: 8,
+        overflow: 'hidden'
     }
 })

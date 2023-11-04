@@ -30,7 +30,6 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
             .then(res => {
                 const convertListClassify = res?.payload?.filter(item => item?.value === false).map((item, index) => ({ label: item.title, value: item.categoryId }))
                 setListClassify(convertListClassify)
-                console.log(res, 'listClassify')
             })
             .catch(err => console.log('err', err))
     }
