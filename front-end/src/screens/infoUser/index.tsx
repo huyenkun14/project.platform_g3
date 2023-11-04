@@ -63,6 +63,7 @@ const InfoUser = () => {
             })
             .catch(err => {
                 console.log('Delete error', err);
+                setLoading(false)
             });
     }
     const onChangeInfoUser = (name) => {
