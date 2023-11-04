@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.example.moneytrackerbackend.utils.FormatMoneyUtil.formatMoney;
+
 @Service
 @RequiredArgsConstructor
 public class WarningServiceImp implements WarningService{
@@ -35,7 +37,7 @@ public class WarningServiceImp implements WarningService{
 
         Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(()-> new CustomException("Error: no transaction."));
         Category category = transaction.getCategory();
-        String content = "Chi tiêu của bạn cho " + category.getTitle() + " đã vượt mức ngân sách là " + amount + ".";
+        String content = "Chi tiêu của bạn cho " + category.getTitle() + " đã vượt mức ngân sách là " + formatMoney(amount) + ".";
 
         Warning warning = Warning.builder()
                 .user(transaction.getCategory().getUser())

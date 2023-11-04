@@ -1,5 +1,7 @@
 package com.example.moneytrackerbackend.controllers;
 
+import com.example.moneytrackerbackend.dto.ConvertToResponse;
+import com.example.moneytrackerbackend.dto.response.WarningResponse;
 import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.entities.Warning;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 
+import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertWarning;
+
 @RestController
 @RequiredArgsConstructor
 public class WarningController {
@@ -25,7 +29,7 @@ public class WarningController {
     private final EmailService emailService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/warning/check")
-    public ResponseEntity<Warning> warning(@RequestParam Long transactionId){
+    public ResponseEntity<WarningResponse> warning(@RequestParam Long transactionId){
 
         Transaction transaction = transactionService.getTransaction(transactionId);
 
@@ -34,17 +38,22 @@ public class WarningController {
         if (check < 0) {
 
             Warning warning = warningService.createWarning(transactionId, check);
-            emailService.sendEmail(transaction.getCategory().getUser().getEmail(), "Cảnh bảo chi tiêu từ Moly", warning.getMessage());
-            return ResponseEntity.ok(warning);
+            emailService.sendEmail(transaction.getCategory().getUser().getEmail(), "!!MOLY: CẢNH BÁO CHI TIÊU!!", warning.getMessage());
+
+            return ResponseEntity.ok(convertWarning(warning));
         }
         return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/warning/get-all")
-    public ResponseEntity<List<Warning>> getAll(Principal principal) {
+    public ResponseEntity<List<WarningResponse>> getAll(Principal principal) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        return ResponseEntity.ok(warningService.getAllWarning(userId));
+
+        List<Warning> warnings = warningService.getAllWarning(userId);
+
+        return ResponseEntity.ok(warnings.stream().map(ConvertToResponse::convertWarning).toList());
     }
 }
