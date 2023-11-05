@@ -2,7 +2,7 @@ package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.ConvertToResponse;
 import com.example.moneytrackerbackend.dto.response.WarningResponse;
-import com.example.moneytrackerbackend.entities.Transaction;
+import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.entities.Warning;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.*;
@@ -23,22 +23,26 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertWarni
 @RestController
 @RequiredArgsConstructor
 public class WarningController {
-    private final TransactionService transactionService;
-    private final WarningService warningService;
 
+    private final UserServiceImp userService;
+    private final WarningService warningService;
     private final EmailService emailService;
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/warning/check")
-    public ResponseEntity<WarningResponse> warning(@RequestParam Long transactionId){
+    public ResponseEntity<WarningResponse> warning(@RequestParam Long categoryId, @RequestParam String date, Principal principal) {
 
-        Transaction transaction = transactionService.getTransaction(transactionId);
-
-        int check = warningService.checkBudget(transaction.getCategory().getId(), transaction.getDate());
+        int check = warningService.checkBudget(categoryId, date);
 
         if (check < 0) {
 
-            Warning warning = warningService.createWarning(transactionId, check);
-            emailService.sendEmail(transaction.getCategory().getUser().getEmail(), "!!MOLY: CẢNH BÁO CHI TIÊU!!", warning.getMessage());
+            UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+            Long userId = userDetails.getId();
+            User user = userService.getUser(userId);
+
+            Warning warning = warningService.createWarning(categoryId, check);
+
+            emailService.sendEmail(user.getEmail(), "!!MOLY: CẢNH BÁO CHI TIÊU!!", warning.getMessage());
 
             return ResponseEntity.ok(convertWarning(warning));
         }
