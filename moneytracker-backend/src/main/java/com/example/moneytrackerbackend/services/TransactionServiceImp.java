@@ -53,7 +53,7 @@ public class TransactionServiceImp implements TransactionService {
     }
 
     public List<Transaction> getAllTransaction(Long userId) {
-        return transactionRepository.findAllByUserIdOrderByDate(userId);
+        return transactionRepository.findAllByCategoryUserIdOrderByIdDesc(userId);
     }
 
     public Transaction updateTransaction(TransactionRequest transactionRequest){
@@ -87,7 +87,7 @@ public class TransactionServiceImp implements TransactionService {
     }
 
     public List<Transaction> getTransactionByCategory(Long categoryId) {
-        return transactionRepository.findAllByCategoryIdOrderByDate(categoryId);
+        return transactionRepository.findAllByCategoryIdOrderByIdDesc(categoryId);
     }
     public List<Transaction> getTransactionByCategoryOnMonth(String monthAndYear, Long categoryId) {
 
