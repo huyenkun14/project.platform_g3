@@ -80,7 +80,9 @@ const Add = () => {
               time={item.date}
               price={item.amount}
               note={item.description}
-              status={item.category.value} />))
+              status={item.category.value} 
+              imageUrl={item.category.urlIcon}
+              />))
             :
             <Text style={{ textAlign: 'center' }}>Không có giao dịch gần đây</Text>
           }

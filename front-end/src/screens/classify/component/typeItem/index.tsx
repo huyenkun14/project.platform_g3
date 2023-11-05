@@ -13,8 +13,9 @@ const TypeItem = (props) => {
         <TouchableOpacity onPress={openDetailClassify}>
             <View style={styles.container}>
                 <View style={styles.typeContainer}>
-                    {/* <View style={styles.image} /> */}
-                    <Image style={styles.image} resizeMode='stretch' source={{uri: item?.iconId ? `${BASE_URL}${item?.urlIcon}` : 'https://cdn-icons-png.flaticon.com/512/447/447120.png'}} />
+                    <View style={styles.image}>
+                        <Image style={styles.imageIcon} resizeMode='stretch' source={{ uri: item?.iconId ? `${BASE_URL}${item?.urlIcon}` : 'https://cdn-icons-png.flaticon.com/512/447/447120.png' }} />
+                    </View>
                     <View>
                         <Text style={styles.title}>{title}</Text>
                         {

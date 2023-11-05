@@ -59,8 +59,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 150,
         borderColor: defaultColors.borderColor,
-        borderWidth: 2,
-        borderStyle: 'dotted',
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 5
     },
     addImageIcon: {
         height: 25,

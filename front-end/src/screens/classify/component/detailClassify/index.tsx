@@ -159,7 +159,7 @@ const DetailClassify = (props: Iprops) => {
                                 style={styles.addImageIcon}
                             />
                             <Text style={styles.addImageText}>Chọn ảnh</Text> */}
-              <ScrollView style={{ width: "100%", height: "100%" }}>
+              <ScrollView style={{ width: "100%", height: "100%" }} showsVerticalScrollIndicator={false}>
                 <View
                   style={{
                     width: "100%",
@@ -188,7 +188,7 @@ const DetailClassify = (props: Iprops) => {
                           <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
                             <Image
                                 source={{ uri: `${BASE_URL}${it?.url}` }}
-                                style={{ width: 50, height: 50 }}
+                                style={{ width: 35, height: 35 }}
                                 resizeMode="stretch"
                             />
                           </TouchableOpacity>
