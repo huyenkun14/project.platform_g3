@@ -99,6 +99,9 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                         />
                     }
                 </View>
+                <View style={styles.inputLabelContainer}>
+                    <Text style={styles.inputLabel}>Danh mục</Text>
+                </View>
                 <View style={styles.dropdownView}>
                     <DropDownPicker
                         style={[styles.dropdown]}
@@ -144,8 +147,8 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                         style={styles.closeIcon}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleCreateBudget}>
-                    <Text style={styles.addBtn}>Tạo ngân sách</Text>
+                <TouchableOpacity style={styles.addBtn} onPress={handleCreateBudget}>
+                    <Text style={styles.addBtnText}>Tạo ngân sách</Text>
                 </TouchableOpacity>
             </Modal>
         </View>
