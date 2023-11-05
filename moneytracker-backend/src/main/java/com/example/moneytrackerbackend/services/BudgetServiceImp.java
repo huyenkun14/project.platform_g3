@@ -41,15 +41,7 @@ public class BudgetServiceImp implements BudgetService {
     public Budget updateBudget(BudgetRequest budgetRequest) {
 
         Budget budget = getBudget(budgetRequest.getBudgetId());
-
-        Category category = categoryRepository.findById(budgetRequest.getCategoryId())
-                .orElseThrow(() -> new CustomException("Error: no category"));
-
-        budget.setCategory(category);
         budget.setAmount(budgetRequest.getAmount());
-        budget.setEndDate(formatterDate(budgetRequest.getEndDate()));
-        budget.setStartDate(formatterDate(budgetRequest.getStartDate()));
-
         budget = budgetRepository.save(budget);
 
         return budget;

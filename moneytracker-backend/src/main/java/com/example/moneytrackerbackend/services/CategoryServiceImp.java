@@ -64,7 +64,7 @@ public class CategoryServiceImp implements CategoryService {
 
         Category category = getCategoryById(id);
 
-        List<Transaction> transactions = transactionRepository.findAllByCategoryIdOrderByDate(category.getId());
+        List<Transaction> transactions = transactionRepository.findAllByCategoryIdOrderByIdDesc(category.getId());
         if(!transactions.isEmpty()){
             throw new CustomException("Error: Have transaction of this category");
         }

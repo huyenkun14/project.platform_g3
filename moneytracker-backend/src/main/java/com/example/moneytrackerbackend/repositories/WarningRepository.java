@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface WarningRepository extends JpaRepository<Warning, Long> {
-    List<Warning> findAllByUserIdOrderByDate(Long userId);
+    List<Warning> findAllByUserIdOrderByDateDesc(Long userId);
 }
