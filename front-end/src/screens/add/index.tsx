@@ -47,24 +47,20 @@ const Add = () => {
         <Header title='Thêm' isBack={false} />
         {/* add item */}
         <View style={styles.addContainer}>
-          <TouchableOpacity onPress={toAddIncome}>
-            <View style={[styles.addItem, styles.addIncome]}>
-              <Image
-                source={require('../../../assets/images/icon/add.png')}
-                style={[styles.itemIcon, { tintColor: defaultColors.text_3 }]}
-              />
-              <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
-            </View>
+          <TouchableOpacity onPress={toAddIncome} style={[styles.addItem, styles.addIncome]}>
+            <Image
+              source={require('../../../assets/images/icon/add.png')}
+              style={[styles.itemIcon, { tintColor: defaultColors.text_3 }]}
+            />
+            <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
           </TouchableOpacity>
           <View style={styles.addContainer}>
-            <TouchableOpacity onPress={toAddExpense}>
-              <View style={[styles.addItem, styles.addExpense]}>
-                <Image
-                  source={require('../../../assets/images/icon/add.png')}
-                  style={[styles.itemIcon, { tintColor: defaultColors.text_2 }]}
-                />
-                <Text style={styles.addExpenseText}>Thêm chi tiêu</Text>
-              </View>
+            <TouchableOpacity onPress={toAddExpense} style={[styles.addItem, styles.addExpense]}>
+              <Image
+                source={require('../../../assets/images/icon/add.png')}
+                style={[styles.itemIcon, { tintColor: defaultColors.text_2 }]}
+              />
+              <Text style={styles.addExpenseText}>Thêm chi tiêu</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -80,9 +76,9 @@ const Add = () => {
               time={item.date}
               price={item.amount}
               note={item.description}
-              status={item.category.value} 
+              status={item.category.value}
               imageUrl={item.category.urlIcon}
-              />))
+            />))
             :
             <Text style={{ textAlign: 'center' }}>Không có giao dịch gần đây</Text>
           }

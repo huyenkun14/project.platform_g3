@@ -29,11 +29,11 @@ const Home = () => {
     username: ""
   })
   const optionsData = [
-    {
-      id: 1,
-      title: 'Quản lý',
-      icon: require('../../../assets/images/icon/ic_manager.png')
-    },
+    // {
+    //   id: 1,
+    //   title: 'Quản lý',
+    //   icon: require('../../../assets/images/icon/ic_manager.png')
+    // },
     {
       id: 2,
       title: 'Giao diện',
@@ -51,11 +51,11 @@ const Home = () => {
       icon: require('../../../assets/images/icon/ic_bell.png'),
       router: NAVIGATION_TITLE.NOTIFICATION
     },
-    {
-      id: 5,
-      title: 'Tìm kiếm',
-      icon: require('../../../assets/images/icon/ic_search.png')
-    },
+    // {
+    //   id: 5,
+    //   title: 'Tìm kiếm',
+    //   icon: require('../../../assets/images/icon/ic_search.png')
+    // },
     {
       id: 6,
       title: 'Tài khoản',
@@ -163,8 +163,8 @@ const Home = () => {
             {optionsData.map((item) => (
               <Option title={item.title} icon={item.icon} key={item.id} router={item.router} />
             ))}
-            <View style={styles.emptyOption} />
-            <View style={styles.emptyOption} />
+            {/* <View style={styles.emptyOption} />
+            <View style={styles.emptyOption} /> */}
           </View>
         </View>
         {/* banner */}

@@ -71,10 +71,8 @@ const Login = () => {
                     secureTextEntry
                 />
             </View>
-            <TouchableOpacity onPress={handleLogin}>
-                <View style={[styles.formItem, styles.formBtn]}>
+            <TouchableOpacity onPress={handleLogin} style={[styles.formItem, styles.formBtn]}>
                     <Text style={styles.textBtn}>Đăng nhập</Text>
-                </View>
             </TouchableOpacity>
             <View style={styles.register}>
                 <Text style={styles.registerText}>Chưa có tài khoản? </Text>
