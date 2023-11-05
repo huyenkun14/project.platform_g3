@@ -10,6 +10,7 @@ import History from "../screens/history";
 import { defaultColors } from "../theme";
 import Classify from "../screens/classify";
 import { NAVIGATION_TITLE } from "../constants/navigation";
+import ClassifyTopTab from "./TopTab";
 
 const MyBottomTabs = () => {
 

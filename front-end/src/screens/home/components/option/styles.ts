@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     optionContainer: {
         width: 90,
         alignItems: 'center',
-        marginBottom: 20,
+        // marginBottom: 16,
     },
     optionIconContainer: {
         height: 56,
