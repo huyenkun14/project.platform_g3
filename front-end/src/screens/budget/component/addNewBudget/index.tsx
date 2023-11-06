@@ -7,6 +7,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createBudgetAction } from '../../../../services/budget/actions';
+import { addCommas, removeNonNumeric } from '../../../../../utils/formatMoney';
 
 const AddNewBudget = ({ modalVisible, setModalVisible }) => {
     const [listClassify, setListClassify] = useState([]);
@@ -40,7 +41,7 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
             startDate: moment(firstDay).format("DD-MM-YYYY"),
             endDate: moment(lastDay).format("DD-MM-YYYY"),
             categoryId: infoBudget.categoryId,
-            amount: infoBudget.amount
+            amount: infoBudget.amount.replace('.','')
         }))
             .then(res => {
                 if(res?.payload){
@@ -130,7 +131,7 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                 </View>
                 <View style={styles.shadow}>
                     <TextInput
-                        value={infoBudget?.amount}
+                        value={addCommas(removeNonNumeric(infoBudget?.amount))}
                         onChangeText={onChangeInfoBudget('amount')}
                         keyboardType="numeric"
                         style={styles.input}

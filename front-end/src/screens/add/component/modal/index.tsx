@@ -9,6 +9,7 @@ import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createEntryAction } from '../../../../services/entry/actions';
 import moment from 'moment';
 import { checkWarningAction } from '../../../../services/notification/actions';
+import { addCommas, formatMoneyNotVND, removeNonNumeric } from '../../../../../utils/formatMoney';
 
 const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
@@ -41,7 +42,7 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const handleCreateEntry = () => {
     const data = new FormData()
     data.append('categoryId', classifyValue)
-    data.append('amount', infoEntry.money)
+    data.append('amount', infoEntry.money.replace('.', ''))
     data.append('date', infoEntry.time)
     data.append('description', infoEntry.note)
     dispatch(createEntryAction(data))
@@ -163,7 +164,7 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
             </View>
             <View style={styles.shadow}>
               <TextInput
-                value={infoEntry.money}
+                value={addCommas(removeNonNumeric(infoEntry.money))}
                 onChangeText={onChangeInfoEntry('money')}
                 keyboardType="numeric"
                 style={styles.input}
