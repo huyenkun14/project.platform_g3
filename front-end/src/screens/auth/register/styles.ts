@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
         backgroundColor: defaultColors.backgroundColor,
     },
     logo: {
-        height: 60,
+        height: 80,
+        marginBottom: 10,
         resizeMode: 'contain',
         alignSelf: 'center',
     },
@@ -31,7 +32,7 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         fontWeight: '500',
-        color: defaultColors.text_3,
+        color: defaultColors.text_1,
     },
     input: {
         color: defaultColors.text_1,

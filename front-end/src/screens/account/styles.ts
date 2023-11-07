@@ -9,9 +9,10 @@ export const styles = StyleSheet.create({
         position: 'relative',
     },
     logo: {
-        height: 60,
+        height: 40,
         resizeMode: 'contain',
-        marginLeft: 25,
+        alignSelf: 'center',
+        marginBottom: 10,
     },
     item: {
         flexDirection: 'row',
