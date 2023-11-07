@@ -1,14 +1,19 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Home from '../screens/test';
+import Classify from '../screens/classify';
 
-const Tab = createMaterialTopTabNavigator();
-
-const ClassifyTopTab = () => {
+const TopTab = () => {
+  const Tab = createMaterialTopTabNavigator();
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Test" component={Home} />
-      <Tab.Screen name="HomeTest" component={Home} />
+    <Tab.Navigator initialRouteName="ClassifyExpense">
+      <Tab.Screen name="ClassifyExpense" component={Home} />
+      <Tab.Screen name="ClassifyIncome" component={Classify} />
     </Tab.Navigator>
   );
+}
+const ClassifyTopTab = () => {
+  return (
+    <TopTab />
+  )
 }
 export default ClassifyTopTab
