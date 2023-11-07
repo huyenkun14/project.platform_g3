@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
         backgroundColor: defaultColors.backgroundColor,
     },
     logo: {
-        height: 50,
-        resizeMode: 'stretch',
+        height: 60,
+        resizeMode: 'contain',
         alignSelf: 'center',
     },
     slogan: {

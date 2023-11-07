@@ -10,8 +10,8 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 25,
     },
     logo: {
-        height: 50,
-        resizeMode: 'stretch',
+        height: 60,
+        resizeMode: 'contain',
         alignSelf: 'center',
     },
     inputLabel: {

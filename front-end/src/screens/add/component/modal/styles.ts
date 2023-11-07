@@ -13,8 +13,8 @@ export const styles = StyleSheet.create({
   },
   logo: {
     alignSelf: 'center',
-    height: 50,
-    resizeMode: 'stretch',
+    height: 60,
+    resizeMode: 'contain',
   },
   header: {
     color: defaultColors.titleColor,
