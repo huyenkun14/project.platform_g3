@@ -20,7 +20,7 @@ const Account = () => {
                 <Header title='Tài khoản' isBack={true} />
                 <Image
                     style={styles.logo}
-                    source={require('../../../../../assets/images/Moly.png')}
+                    source={require('../../../assets/images/Moly.png')}
                 />
                 {/* menu */}
                 <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate(NAVIGATION_TITLE.HOME) }}>
