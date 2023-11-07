@@ -50,7 +50,10 @@ const Login = () => {
 
     return (
         <KeyboardAvoidingView style={styles.container}>
-            <Text style={styles.title}>Moli</Text>
+            <Image
+                style={styles.logo}
+                source={require('../../../../../assets/images/Moly.png')}
+            />
             <Text style={styles.slogan}>Đừng để tiền rơi</Text>
             <Text style={styles.inputLabel}>E-mail: </Text>
             <View style={styles.formItem}>
@@ -72,7 +75,7 @@ const Login = () => {
                 />
             </View>
             <TouchableOpacity onPress={handleLogin} style={[styles.formItem, styles.formBtn]}>
-                    <Text style={styles.textBtn}>Đăng nhập</Text>
+                <Text style={styles.textBtn}>Đăng nhập</Text>
             </TouchableOpacity>
             <View style={styles.register}>
                 <Text style={styles.registerText}>Chưa có tài khoản? </Text>

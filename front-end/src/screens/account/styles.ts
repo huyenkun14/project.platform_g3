@@ -8,11 +8,9 @@ export const styles = StyleSheet.create({
         backgroundColor: defaultColors.backgroundColor,
         position: 'relative',
     },
-    title: {
-        color: defaultColors.titleColor,
-        fontSize: 25,
-        fontWeight: '800',
-        marginBottom: 3,
+    logo: {
+        height: 50,
+        resizeMode: 'stretch',
         marginLeft: 25,
     },
     item: {

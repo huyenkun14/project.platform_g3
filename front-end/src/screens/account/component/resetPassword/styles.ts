@@ -9,12 +9,10 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 25,
     },
-    title: {
-        color: defaultColors.titleColor,
-        fontSize: 40,
-        fontWeight: '800',
-        marginBottom: 3,
-        textAlign: 'center',
+    logo: {
+        height: 50,
+        resizeMode: 'stretch',
+        alignSelf: 'center',
     },
     inputLabel: {
         marginBottom: 8,
@@ -27,17 +25,17 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         marginBottom: 16,
-    }, 
+    },
     buttonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'space-evenly',
+        justifyContent: 'space-evenly',
         marginTop: 16,
-    }, 
+    },
     button: {
         height: 40,
         borderRadius: 8,
-        width: SCREEN_WIDTH/3,
+        width: SCREEN_WIDTH / 3,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: defaultColors.tabActive
