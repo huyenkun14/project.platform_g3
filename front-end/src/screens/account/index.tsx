@@ -18,7 +18,10 @@ const Account = () => {
             <StatusBar />
             <ScrollView style={styles.container}>
                 <Header title='Tài khoản' isBack={true} />
-                <Text style={styles.title}>Moli</Text>
+                <Image
+                    style={styles.logo}
+                    source={require('../../../../../assets/images/Moly.png')}
+                />
                 {/* menu */}
                 <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate(NAVIGATION_TITLE.HOME) }}>
                     <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_home.png')} />

@@ -63,7 +63,10 @@ const Login = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <Text style={styles.title}>Moli</Text>
+      <Image
+        style={styles.logo}
+        source={require('../../../../../assets/images/Moly.png')}
+      />
       <Text style={styles.slogan}>Đừng để tiền rơi</Text>
       <Text style={styles.inputLabel}>Tên: </Text>
       <View style={styles.formItem}>
