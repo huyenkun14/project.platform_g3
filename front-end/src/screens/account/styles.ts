@@ -11,8 +11,10 @@ const styles = () => {
             position: 'relative',
         },
         logo: {
-            height: 50,
-            resizeMode: 'stretch',
+            height: 40,
+            resizeMode: 'contain',
+            alignSelf: 'center',
+            marginBottom: 10,
         },
         title: {
             color: theme.titleColor,

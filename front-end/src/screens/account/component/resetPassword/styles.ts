@@ -13,8 +13,8 @@ const styles = () => {
         paddingHorizontal: 25,
     },
     logo: {
-        height: 50,
-        resizeMode: 'stretch',
+        height: 60,
+        resizeMode: 'contain',
         alignSelf: 'center',
     },
     title: {
