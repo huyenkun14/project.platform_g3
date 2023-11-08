@@ -1,6 +1,7 @@
-import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import st from './styles'
+import DatePicker from '@react-native-community/datetimepicker';
 import Header from '../../components/header'
 import Entry from '../../components/entry'
 import AddNewEntry from './component/modal'
@@ -12,7 +13,10 @@ import moment from 'moment';
 import { checkWarningAction } from '../../services/notification/actions';
 import { addCommas, removeNonNumeric } from '../../../utils/formatMoney';
 import * as ImagePicker from 'expo-image-picker';
+import { getAllClassifyAction } from '../../services/classify/actions'
+import DropDownPicker from 'react-native-dropdown-picker'
 const Add = () => {
+  const styles = st();
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
   const [image, setImage] = useState(null);
