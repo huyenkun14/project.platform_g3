@@ -50,11 +50,11 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
     data.append('amount', infoEntry.money.replace('.', ''))
     data.append('date', infoEntry.time)
     data.append('description', infoEntry.note)
-    data.append('image', {
-      uri: imageToUpload,
-      type: `image/${imageType}`,
-      name: imageName
-    });
+    // data.append('image', {
+    //   uri: imageToUpload,
+    //   type: `image/${imageType}`,
+    //   name: imageName
+    // });
     dispatch(createEntryAction(data))
       .then(res => {
         if (res?.payload) {
@@ -73,16 +73,16 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
       })
       .catch(err => console.log('err', err))
   }
-  const checkWarning = () => {
-    dispatch(checkWarningAction({
-      transactionId: newEntry?.transactionId
-    }))
-      .then(res => {
-        console.log(res, 'warninggggggg')
-        setWarning(res?.payload)
-      })
-      .catch(err => console.log(err))
-  }
+  // const checkWarning = () => {
+  //   dispatch(checkWarningAction({
+  //     transactionId: newEntry?.transactionId
+  //   }))
+  //     .then(res => {
+  //       console.log(res, 'warninggggggg')
+  //       setWarning(res?.payload)
+  //     })
+  //     .catch(err => console.log(err))
+  // }
   const onListClassifyOpen = useCallback(() => {
     setListOpen(false);
   }, []);
@@ -227,10 +227,10 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
               </View>
               <TouchableOpacity onPress={() => {
                 handleCreateEntry()
-                checkWarning()
-                if (warning?.message) {
-                  Alert.alert(`${warning?.message}`)
-                }
+                // checkWarning()
+                // if (warning?.message) {
+                //   Alert.alert(`${warning?.message}`)
+                // }
               }}>
                 <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
               </TouchableOpacity>

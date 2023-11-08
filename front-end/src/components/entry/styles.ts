@@ -18,6 +18,13 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    newIcon: {
+        height: 10,
+        width: 10,
+        borderRadius: 10,
+        backgroundColor: 'green',
+        marginRight: 10,
+    },
     image: {
         height: 40,
         width: 40,
