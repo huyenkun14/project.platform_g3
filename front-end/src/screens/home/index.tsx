@@ -101,7 +101,7 @@ const Home = () => {
       .then(res => {
         setLoading(false)
         console.log(res)
-        const converListEntry = res?.payload.slice(-3)
+        const converListEntry = res?.payload.slice(-5)
         setListEntry(converListEntry)
       })
       .catch(err => {
