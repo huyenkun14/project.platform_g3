@@ -18,7 +18,7 @@ const styles = () => {
     logo: {
       alignSelf: 'center',
       height: 50,
-      resizeMode: 'stretch',
+      resizeMode: 'contain',
     },
     header: {
       color: theme.titleColor,
