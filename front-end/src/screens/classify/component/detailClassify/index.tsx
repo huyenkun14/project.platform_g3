@@ -9,14 +9,14 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { styles } from "./styles";
+import st from "./styles";
 import { useDispatch } from "react-redux";
 import { createClassifyAction } from "../../../../services/classify/actions";
 import { createBudgetAction } from "../../../../services/budget/actions";
-import { defaultColors } from "../../../../theme";
 import DropDownPicker from "react-native-dropdown-picker";
 import { BASE_URL } from "../../../../constants/api";
 import { deleteCategory, updateCategory } from "../../../../services/classify";
+import useTheme from "../../../../hooks/useTheme";
 
 interface Iprops {
   modalVisible?: boolean;
@@ -35,6 +35,8 @@ const DetailClassify = (props: Iprops) => {
     title: item?.title
   });
   const [iconCurrent, setIconCurrent] = useState<number>(item?.iconId);
+  const styles = st();
+  const theme = useTheme();
 
   const [open, setOpen] = useState(false);
 
@@ -134,7 +136,7 @@ const DetailClassify = (props: Iprops) => {
               items={items}
               setOpen={setOpen}
               setValue={setValue}
-              style={{ borderWidth: 1, borderColor: defaultColors.borderColor }}
+              style={{ borderWidth: 1, borderColor: theme.borderColor }}
               customItemContainerStyle={{
                 borderWidth: 0,
                 backgroundColor: "red",
@@ -159,7 +161,7 @@ const DetailClassify = (props: Iprops) => {
                                 style={styles.addImageIcon}
                             />
                             <Text style={styles.addImageText}>Chọn ảnh</Text> */}
-              <ScrollView style={{ width: "100%", height: "100%" }}>
+              <ScrollView style={{ width: "100%", height: "100%" }} showsVerticalScrollIndicator={false}>
                 <View
                   style={{
                     width: "100%",
@@ -179,8 +181,8 @@ const DetailClassify = (props: Iprops) => {
                             marginTop: 5,
                             borderColor:
                               it?.id !== iconCurrent
-                                ? defaultColors.borderColor
-                                : defaultColors.tabActive,
+                                ? theme.borderColor
+                                : theme.tabActive,
                             borderWidth: 1,
                             borderRadius: 5,
                           }}
@@ -188,7 +190,7 @@ const DetailClassify = (props: Iprops) => {
                           <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
                             <Image
                                 source={{ uri: `${BASE_URL}${it?.url}` }}
-                                style={{ width: 50, height: 50 }}
+                                style={{ width: 35, height: 35 }}
                                 resizeMode="stretch"
                             />
                           </TouchableOpacity>
@@ -209,7 +211,7 @@ const DetailClassify = (props: Iprops) => {
               <TouchableOpacity
                 onPress={handleUpdateCategory}
                 style={{
-                  backgroundColor: defaultColors.tabActive,
+                  backgroundColor: theme.tabActive,
                   padding: 12,
                   borderRadius: 5,
                 }}
@@ -218,7 +220,7 @@ const DetailClassify = (props: Iprops) => {
                   style={{
                     fontSize: 15,
                     fontWeight: "600",
-                    color: defaultColors.WHITE,
+                    color: theme.WHITE,
                   }}
                 >
                   Chỉnh sửa danh mục
@@ -227,7 +229,7 @@ const DetailClassify = (props: Iprops) => {
               <TouchableOpacity
                 onPress={() => handleDeleteCategory(item?.categoryId)}
                 style={{
-                  backgroundColor: defaultColors.CANCEL_BACKGROUNG,
+                  backgroundColor: theme.CANCEL_BACKGROUNG,
                   padding: 12,
                   borderRadius: 5,
                 }}
@@ -236,7 +238,7 @@ const DetailClassify = (props: Iprops) => {
                   style={{
                     fontSize: 15,
                     fontWeight: "600",
-                    color: defaultColors.WHITE,
+                    color: theme.WHITE,
                   }}
                 >
                   Xóa danh mục

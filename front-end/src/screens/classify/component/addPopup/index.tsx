@@ -1,17 +1,19 @@
 import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid, ScrollView } from 'react-native'
 import React, { useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import { useDispatch } from 'react-redux'
 import { createClassifyAction } from '../../../../services/classify/actions'
 import Checkbox from 'expo-checkbox';
 import { BASE_URL } from '../../../../constants/api'
-import { defaultColors } from '../../../../theme'
 import { createCategory } from '../../../../services/classify'
+import useTheme from '../../../../hooks/useTheme'
 
 const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, handleGetlist }) => {
     const dispatch = useDispatch<any>()
     const [isIncomeChecked, setIncomeChecked] = useState(false);
     const [iconCurrent, setIconCurrent] = useState<number>(null);
+    const styles = st();
+    const theme = useTheme();
 
     const [infoClassify, setInfoClassify] = useState({
         title: '',
@@ -34,11 +36,11 @@ const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, h
         }
     }
     const handleChangeInfoClassifyValue = (value: boolean) => {
-        let _data = {...infoClassify}
+        let _data = { ...infoClassify }
         _data.value = value
         setInfoClassify(_data)
     }
-    const handleCreateClassify = async() => {
+    const handleCreateClassify = async () => {
         setLoading(true)
         const res = await createCategory({
             iconId: iconCurrent,
@@ -99,42 +101,42 @@ const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, h
                             </View>
                         </View>
                         <View style={styles.addImage}>
-                            <ScrollView style={{ width: "100%", height: "100%" }}>
+                            <ScrollView style={{ width: "100%", height: "100%" }} showsVerticalScrollIndicator={false}>
                                 <View
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    flexDirection: "row",
-                                    flexWrap: "wrap",
-                                    justifyContent: "space-around",
-                                }}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        flexDirection: "row",
+                                        flexWrap: "wrap",
+                                        justifyContent: "space-around",
+                                    }}
                                 >
-                                {listIcon &&
-                                    listIcon.length > 0 &&
-                                    listIcon.map((it) => {
-                                    return (
-                                        <View
-                                        style={{
-                                            padding: 10,
-                                            marginTop: 5,
-                                            borderColor:
-                                            it?.id !== iconCurrent
-                                                ? defaultColors.borderColor
-                                                : defaultColors.tabActive,
-                                            borderWidth: 1,
-                                            borderRadius: 5,
-                                        }}
-                                        >
-                                        <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
-                                            <Image
-                                                source={{ uri: `${BASE_URL}${it?.url}` }}
-                                                style={{ width: 50, height: 50 }}
-                                                resizeMode="stretch"
-                                            />
-                                        </TouchableOpacity>
-                                        </View>
-                                    );
-                                    })}
+                                    {listIcon &&
+                                        listIcon.length > 0 &&
+                                        listIcon.map((it) => {
+                                            return (
+                                                <View
+                                                    style={{
+                                                        padding: 10,
+                                                        marginTop: 5,
+                                                        borderColor:
+                                                            it?.id !== iconCurrent
+                                                                ? theme.borderColor
+                                                                : theme.tabActive,
+                                                        borderWidth: 1,
+                                                        borderRadius: 5,
+                                                    }}
+                                                >
+                                                    <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
+                                                        <Image
+                                                            source={{ uri: `${BASE_URL}${it?.url}` }}
+                                                            style={{ width: 35, height: 35 }}
+                                                            resizeMode="stretch"
+                                                        />
+                                                    </TouchableOpacity>
+                                                </View>
+                                            );
+                                        })}
                                 </View>
                             </ScrollView>
                         </View>

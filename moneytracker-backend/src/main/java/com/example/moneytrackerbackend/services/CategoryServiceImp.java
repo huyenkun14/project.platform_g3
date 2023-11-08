@@ -64,10 +64,28 @@ public class CategoryServiceImp implements CategoryService {
 
         Category category = getCategoryById(id);
 
-        List<Transaction> transactions = transactionRepository.findAllByCategoryIdOrderByDate(category.getId());
+        List<Transaction> transactions = transactionRepository.findAllByCategoryIdOrderByIdDesc(category.getId());
         if(!transactions.isEmpty()){
             throw new CustomException("Error: Have transaction of this category");
         }
         categoryRepository.deleteById(id);
+    }
+    public void createDefaultCategory(Long userId){
+        CategoryRequest defaultIncomeCategory = CategoryRequest.builder()
+                .userId(userId)
+                .title("Thu nhập mặc định")
+                .iconId(Long.parseLong("1"))
+                .value(true)
+                .build();
+        createCategory(defaultIncomeCategory);
+
+        CategoryRequest defaultSpendingCategory = CategoryRequest.builder()
+                .userId(userId)
+                .title("Chi tiêu mặc định")
+                .iconId(Long.parseLong("1"))
+                .value(false)
+                .build();
+
+        createCategory(defaultSpendingCategory);
     }
 }

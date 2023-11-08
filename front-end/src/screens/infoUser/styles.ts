@@ -1,9 +1,12 @@
 import { StyleSheet } from "react-native";
-import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from "../../theme";
+import useTheme from "../../hooks/useTheme";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../utils/Dimension";
 
-export const styles = StyleSheet.create({
+const styles = () => {
+    const theme = useTheme();
+const st = StyleSheet.create({
     container: {
-        backgroundColor: defaultColors.backgroundColor,
+        backgroundColor: theme.backgroundColor,
         minHeight: SCREEN_HEIGHT,
     },
     headerContainer: {
@@ -62,7 +65,7 @@ export const styles = StyleSheet.create({
     },
     amountItem: {
         minWidth: SCREEN_WIDTH/3,
-        backgroundColor: defaultColors.flatListItem,
+        backgroundColor: theme.flatListItem,
         borderRadius: 10,
         paddingHorizontal: 15,
         paddingVertical: 20
@@ -72,16 +75,16 @@ export const styles = StyleSheet.create({
         width: 25,
         resizeMode: 'contain',
         marginBottom: 15,
-        tintColor: defaultColors.text_white,
+        tintColor: theme.text_white,
     },
     amountLabel:{
         fontSize: 12,
-        color: defaultColors.text_white,
+        color: theme.text_white,
         marginBottom: 6,
     },
     amountText: {
         fontSize: 16,
-        color: defaultColors.text_white,
+        color: theme.text_white,
     },
     modalContainer: {
         backgroundColor: 'rgba(0,0,0,0.5)',
@@ -93,7 +96,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 25,
         paddingVertical: 30,
         borderRadius: 10,
-        backgroundColor: defaultColors.backgroundColor,
+        backgroundColor: theme.backgroundColor,
         width: SCREEN_WIDTH-40,
     },
     modalAvatar: {
@@ -105,7 +108,7 @@ export const styles = StyleSheet.create({
         marginBottom: 16,
     },
     input: {
-        borderEndColor: defaultColors.borderColor,
+        borderEndColor: theme.borderColor,
         borderRadius: 10,
         borderWidth: 1,
         paddingVertical: 10,
@@ -121,9 +124,13 @@ export const styles = StyleSheet.create({
     button: {
         paddingHorizontal: 16,
         paddingVertical: 8,
-        backgroundColor: defaultColors.flatListItem,
-        color: defaultColors.text_white,
+        backgroundColor: theme.flatListItem,
+        color: theme.text_white,
         borderRadius: 8,
         overflow: 'hidden'
     }
 })
+    return st
+}
+
+export default styles

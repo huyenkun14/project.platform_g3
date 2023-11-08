@@ -1,6 +1,6 @@
 import { View, Text, FlatList, SafeAreaView, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header'
 import Entry from '../../components/entry'
 import moment from 'moment';
@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 
 const History = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const styles = st();
   const [date, setDate] = useState<Date>(new Date());
   const dispatch = useDispatch<any>()
   const [listEntry, setListEntry] = useState([])
@@ -47,7 +48,7 @@ const History = () => {
           <Text style={styles.timeText}>{moment(date).format("MM-YYYY")}</Text>
         </View>
         <View>
-          {listEntry.length > 0 ? listEntry?.map((item, index) => (
+          {listEntry?.length > 0 ? listEntry?.map((item, index) => (
             <Entry
               entryId={item.transactionId}
               key={index}
@@ -56,6 +57,7 @@ const History = () => {
               price={item.amount}
               note={item.description}
               status={item.category.value}
+              imageUrl={item.category.urlIcon}
             />
           )) : <Text style={{ textAlign: 'center', marginTop: 50 }}>Không có giao dịch.</Text>}
 

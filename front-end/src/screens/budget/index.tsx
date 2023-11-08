@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { getAllClassifyAction } from '../../services/classify/actions'
 import { useDispatch } from 'react-redux'
 import Header from '../../components/header'
-import { styles } from './styles'
-import { SCREEN_WIDTH, defaultColors } from '../../theme'
+import st from './styles'
 import { getBudgetByMonthAction } from '../../services/budget/actions'
 import DatePicker from '@react-native-community/datetimepicker';
 import moment from 'moment'
@@ -15,6 +14,9 @@ import { deleteBudget, updateBudget } from '../../services/budget'
 import { ToastAndroid } from 'react-native'
 import Loading from '../../../utils/loading/Loading'
 import { BASE_URL } from '../../constants/api'
+import { addCommas, formatMoneyNotVND, removeNonNumeric } from '../../../utils/formatMoney'
+import useTheme from '../../hooks/useTheme'
+import { SCREEN_WIDTH } from '../../../utils/Dimension'
 
 const Budget = () => {
     const dispatch = useDispatch<any>()
@@ -28,6 +30,8 @@ const Budget = () => {
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [itemChoose, setItemChoose] = useState<any>()
     const [loading, setLoading] = useState<boolean>(false)
+    const theme = useTheme();
+    const styles = st();
     useEffect(() => {
         getListBudget()
         getFinancialValueList()
@@ -64,12 +68,12 @@ const Budget = () => {
         setDate(currentDate);
     };
 
-    const handleUpdate = async() => {
+    const handleUpdate = async () => {
         setLoading(true)
         const res = await updateBudget({
             budgetId: itemChoose?.budgetId,
             categoryId: itemChoose?.category?.categoryId,
-            amount: Number(valueCurrent),
+            amount: Number(valueCurrent.replace('.', '')),
             startDate: moment(itemChoose?.startDate).format('DD-MM-YYYY'),
             endDate: moment(itemChoose?.endDate).format('DD-MM-YYYY')
         })
@@ -88,7 +92,7 @@ const Budget = () => {
         setLoading(true)
         const res = await deleteBudget(itemChoose?.budgetId)
         setLoading(false)
-        if (res?.status === 200){
+        if (res?.status === 200) {
             setOpenModal(false)
             getListBudget()
             ToastAndroid.show("Xóa budget thành công", ToastAndroid.SHORT);
@@ -131,29 +135,30 @@ const Budget = () => {
                         ...item1
                     }))).map((item, index) => {
                         return (
-                        <TouchableOpacity key={index} onPress={() => handleOpenModal(item)} >
-                            <View style={styles.budgetContainer}>
-                                <View style={styles.typeContainer}>
-                                    <View style={[styles.image, {padding: 10}]}>
-                                        <Image source={{uri: `${BASE_URL}${item?.category?.urlIcon}`}} resizeMode='stretch' style={{width: '100%', height: '100%'}} />
-                                    </View>
-                                    <View>
-                                        <Text style={styles.title}>{item?.category?.title}</Text>
-                                        <View style={styles.range}>
-                                            <View style={[styles.current,
-                                            {
-                                                width: item?.totalAmount ? (Number(item?.totalAmount) / Number(item?.amount)) * rangeWidth : 0,
-                                                maxWidth: rangeWidth
-                                            },
-                                            (Number(item?.totalAmount) / Number(item?.amount)) >= 0.8 ? styles.warning : styles.safe
-                                            ]} />
+                            <TouchableOpacity key={index} onPress={() => handleOpenModal(item)} >
+                                <View style={styles.budgetContainer}>
+                                    <View style={styles.typeContainer}>
+                                        <View style={[styles.image, { padding: 10 }]}>
+                                            <Image source={{ uri: `${BASE_URL}${item?.category?.urlIcon}` }} resizeMode='stretch' style={{ width: '100%', height: '100%' }} />
                                         </View>
+                                        <View>
+                                            <Text style={styles.title}>{item?.category?.title}</Text>
+                                            <View style={styles.range}>
+                                                <View style={[styles.current,
+                                                {
+                                                    width: item?.totalAmount ? (Number(item?.totalAmount) / Number(item?.amount)) * rangeWidth : 0,
+                                                    maxWidth: rangeWidth
+                                                },
+                                                (Number(item?.totalAmount) / Number(item?.amount)) >= 0.8 ? styles.warning : styles.safe
+                                                ]} />
+                                            </View>
 
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                    )}) : <Text style={{ textAlign: 'center', marginTop: 50 }}>Chưa có ngân sách nào được tạo trong tháng {moment(date).format('MM-YYYY')}.</Text>
+                            </TouchableOpacity>
+                        )
+                    }) : <Text style={{ textAlign: 'center', marginTop: 50 }}>Chưa có ngân sách nào được tạo trong tháng {moment(date).format('MM-YYYY')}.</Text>
                 }
             </ScrollView>
             <TouchableOpacity
@@ -176,10 +181,10 @@ const Budget = () => {
                 }}
                     >
                     <View style={{backgroundColor: 'rgba(0,0,0,0.6)', flex: 1, alignItems: 'center', justifyContent: "center"}}>
-                        <View style={{width: 300, height: 200, backgroundColor: defaultColors.WHITE, borderRadius: 8, padding: 16}}>
-                            <Text style={{fontSize: 18, fontWeight: "600", color: defaultColors.flatListItem, textAlign: "center"}}>Sửa ngân sách</Text>
+                        <View style={{width: 300, height: 200, backgroundColor: theme.WHITE, borderRadius: 8, padding: 16}}>
+                            <Text style={{fontSize: 18, fontWeight: "600", color: theme.flatListItem, textAlign: "center"}}>Sửa ngân sách</Text>
                             <View style={{marginTop: 12}}>
-                                <Text style={{fontSize: 16, fontWeight: "500", color: defaultColors.BLACK}}>Giá trị</Text>
+                                <Text style={{fontSize: 16, fontWeight: "500", color: theme.BLACK}}>Giá trị</Text>
                                 <View style={{flexDirection: "row", alignItems: "center", marginTop: 12}}>
                                     <TextInput 
                                         placeholder='Giá trị' 
@@ -188,33 +193,33 @@ const Budget = () => {
                                         onChangeText={(text) => setValueCurrent(text)} 
                                         style={{
                                             borderWidth: 1, 
-                                            borderColor: defaultColors.borderColor, 
+                                            borderColor: theme.borderColor, 
                                             height: 40,
                                             flex: 1,
                                             padding: 5,
                                             textAlign: "right",
                                             borderRadius: 5,
                                             marginRight: 10
-                                            }} />
+                                        }} />
                                     <Text>VND</Text>
                                 </View>
                             </View>
-                            <View style={{marginTop: 24, flexDirection: "row", justifyContent: "space-between"}}>
+                            <View style={{ marginTop: 24, flexDirection: "row", justifyContent: "space-between" }}>
                                 <TouchableOpacity onPress={handleUpdate}>
-                                    <View style={{width: 150, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: defaultColors.tabActive, overflow: "hidden"}}>
+                                    <View style={{width: 150, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: theme.tabActive, overflow: "hidden"}}>
                                         <Text style={{
                                             fontSize: 15,
                                             fontWeight: "600",
-                                            color: defaultColors.WHITE,
+                                            color: theme.WHITE,
                                         }}>Chỉnh sửa</Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={handleDelete}>
-                                    <View style={{width: 100, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: defaultColors.CANCEL_BACKGROUNG, overflow: "hidden"}}>
+                                    <View style={{width: 100, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: theme.CANCEL_BACKGROUNG, overflow: "hidden"}}>
                                         <Text style={{
                                             fontSize: 15,
                                             fontWeight: "600",
-                                            color: defaultColors.WHITE,
+                                            color: theme.WHITE,
                                         }}>Xóa</Text>
                                     </View>
                                 </TouchableOpacity>

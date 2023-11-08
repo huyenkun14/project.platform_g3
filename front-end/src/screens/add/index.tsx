@@ -1,14 +1,15 @@
 import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header'
 import Entry from '../../components/entry'
-import { defaultColors } from '../../theme'
 import AddNewEntry from './component/modal'
 import { getAllEntryAction } from '../../services/entry/actions'
 import { useDispatch } from 'react-redux'
+import useTheme from '../../hooks/useTheme'
 const Add = () => {
   const [addIncome, setAddIncome] = useState(false)
+  const styles = st();
   const [addExpenses, setAddExpenses] = useState(false)
   const [isIncome, setIsIncome] = useState(false)
   const dispatch = useDispatch<any>()
@@ -47,24 +48,20 @@ const Add = () => {
         <Header title='Thêm' isBack={false} />
         {/* add item */}
         <View style={styles.addContainer}>
-          <TouchableOpacity onPress={toAddIncome}>
-            <View style={[styles.addItem, styles.addIncome]}>
-              <Image
-                source={require('../../../assets/images/icon/add.png')}
-                style={[styles.itemIcon, { tintColor: defaultColors.text_3 }]}
-              />
-              <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
-            </View>
+          <TouchableOpacity onPress={toAddIncome} style={[styles.addItem, styles.addIncome]}>
+            <Image
+              source={require('../../../assets/images/icon/add.png')}
+              style={[styles.itemIcon, { tintColor: useTheme().text_3 }]}
+            />
+            <Text style={styles.addIncomeText}>Thêm thu nhập</Text>
           </TouchableOpacity>
           <View style={styles.addContainer}>
-            <TouchableOpacity onPress={toAddExpense}>
-              <View style={[styles.addItem, styles.addExpense]}>
-                <Image
-                  source={require('../../../assets/images/icon/add.png')}
-                  style={[styles.itemIcon, { tintColor: defaultColors.text_2 }]}
-                />
-                <Text style={styles.addExpenseText}>Thêm chi tiêu</Text>
-              </View>
+            <TouchableOpacity onPress={toAddExpense} style={[styles.addItem, styles.addExpense]}>
+              <Image
+                source={require('../../../assets/images/icon/add.png')}
+                style={[styles.itemIcon, { tintColor: useTheme().text_2 }]}
+              />
+              <Text style={styles.addExpenseText}>Thêm chi tiêu</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -80,7 +77,9 @@ const Add = () => {
               time={item.date}
               price={item.amount}
               note={item.description}
-              status={item.category.value} />))
+              status={item.category.value}
+              imageUrl={item.category.urlIcon}
+            />))
             :
             <Text style={{ textAlign: 'center' }}>Không có giao dịch gần đây</Text>
           }

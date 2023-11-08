@@ -1,6 +1,6 @@
 import { ScrollView, View, Text, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header'
 import { overview } from '../../mock/home'
 import Banner from './components/banner'
@@ -17,6 +17,7 @@ import { formatMoneyNotVND } from '../../../utils/formatMoney'
 
 const Home = () => {
   const dispatch = useDispatch<any>()
+  const styles = st();
   const [listEntry, setListEntry] = useState([])
   const [loading, setLoading] = useState<boolean>(false)
   const [infoUser, setInfoUser] = useState({
@@ -29,11 +30,11 @@ const Home = () => {
     username: ""
   })
   const optionsData = [
-    {
-      id: 1,
-      title: 'Quản lý',
-      icon: require('../../../assets/images/icon/ic_manager.png')
-    },
+    // {
+    //   id: 1,
+    //   title: 'Quản lý',
+    //   icon: require('../../../assets/images/icon/ic_manager.png')
+    // },
     {
       id: 2,
       title: 'Giao diện',
@@ -49,13 +50,14 @@ const Home = () => {
     {
       id: 4,
       title: 'Nhắc nhở',
-      icon: require('../../../assets/images/icon/ic_bell.png')
+      icon: require('../../../assets/images/icon/ic_bell.png'),
+      router: NAVIGATION_TITLE.NOTIFICATION
     },
-    {
-      id: 5,
-      title: 'Tìm kiếm',
-      icon: require('../../../assets/images/icon/ic_search.png')
-    },
+    // {
+    //   id: 5,
+    //   title: 'Tìm kiếm',
+    //   icon: require('../../../assets/images/icon/ic_search.png')
+    // },
     {
       id: 6,
       title: 'Tài khoản',
@@ -163,8 +165,8 @@ const Home = () => {
             {optionsData.map((item) => (
               <Option title={item.title} icon={item.icon} key={item.id} router={item.router} theme={item?.theme} />
             ))}
-            <View style={styles.emptyOption} />
-            <View style={styles.emptyOption} />
+            {/* <View style={styles.emptyOption} />
+            <View style={styles.emptyOption} /> */}
           </View>
         </View>
         {/* banner */}
@@ -182,7 +184,9 @@ const Home = () => {
               time={item.date}
               price={item.amount}
               note={item.description}
-              status={item.category.value} />))
+              status={item.category.value}
+              imageUrl={item.category.urlIcon}
+            />))
             :
             <Text style={{ textAlign: 'center', paddingBottom: 50 }}>Không có giao dịch gần đây</Text>
           }

@@ -1,12 +1,13 @@
 import { View, Text, Modal, TouchableOpacity, Image, TextInput, ToastAndroid } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import moment from 'moment';
 import DatePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createBudgetAction } from '../../../../services/budget/actions';
+import { addCommas, removeNonNumeric } from '../../../../../utils/formatMoney';
 
 const AddNewBudget = ({ modalVisible, setModalVisible }) => {
     const [listClassify, setListClassify] = useState([]);
@@ -16,6 +17,7 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
     const [listOpen, setListOpen] = useState(false);
     const [date, setDate] = useState<Date>(new Date());
     const dispatch = useDispatch<any>()
+    const styles = st();
     const [infoBudget, setInfoBudget] = useState({
         startDate: '',
         endDate: '',
@@ -40,7 +42,7 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
             startDate: moment(firstDay).format("DD-MM-YYYY"),
             endDate: moment(lastDay).format("DD-MM-YYYY"),
             categoryId: infoBudget.categoryId,
-            amount: infoBudget.amount
+            amount: infoBudget.amount.replace('.','')
         }))
             .then(res => {
                 if(res?.payload){
@@ -130,7 +132,7 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                 </View>
                 <View style={styles.shadow}>
                     <TextInput
-                        value={infoBudget?.amount}
+                        value={addCommas(removeNonNumeric(infoBudget?.amount))}
                         onChangeText={onChangeInfoBudget('amount')}
                         keyboardType="numeric"
                         style={styles.input}

@@ -3,9 +3,13 @@
 import React from 'react'
 import Carousel from 'react-native-reanimated-carousel';
 import { View, Image } from 'react-native';
-import { SLIDER_HEIGHT, SLIDER_WIDTH, styles } from './styles';
+import st from './styles';
 
 const Banner = () => {
+
+  const styles = st().st;
+  const SLIDER_HEIGHT = st().SLIDER_HEIGHT;
+  const SLIDER_WIDTH = st().SLIDER_WIDTH;
 
   const dataBanner = [
     {

@@ -11,7 +11,7 @@ const lightColors = {
         flatListItem: '#7FC4DC',
         optionItem: '#fff',
         // entry
-        backgroundType: '#E2F0F5',
+        backgroundType: '#98D8F0',
         borderColor: '#E6E6E6',
         // tab
         tabColor: '#BDBDBD',
@@ -24,7 +24,8 @@ const lightColors = {
         // other
         WHITE: '#FFFFFF',
         BLACK: "#000000",
-        CANCEL_BACKGROUNG: "#DC143C"
+        CANCEL_BACKGROUNG: "#DC143C",
+        OPTION_ACTIVE: "#3B3DBF",
 }
 
 export default lightColors;

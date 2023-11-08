@@ -1,20 +1,22 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { styles } from './styles'
-import { SCREEN_WIDTH } from '../../../../theme'
+import st from './styles'
 import { BASE_URL } from '../../../../constants/api'
+import { SCREEN_WIDTH } from '../../../../../utils/Dimension'
 
 const TypeItem = (props) => {
     const { title, status, budget, current, openDetailClassify, item } = props
     const rangeWidth = SCREEN_WIDTH / 2
+    const styles = st();
     const itemWidth = (Number(current) / Number(budget)) * rangeWidth
 
     return (
         <TouchableOpacity onPress={openDetailClassify}>
             <View style={styles.container}>
                 <View style={styles.typeContainer}>
-                    {/* <View style={styles.image} /> */}
-                    <Image style={styles.image} resizeMode='stretch' source={{uri: item?.iconId ? `${BASE_URL}${item?.urlIcon}` : 'https://cdn-icons-png.flaticon.com/512/447/447120.png'}} />
+                    <View style={styles.image}>
+                        <Image style={styles.imageIcon} resizeMode='stretch' source={{ uri: item?.iconId ? `${BASE_URL}${item?.urlIcon}` : 'https://cdn-icons-png.flaticon.com/512/447/447120.png' }} />
+                    </View>
                     <View>
                         <Text style={styles.title}>{title}</Text>
                         {

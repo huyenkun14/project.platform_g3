@@ -10,13 +10,15 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Category findByTitleAndUserId(String title, Long userID);
+//    Category findByTitleAndUserId(String title, Long userID);
 
-    @Query("select COUNT(c) FROM Category c WHERE c.user.id = :userId AND c.title = :title")
+    @Query("SELECT COUNT(c) FROM Category c WHERE c.user.id = :userId AND c.title = :title")
     int existsByTitle(@Param("title") String title, @Param("userId") Long userId);
 
-    List<Category> findAllByValueAndUserId(boolean value, Long userId);
+    @Query("SELECT c FROM Category c WHERE c.user.id = :userId AND c.value = :value ORDER BY CASE  WHEN c.title = 'Thu nhập mặc định' THEN 1 WHEN c.title= 'Chi tiêu mặc định' THEN 2 ELSE 0 END ASC , c.title ASC")
+    List<Category> findAllByValueAndUserId(@Param("value") boolean value, @Param("userId") Long userId);
 
-    List<Category> findAllByUserId(Long userId);
+    @Query("SELECT c FROM Category c WHERE c.user.id = :userId ORDER BY CASE  WHEN c.title = 'Thu nhập mặc định' THEN 1 WHEN c.title= 'Chi tiêu mặc định' THEN 2 ELSE 0 END ASC , c.title ASC")
+    List<Category> findAllByUserId(@Param("userId") Long userId);
 
 }

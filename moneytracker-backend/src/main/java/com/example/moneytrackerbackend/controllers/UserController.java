@@ -1,6 +1,5 @@
 package com.example.moneytrackerbackend.controllers;
 
-import com.example.moneytrackerbackend.dto.request.CategoryRequest;
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.UserRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
@@ -47,22 +46,25 @@ public class UserController {
 
     @PostMapping("/api/auth/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String jwt = tokenProvider.generateJwtToken(authentication);
+
         return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getId(), userDetails.getUsername()));
     }
 
     @PostMapping("api/auth/register")
     public ResponseEntity<MessageResponse> register(@RequestBody UserRequest registerRequest) {
 
-        if(userRepository.existsByEmail(registerRequest.getEmail())){
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new CustomException("Error: Email is already taken!");
         }
 
@@ -72,30 +74,16 @@ public class UserController {
                 .phoneNumber(registerRequest.getPhoneNumber())
                 .build();
         user = userService.saveUser(user);
-
-        CategoryRequest defaultIncomeCategory = CategoryRequest.builder()
-                .userId(user.getId())
-                .title("Default Income")
-                .iconId(Long.parseLong( "1"))
-                .value(true)
-                .build();
-        categoryService.createCategory(defaultIncomeCategory);
-
-        CategoryRequest defaultSpendingCategory = CategoryRequest.builder()
-                .userId(user.getId())
-                .title("Default Expenditure")
-                .iconId(Long.parseLong( "1"))
-                .value(false)
-                .build();
-        categoryService.createCategory(defaultSpendingCategory);
+        categoryService.createDefaultCategory(user.getId());
 
         return ResponseEntity.ok(new MessageResponse("Success register account"));
     }
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("api/v1/user")
-    public ResponseEntity<UserResponse> getUser(Principal principal){
+    public ResponseEntity<UserResponse> getUser(Principal principal) {
 
-        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
 
@@ -103,60 +91,59 @@ public class UserController {
         int totalIncome = 0;
         int totalSpending = 0;
 
-        for (Transaction transaction: transactions){
-            if(transaction.getCategory().isValue()){
-                totalIncome+= transaction.getAmount();
-            }
-            else {
+        for (Transaction transaction : transactions) {
+            if (transaction.getCategory().isValue()) {
+                totalIncome += transaction.getAmount();
+            } else {
                 totalSpending += transaction.getAmount();
             }
         }
 
         return ResponseEntity.ok(convertUser(user, totalIncome, totalSpending));
     }
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("api/v1/user/set-avatar")
-    public ResponseEntity<MessageResponse> setAvatar(@RequestParam("image")MultipartFile image, Principal principal) {
+    public ResponseEntity<MessageResponse> setAvatar(@RequestParam("image") MultipartFile image, Principal principal) {
 
-        Long imgId= imageService.saveUploadedFile(image);
+        Long imgId = imageService.saveUploadedFile(image);
 
-        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
 
         user.setImageId(imgId);
         userService.saveUser(user);
 
-        return ResponseEntity.ok( new MessageResponse("Success set avatar"));
+        return ResponseEntity.ok(new MessageResponse("Success set avatar"));
     }
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("api/v1/user/update")
     public ResponseEntity<MessageResponse> updateUser(Principal principal,
-                                                   @RequestParam(value = "avatar", required = false) MultipartFile avatar,
-                                                   @RequestParam("username") String username,
-                                                   @RequestParam("password") String password,
-                                                   @RequestParam("email") String email,
-                                                   @RequestParam("phoneNumber") String phoneNumber){
+                                                      @RequestParam(value = "avatar", required = false) MultipartFile avatar,
+                                                      @RequestParam("username") String username,
+                                                      @RequestParam("email") String email,
+                                                      @RequestParam("phoneNumber") String phoneNumber) {
 
-        UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
         User user = userService.getUser(userId);
 
-        if(!user.getEmail().equals(email)){
-            if(userRepository.existsByEmail(email)){
+        if (!user.getEmail().equals(email)) {
+            if (userRepository.existsByEmail(email)) {
                 throw new CustomException("Error: Email is already taken!");
             }
             user.setEmail(email);
         }
-        if(avatar!=null){
-            Long imgId= imageService.saveUploadedFile(avatar);
-            if(user.getImageId()!=null){
+        if (avatar != null) {
+            Long imgId = imageService.saveUploadedFile(avatar);
+            if (user.getImageId() != null) {
                 imageService.deleteImage(user.getImageId());
             }
             user.setImageId(imgId);
         }
 
-        user.setPassword(encoder.encode(password));
         user.setUsername(username);
         user.setPhoneNumber(phoneNumber);
         userService.saveUser(user);
@@ -164,4 +151,23 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse("Success update your account."));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("api/v1/user/reset-password")
+    public ResponseEntity<MessageResponse> updateUserPassword(Principal principal,
+                                                              @RequestParam("prePassword") String prePassword,
+                                                              @RequestParam("password") String password) {
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Long userId = userDetails.getId();
+        User user = userService.getUser(userId);
+
+        if(encoder.matches(prePassword, user.getPassword())){
+            user.setPassword(encoder.encode(password));
+            userService.saveUser(user);
+
+            return ResponseEntity.ok(new MessageResponse("Success save new password."));
+        }
+
+        return ResponseEntity.ok(new MessageResponse("Old password is not collect."));
+    }
 }
