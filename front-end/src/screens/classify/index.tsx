@@ -1,6 +1,6 @@
 import { SafeAreaView, TouchableOpacity, View, Text, ScrollView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header';
 import TypeItem from './component/typeItem';
 import AddNewClassify from './component/addPopup';
@@ -9,11 +9,13 @@ import { useDispatch } from 'react-redux';
 import DetailClassify from './component/detailClassify';
 import { getAllIcon } from '../../services/icon';
 import Loading from '../../../utils/loading/Loading';
-import { defaultColors } from '../../theme';
 import { useIsFocused } from '@react-navigation/native';
+import useTheme from '../../hooks/useTheme';
 
 const Classify = () => {
     const isFocused = useIsFocused()
+    const styles = st();
+    const theme = useTheme();
     const [type, setType] = useState([])
     const [isIncome, setIsIncome] = useState(false)
     const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
@@ -78,7 +80,7 @@ const Classify = () => {
             <Header title="Danh mục" isBack={false} />
             <View style={styles.option}>
                 <TouchableOpacity
-                    style={[styles.optionBtn, { backgroundColor: !isIncome ? defaultColors.flatListItem : defaultColors.borderColor }]}
+                    style={[styles.optionBtn, { backgroundColor: !isIncome ? theme.flatListItem : theme.borderColor }]}
                     onPress={() => {
                         setType(listClassify?.filter(item => item?.value === false))
                         setIsIncome(false)
@@ -86,7 +88,7 @@ const Classify = () => {
                     <Text style={styles.optionText}>Chi tiêu</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.optionBtn, { backgroundColor: isIncome ? defaultColors.flatListItem : defaultColors.borderColor }]}
+                    style={[styles.optionBtn, { backgroundColor: isIncome ? theme.flatListItem : theme.borderColor }]}
                     onPress={() => {
                         setType(listClassify?.filter(item => item?.value === true))
                         setIsIncome(true)

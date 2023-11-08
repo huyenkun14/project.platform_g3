@@ -1,7 +1,8 @@
 import { Modal, View, Image, Text, ActivityIndicator } from "react-native"
-import styles from './styles'
+import st from './styles'
 
 const Loading = ({visiable, description}:{visiable: boolean, description?: string}) => {
+    const styles = st();
     return (
         <Modal transparent visible={visiable} animationType="fade">
             <View style={styles.container}>

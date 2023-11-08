@@ -1,23 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ToastAndroid, KeyboardAvoidingView, Alert } from 'react-native';
-import { styles } from './styles';
-import DatePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
-import AddNewClassify from '../../components/addNewClassify';
-import { useDispatch } from 'react-redux';
-import { getAllClassifyAction } from '../../services/classify/actions';
+import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import st from './styles'
+import Header from '../../components/header'
+import Entry from '../../components/entry'
+import AddNewEntry from './component/modal'
+import { getAllEntryAction } from '../../services/entry/actions'
+import { useDispatch } from 'react-redux'
+import useTheme from '../../hooks/useTheme'
 import { createEntryAction } from '../../services/entry/actions';
 import moment from 'moment';
 import { checkWarningAction } from '../../services/notification/actions';
 import { addCommas, removeNonNumeric } from '../../../utils/formatMoney';
 import * as ImagePicker from 'expo-image-picker';
 const Add = () => {
-  // const [addIncome, setAddIncome] = useState(false)
-  // const [addExpenses, setAddExpenses] = useState(false)
-  // const [isIncome, setIsIncome] = useState(false)
-  // const dispatch = useDispatch<any>()
-  // const [listEntry, setListEntry] = useState([])
-
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
   const [image, setImage] = useState(null);

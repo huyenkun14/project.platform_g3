@@ -6,7 +6,7 @@ import themeReducer from './slices/themeSlice';
 
 const rootReducer = combineReducers({
     counter: counterReducer,
-    theme: themeReducer,
+    // theme: themeReducer,
     // more reducer
 });
 

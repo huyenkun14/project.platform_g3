@@ -1,6 +1,6 @@
 import { View, Text, FlatList, SafeAreaView, TouchableOpacity, Image, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header'
 import Entry from '../../components/entry'
 import moment from 'moment';
@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 
 const History = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const styles = st();
   const [date, setDate] = useState<Date>(new Date());
   const dispatch = useDispatch<any>()
   const [listEntry, setListEntry] = useState([])

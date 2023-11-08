@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import DatePicker from '@react-native-community/datetimepicker';
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const EntryDetail = ({ route }) => {
     const { entryId } = route.params
+    const styles = st();
     const navigation = useNavigation<any>()
     const dispatch = useDispatch<any>()
     const [showDatePicker, setShowDatePicker] = useState(false);

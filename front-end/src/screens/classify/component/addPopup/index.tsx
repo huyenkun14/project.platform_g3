@@ -1,17 +1,19 @@
 import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid, ScrollView } from 'react-native'
 import React, { useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import { useDispatch } from 'react-redux'
 import { createClassifyAction } from '../../../../services/classify/actions'
 import Checkbox from 'expo-checkbox';
 import { BASE_URL } from '../../../../constants/api'
-import { defaultColors } from '../../../../theme'
 import { createCategory } from '../../../../services/classify'
+import useTheme from '../../../../hooks/useTheme'
 
 const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, handleGetlist }) => {
     const dispatch = useDispatch<any>()
     const [isIncomeChecked, setIncomeChecked] = useState(false);
     const [iconCurrent, setIconCurrent] = useState<number>(null);
+    const styles = st();
+    const theme = useTheme();
 
     const [infoClassify, setInfoClassify] = useState({
         title: '',
@@ -119,8 +121,8 @@ const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, h
                                                         marginTop: 5,
                                                         borderColor:
                                                             it?.id !== iconCurrent
-                                                                ? defaultColors.borderColor
-                                                                : defaultColors.tabActive,
+                                                                ? theme.borderColor
+                                                                : theme.tabActive,
                                                         borderWidth: 1,
                                                         borderRadius: 5,
                                                     }}

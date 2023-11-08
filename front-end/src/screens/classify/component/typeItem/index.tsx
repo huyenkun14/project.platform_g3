@@ -1,12 +1,13 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { styles } from './styles'
-import { SCREEN_WIDTH } from '../../../../theme'
+import st from './styles'
 import { BASE_URL } from '../../../../constants/api'
+import { SCREEN_WIDTH } from '../../../../../utils/Dimension'
 
 const TypeItem = (props) => {
     const { title, status, budget, current, openDetailClassify, item } = props
     const rangeWidth = SCREEN_WIDTH / 2
+    const styles = st();
     const itemWidth = (Number(current) / Number(budget)) * rangeWidth
 
     return (

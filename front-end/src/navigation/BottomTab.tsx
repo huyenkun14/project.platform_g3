@@ -7,10 +7,10 @@ import Home from "../screens/home"
 import Add from "../screens/add";
 import Chart from "../screens/charts";
 import History from "../screens/history";
-import { defaultColors } from "../theme";
 import Classify from "../screens/classify";
 import { NAVIGATION_TITLE } from "../constants/navigation";
 import ClassifyTopTab from "./TopTab";
+import useTheme from "../hooks/useTheme";
 
 const MyBottomTabs = () => {
 
@@ -45,8 +45,8 @@ const MyBottomTabs = () => {
     const { focused, tabName } = props
     const tab = TabsData.filter(item => item?.name === tabName)[0]
     const getColor = useCallback(() => {
-      if (focused) return defaultColors.tabActive
-      else return defaultColors.tabColor
+      if (focused) return useTheme().tabActive
+      else return useTheme().tabColor
     }, [focused])
     if (tabName === NAVIGATION_TITLE.ADD)
       return (
@@ -56,13 +56,13 @@ const MyBottomTabs = () => {
           width: 60,
           height: 60,
           borderRadius: 100,
-          backgroundColor: defaultColors.tabAdd,
+          backgroundColor: useTheme().tabAdd,
           top: -25,
 
         }}>
           <Image
             source={tab?.icon}
-            style={{ tintColor: defaultColors.text_white, height: 25, width: 25 }}
+            style={{ tintColor: useTheme().text_white, height: 25, width: 25 }}
             resizeMode="contain"
           />
         </View>
@@ -84,7 +84,7 @@ const MyBottomTabs = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 300,
-          backgroundColor: defaultColors.backgroundColor
+          backgroundColor: useTheme().backgroundColor
         },
       }}
     >

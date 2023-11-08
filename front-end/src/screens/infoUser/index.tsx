@@ -1,6 +1,6 @@
 import { View, Text, StatusBar, Image, TouchableOpacity, Alert, Modal, TextInput, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import { useDispatch } from 'react-redux'
 import { getInfoUserAction, updateInfoUserAction } from '../../services/user/actions'
 import Header from '../../components/header'
@@ -11,6 +11,7 @@ import Loading from '../../../utils/loading/Loading'
 
 const InfoUser = () => {
     const dispatch = useDispatch<any>()
+    const styles = st();
     const navigation = useNavigation<any>()
     const [modalVisible, setModalVisible] = useState(false)
     const [isLoading, setLoading] = useState(false)

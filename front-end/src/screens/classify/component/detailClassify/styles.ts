@@ -1,7 +1,9 @@
 import { StyleSheet } from "react-native";
-import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from "../../../../theme";
+import useTheme from "../../../../hooks/useTheme";
 
-export const styles = StyleSheet.create({
+const styles = () => {
+    const theme = useTheme();
+const st = StyleSheet.create({
     modalContainer: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
@@ -11,7 +13,7 @@ export const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: defaultColors.backgroundColor,
+        backgroundColor: theme.backgroundColor,
         paddingHorizontal: 16,
         paddingVertical: 16,
         borderTopLeftRadius: 20,
@@ -23,7 +25,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     title: {
-        color: defaultColors.titleColor,
+        color: theme.titleColor,
         fontSize: 20,
         fontWeight: '800',
         textAlign: 'center',
@@ -42,23 +44,23 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         fontWeight: '500',
-        color: defaultColors.BLACK,
+        color: theme.BLACK,
     },
     input: {
-        color: defaultColors.text_1,
+        color: theme.text_1,
         fontSize: 14,
         paddingHorizontal: 15,
         borderRadius: 5,
         height: 50,
         overflow: 'hidden',
-        backgroundColor: defaultColors.backgroundColor,
+        backgroundColor: theme.backgroundColor,
     },
     addImage: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         height: 150,
-        borderColor: defaultColors.borderColor,
+        borderColor: theme.borderColor,
         borderWidth: 1,
         padding: 10,
         borderRadius: 5
@@ -72,21 +74,21 @@ export const styles = StyleSheet.create({
         marginLeft: 10,
     },
     button: {
-        backgroundColor: defaultColors.tabActive,
+        backgroundColor: theme.tabActive,
         paddingVertical: 15,
         borderRadius: 5,
         textAlign: 'center',
         fontSize: 16,
-        color: defaultColors.text_white,
+        color: theme.text_white,
         marginTop: 30,
 
     },
     shadow: {
         borderRadius: 5,
-        borderColor: defaultColors.borderColor,
+        borderColor: theme.borderColor,
         borderWidth: 1.5,
-        backgroundColor: defaultColors.backgroundColor,
-        // shadowColor: defaultColors.shadowColor,
+        backgroundColor: theme.backgroundColor,
+        // shadowColor: theme.shadowColor,
         // shadowOffset: {
         //   width: 0,
         //   height: 3,
@@ -96,3 +98,8 @@ export const styles = StyleSheet.create({
         // elevation: 7,
     },
 })
+
+return st
+}
+
+export default styles;

@@ -24,7 +24,8 @@ const darkColors = {
     // other
     WHITE: '#FFFFFF',
     BLACK: "#000000",
-    CANCEL_BACKGROUNG: "#DC143C"
+    CANCEL_BACKGROUNG: "#DC143C",
+    OPTION_ACTIVE: "#3B3DBF",
 }
 
 export default darkColors;

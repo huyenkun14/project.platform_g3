@@ -1,9 +1,8 @@
 import { View, Text, StatusBar, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header'
 import Entry from '../../components/entry'
-import { defaultColors } from '../../theme'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { useNavigation } from '@react-navigation/native'
 import { clearAllAsyncStorage } from '../../../utils/asyncStorage'
@@ -13,6 +12,7 @@ import * as MailComposer from 'expo-mail-composer';
 const Account = () => {
     const [userInfoModal, setUserInfoModal] = useState<boolean>(false)
     const navigation = useNavigation<any>()
+    const styles = st();
     return (
         <SafeAreaView>
             <StatusBar />
@@ -20,7 +20,7 @@ const Account = () => {
                 <Header title='Tài khoản' isBack={true} />
                 <Image
                     style={styles.logo}
-                    source={require('../../../assets/images/Moly.png')}
+                    source={require('../../../assets/images/moly.png')}
                 />
                 {/* menu */}
                 <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate(NAVIGATION_TITLE.HOME) }}>

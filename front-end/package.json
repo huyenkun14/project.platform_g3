@@ -24,7 +24,7 @@
     "chart.js": "^4.4.0",
     "expo": "^49.0.16",
     "expo-checkbox": "~2.4.0",
-    "expo-cli": "^4.0.17",
+    "expo-cli": "^6.3.10",
     "expo-image-picker": "~14.3.2",
     "expo-status-bar": "~1.6.0",
     "firebase": "^10.3.0",

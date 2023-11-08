@@ -1,6 +1,6 @@
 import { ScrollView, View, Text, FlatList, Image, SafeAreaView, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import Header from '../../components/header'
 import { overview } from '../../mock/home'
 import Banner from './components/banner'
@@ -17,6 +17,7 @@ import { formatMoneyNotVND } from '../../../utils/formatMoney'
 
 const Home = () => {
   const dispatch = useDispatch<any>()
+  const styles = st();
   const [listEntry, setListEntry] = useState([])
   const [loading, setLoading] = useState<boolean>(false)
   const [infoUser, setInfoUser] = useState({
@@ -37,7 +38,8 @@ const Home = () => {
     {
       id: 2,
       title: 'Giao diện',
-      icon: require('../../../assets/images/icon/ic_moon.png')
+      icon: require('../../../assets/images/icon/ic_moon.png'),
+      theme: true
     },
     {
       id: 3,
@@ -161,7 +163,7 @@ const Home = () => {
           <Text style={styles.title}>Danh mục</Text>
           <View style={styles.optionContainer}>
             {optionsData.map((item) => (
-              <Option title={item.title} icon={item.icon} key={item.id} router={item.router} />
+              <Option title={item.title} icon={item.icon} key={item.id} router={item.router} theme={item?.theme} />
             ))}
             {/* <View style={styles.emptyOption} />
             <View style={styles.emptyOption} /> */}

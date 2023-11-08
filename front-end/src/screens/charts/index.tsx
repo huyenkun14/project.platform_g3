@@ -1,18 +1,21 @@
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import { LineChart, PieChart } from "react-native-chart-kit";
 import Header from '../../components/header';
-import { SCREEN_WIDTH, defaultColors } from '../../theme';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import DatePicker from '@react-native-community/datetimepicker';
 import { getFinancialValueAction, getFinancialYearlyAction } from '../../services/financialSummary/actions';
 import { formatMoney } from '../../../utils/formatMoney';
+import { SCREEN_WIDTH } from '../../../utils/Dimension';
+import useTheme from '../../hooks/useTheme';
 
 const Chart = () => {
   const [chartType, setChartType] = useState('1')
   const [isShowDetail, setIsshowDetail] = useState(false)
+  const styles = st();
+  const theme = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [date, setDate] = useState<Date>(new Date());
   const [listFinancialYearly, setListFinancialYearly] = useState([])
@@ -268,13 +271,13 @@ const Chart = () => {
         {/* options */}
         <View style={styles.option}>
           <TouchableOpacity onPress={() => { setChartType('1') }}>
-            <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? defaultColors.flatListItem : '#d8d8d8' }]}>Tổng quan</Text>
+            <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? theme.flatListItem : '#d8d8d8' }]}>Tổng quan</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { setChartType('2'), setIsIncome(false) }}>
-            <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? defaultColors.flatListItem : '#d8d8d8' }]}>Chi tiêu</Text>
+            <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? theme.flatListItem : '#d8d8d8' }]}>Chi tiêu</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { setChartType('3'), setIsIncome(true) }}>
-            <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? defaultColors.flatListItem : '#d8d8d8' }]}>Thu nhập</Text>
+            <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? theme.flatListItem : '#d8d8d8' }]}>Thu nhập</Text>
           </TouchableOpacity>
         </View>
         {renderChart()}

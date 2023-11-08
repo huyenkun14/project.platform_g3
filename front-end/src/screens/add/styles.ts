@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native'
-import { SCREEN_HEIGHT, SCREEN_WIDTH, defaultColors } from '../../theme'
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../utils/Dimension'
+import useTheme from '../../hooks/useTheme'
 
-export const styles = StyleSheet.create({
-
-  modalContainer: {
+const styles = () => {
+  const theme = useTheme();
+  const st = StyleSheet.create({
+ modalContainer: {
     flex: 1,
     paddingHorizontal: 25,
     backgroundColor: defaultColors.borderColor,
@@ -179,4 +181,7 @@ export const styles = StyleSheet.create({
     // shadowRadius: 4.65,
     // elevation: 7,
   },
-})
+  })
+  return st
+}
+export default styles

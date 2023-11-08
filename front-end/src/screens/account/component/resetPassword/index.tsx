@@ -1,6 +1,6 @@
 import { View, Text, StatusBar, Image, ScrollView, SafeAreaView, TouchableOpacity, Modal, TextInput, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles';
+import st from './styles';
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux';
 import { resetPasswordAction } from '../../../../services/user/actions';
@@ -8,6 +8,7 @@ import { resetPasswordAction } from '../../../../services/user/actions';
 
 const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
     const navigation = useNavigation<any>()
+    const styles = st();
     const dispatch = useDispatch<any>()
     const [textChange, setTextChange] = useState({
         oldPass: '',
@@ -62,7 +63,7 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
                 <View style={styles.container}>
                 <Image
                     style={styles.logo}
-                    source={require('../../../../../assets/images/Moly.png')}
+                    source={require('../../../../../assets/images/moly.png')}
                 />
                     <Text style={styles.inputLabel}>Mật khẩu cũ</Text>
                     <TextInput

@@ -1,12 +1,13 @@
 import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
-import { styles } from './styles'
 import { useDispatch } from 'react-redux'
 import { createClassifyAction } from '../../services/classify/actions'
 import { createBudgetAction } from '../../services/budget/actions'
 import Checkbox from 'expo-checkbox';
+import st from './styles'
 
 const AddNewClassify = ({ modalVisible, setModalVisible }) => {
+    const styles = st();
     const dispatch = useDispatch<any>()
     const [isIncomeChecked, setIncomeChecked] = useState(false);
     const [isExpenseChecked, setExpenseChecked] = useState(false);

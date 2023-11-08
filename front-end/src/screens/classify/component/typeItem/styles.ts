@@ -1,7 +1,9 @@
 import { StyleSheet } from "react-native";
-import { SCREEN_WIDTH, defaultColors } from "../../../../theme";
-
-export const styles = StyleSheet.create({
+import useTheme from "../../../../hooks/useTheme";
+import { SCREEN_WIDTH } from "../../../../../utils/Dimension";
+const styles = () => {
+    const theme = useTheme();
+const st = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -9,9 +11,9 @@ export const styles = StyleSheet.create({
         marginHorizontal: 25,
         paddingVertical: 15,
         borderRadius: 8,
-        borderTopColor: defaultColors.borderColor,
+        borderTopColor: theme.borderColor,
         borderTopWidth: 0.5,
-        borderBottomColor: defaultColors.borderColor,
+        borderBottomColor: theme.borderColor,
         borderBottomWidth: 0.5,
     },
     typeContainer: {
@@ -22,19 +24,19 @@ export const styles = StyleSheet.create({
         height: 40,
         width: 40,
         borderRadius: 8,
-        backgroundColor: defaultColors.backgroundType,
+        backgroundColor: theme.backgroundType,
         marginRight: 15,
         alignItems: 'center',
         justifyContent: 'center',
     },
     imageIcon: {
-        tintColor: defaultColors.text_white,
+        tintColor: theme.text_white,
         height: 22,
         width: 22,
         resizeMode: 'contain',
     },
     title: {
-        color: defaultColors.text_1,
+        color: theme.text_1,
         fontSize: 16,
         fontWeight: '600',
     },
@@ -58,3 +60,6 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FFDCA2',
     },
 })
+return st
+}
+export default styles;
