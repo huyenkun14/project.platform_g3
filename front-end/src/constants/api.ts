@@ -5,6 +5,12 @@ export const AUTH = {
     LOGIN: "/auth/login",
 }
 
+export const USER = {
+    GET: "/v1/user",
+    UPDATE: "/v1/user/update",
+    RESET_PASSWORD: '/v1/user/reset-password'
+}
+
 export const CLASSIFY = {
     CREATE: "/v1/category/create",
     GET_ALL: "/v1/category/get-all",
@@ -34,4 +40,13 @@ export const BUDGET = {
 export const CHART = {
     YEARLY: "/v1/financial-summary/yearly",
     EACH_CATEGORY: "/v1/financial-summary/each-category",
+}
+
+export const ICON = {
+    GET_ALL: '/icon/get-all'
+}
+
+export const WARNING = {
+    GET_ALL: '/v1/warning/get-all',
+    CHECK: '/v1/warning/check'
 }

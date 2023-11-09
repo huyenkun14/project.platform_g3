@@ -9,4 +9,7 @@ export const NAVIGATION_TITLE = {
   HISTORY: 'history',
   CLASSIFY: 'classify',
   ACCOUNT: 'account',
+  BUDGET: 'budget',
+  INFO_USER: 'info',
+  NOTIFICATION: 'notification'
 };

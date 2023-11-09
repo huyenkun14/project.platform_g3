@@ -24,6 +24,14 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: defaultColors.backgroundType,
         marginRight: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    imageIcon: {
+        tintColor: defaultColors.text_white,
+        height: 22,
+        width: 22,
+        resizeMode: 'contain',
     },
     title: {
         color: defaultColors.text_1,

@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import { View, Text, StatusBar, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import { styles } from './styles'
 import Header from '../../components/header'
@@ -7,7 +7,8 @@ import { defaultColors } from '../../theme'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { useNavigation } from '@react-navigation/native'
 import { clearAllAsyncStorage } from '../../../utils/asyncStorage'
-import UserInfoModal from './component/userInfo'
+import ResetPasswordModal from './component/resetPassword'
+import * as MailComposer from 'expo-mail-composer';
 
 const Account = () => {
     const [userInfoModal, setUserInfoModal] = useState<boolean>(false)
@@ -17,43 +18,51 @@ const Account = () => {
             <StatusBar />
             <ScrollView style={styles.container}>
                 <Header title='Tài khoản' isBack={true} />
-                <Text style={styles.title}>Moli</Text>
+                <Image
+                    style={styles.logo}
+                    source={require('../../../assets/images/Moly.png')}
+                />
                 {/* menu */}
-                <TouchableOpacity onPress={() => { navigation.navigate(NAVIGATION_TITLE.HOME) }}>
-                    <View style={styles.item}>
-                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_home.png')} />
-                        <Text style={[styles.itemText]}>Trang chủ</Text>
-                    </View>
+                <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate(NAVIGATION_TITLE.HOME) }}>
+                    <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_home.png')} />
+                    <Text style={[styles.itemText]}>Trang chủ</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setUserInfoModal(true) }}>
-                    <View style={styles.item}>
-                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_info.png')} />
-                        <Text style={[styles.itemText]}>Thông tin</Text>
-                    </View>
+                <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate(NAVIGATION_TITLE.INFO_USER) }}>
+                    <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_info.png')} />
+                    <Text style={[styles.itemText]}>Thông tin</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { }}>
-                    <View style={styles.item}>
-                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_setting.png')} />
-                        <Text style={[styles.itemText]}>Cài đặt</Text>
-                    </View>
+                <TouchableOpacity style={styles.item} onPress={() => { setUserInfoModal(true) }}>
+                    <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_lock.png')} />
+                    <Text style={[styles.itemText]}>Đổi mật khẩu</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { }}>
-                    <View style={styles.item}>
-                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_comment.png')} />
-                        <Text style={[styles.itemText]}>Góp ý - đánh giá</Text>
-                    </View>
+                <TouchableOpacity
+                    style={styles.item}
+                    onPress={() => {
+                        MailComposer.composeAsync({
+                            subject: 'test',
+                            body: 'test',
+                            recipients: ['molyhuce@gmail.com'],
+                            isHtml: true
+                        }).then(data => {
+                            if (data.status == 'sent') {
+                                ToastAndroid.show('Cảm ơn bạn đã góp ý cho Moly', ToastAndroid.SHORT)
+                            }
+                            console.log(data)
+                        })
+                            .catch(err => console.log(err))
+                    }}>
+                    <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_comment.png')} />
+                    <Text style={[styles.itemText]}>Góp ý - đánh giá</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity style={styles.item} onPress={() => {
                     navigation.navigate(NAVIGATION_TITLE.LOGIN)
                     clearAllAsyncStorage()
                 }}>
-                    <View style={styles.item}>
-                        <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_exit.png')} />
-                        <Text style={[styles.itemText, styles.logoutText]}>Đăng xuất</Text>
-                    </View>
+                    <Image style={[styles.itemIcon, { tintColor: 'crimson' }]} source={require('../../../assets/images/icon/ic_exit.png')} />
+                    <Text style={[styles.itemText, styles.logoutText]}>Đăng xuất</Text>
                 </TouchableOpacity>
             </ScrollView>
-            <UserInfoModal
+            <ResetPasswordModal
                 modalVisible={userInfoModal}
                 setModalVisible={setUserInfoModal}
             />

@@ -10,8 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static com.example.moneytrackerbackend.utils.TimeUtil.formatterDate;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +20,12 @@ public class TransactionServiceImp implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
     private final ImageService imageService;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public Transaction createTransaction(TransactionRequest transactionRequest) {
 
         Category category = categoryRepository.findById(transactionRequest.getCategoryId()).orElseThrow(() -> new CustomException("Error: no category"));
 
-        LocalDate date = LocalDate.parse(transactionRequest.getDate(), formatter);
+        LocalDate date = formatterDate(transactionRequest.getDate());
 
 
         Transaction transaction = Transaction.builder()
@@ -53,7 +53,7 @@ public class TransactionServiceImp implements TransactionService {
     }
 
     public List<Transaction> getAllTransaction(Long userId) {
-        return transactionRepository.findAllByUserIdOrderByDate(userId);
+        return transactionRepository.findAllByCategoryUserIdOrderByIdDesc(userId);
     }
 
     public Transaction updateTransaction(TransactionRequest transactionRequest){
@@ -70,7 +70,7 @@ public class TransactionServiceImp implements TransactionService {
         transaction.setAmount(transactionRequest.getAmount());
         transaction.setCategory(category);
         transaction.setDescription(transactionRequest.getDescription());
-        transaction.setDate(LocalDate.parse(transactionRequest.getDate(), formatter));
+        transaction.setDate(formatterDate(transactionRequest.getDate()));
         transaction = transactionRepository.save(transaction);
 
         return transaction;
@@ -87,7 +87,7 @@ public class TransactionServiceImp implements TransactionService {
     }
 
     public List<Transaction> getTransactionByCategory(Long categoryId) {
-        return transactionRepository.findAllByCategoryIdOrderByDate(categoryId);
+        return transactionRepository.findAllByCategoryIdOrderByIdDesc(categoryId);
     }
     public List<Transaction> getTransactionByCategoryOnMonth(String monthAndYear, Long categoryId) {
 
@@ -98,6 +98,5 @@ public class TransactionServiceImp implements TransactionService {
         String[] mothYear = monthAndYear.split("-");
         List<Transaction> transactions= transactionRepository.findTransactionByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
         return transactions.stream().mapToInt(Transaction::getAmount).sum();
-//        return transactionRepository.sumAmountByCategory(categoryId,Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
     }
 }

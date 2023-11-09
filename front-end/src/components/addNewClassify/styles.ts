@@ -12,8 +12,9 @@ export const styles = StyleSheet.create({
         left: 0,
         right: 0,
         backgroundColor: defaultColors.backgroundColor,
-        paddingHorizontal: 40,
-        paddingVertical: 40,
+        // paddingHorizontal: 40,
+        // paddingVertical: 40,
+        padding: 16,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
     },
@@ -42,7 +43,7 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         fontWeight: '500',
-        color: defaultColors.text_3,
+        color: defaultColors.BLACK,
     },
     input: {
         color: defaultColors.text_1,
@@ -57,7 +58,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 30,
-        paddingHorizontal: 30
+        // paddingHorizontal: 30
     },
     checkboxView:{
         flexDirection: 'row',

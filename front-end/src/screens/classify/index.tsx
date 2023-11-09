@@ -1,54 +1,97 @@
 import { SafeAreaView, TouchableOpacity, View, Text, ScrollView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { styles } from './styles'
-import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import Header from '../../components/header';
 import TypeItem from './component/typeItem';
-import { typeData } from '../../mock/classify';
-import { TextInput } from 'react-native-gesture-handler';
-import AddNewClassify from '../../components/addNewClassify';
+import AddNewClassify from './component/addPopup';
 import { getAllClassifyAction } from '../../services/classify/actions';
 import { useDispatch } from 'react-redux';
 import DetailClassify from './component/detailClassify';
+import { getAllIcon } from '../../services/icon';
+import Loading from '../../../utils/loading/Loading';
+import { defaultColors } from '../../theme';
+import { useIsFocused } from '@react-navigation/native';
 
 const Classify = () => {
+    const isFocused = useIsFocused()
     const [type, setType] = useState([])
     const [isIncome, setIsIncome] = useState(false)
-    const [searchText, setSearchText] = useState<string>('')
     const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
     const [detailClassifyOpen, setDetailClassifyOpen] = useState(false)
+    const [chooseItem, setChooseItem] = useState<any>()
     const dispatch = useDispatch<any>()
     const [listClassify, setListClassify] = useState([]);
+    const [listIcon, setListIcon] = useState<{ id: number, url: string }[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
+    const [firstMount, setFirstMount] = useState<boolean>(true)
+
+    const handleChooseItem = (item: any) => {
+        setDetailClassifyOpen(true)
+        setChooseItem(item)
+    }
+
+    const handleGetIcon = async () => {
+        setLoading(true)
+        const res = await getAllIcon()
+        setLoading(false)
+        console.log("res nè", res)
+        if (res?.status === 200) {
+            setListIcon(res?.data)
+        }
+    }
+
     useEffect(() => {
-        getListClassify()
-        setType(listClassify?.filter(item => item?.value === false))
-    }, [])
+        if (isFocused && firstMount) {
+            getListClassify()
+            handleGetIcon()
+            setIsIncome(false)
+            setType(listClassify?.filter(item => item?.value === false))
+            setFirstMount(false)
+        }
+    }, [isFocused])
+    useEffect(() => {
+        if (listClassify && listClassify.length > 0) {
+            if (!isIncome) {
+                setType(listClassify?.filter(item => item?.value === false))
+            }
+            else {
+                setType(listClassify?.filter(item => item?.value === true))
+            }
+        }
+    }, [listClassify])
+
     const getListClassify = () => {
+        setLoading(true)
         dispatch(getAllClassifyAction())
             .then(res => {
+                setLoading(false)
                 setListClassify(res?.payload)
+                console.log("listClassify", res?.payload)
             })
-            .catch(err => console.log('err', err))
+            .catch(err => {
+                setLoading(false)
+                console.log('err', err)
+            })
     }
     return (
         <SafeAreaView style={styles.container}>
             <Header title="Danh mục" isBack={false} />
             <View style={styles.option}>
-                <TouchableOpacity onPress={() => {
-                    setType(listClassify?.filter(item => item?.value === false))
-                    setIsIncome(false)
-                }}>
-                    <View style={styles.optionBtn}>
-                        <Text style={styles.optionText}>Chi tiêu</Text>
-                    </View>
+                <TouchableOpacity
+                    style={[styles.optionBtn, { backgroundColor: !isIncome ? defaultColors.flatListItem : defaultColors.borderColor }]}
+                    onPress={() => {
+                        setType(listClassify?.filter(item => item?.value === false))
+                        setIsIncome(false)
+                    }}>
+                    <Text style={styles.optionText}>Chi tiêu</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    setType(listClassify?.filter(item => item?.value === true))
-                    setIsIncome(true)
-                }}>
-                    <View style={styles.optionBtn}>
-                        <Text style={styles.optionText}>Thu nhập</Text>
-                    </View>
+                <TouchableOpacity
+                    style={[styles.optionBtn, { backgroundColor: isIncome ? defaultColors.flatListItem : defaultColors.borderColor }]}
+                    onPress={() => {
+                        setType(listClassify?.filter(item => item?.value === true))
+                        setIsIncome(true)
+                    }}>
+                    <Text style={styles.optionText}>Thu nhập</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { setAddNewClassifyOpen(true) }}>
                     <View style={styles.searchImageView}>
@@ -74,19 +117,28 @@ const Classify = () => {
                         status={item.status}
                         budget={item.budget}
                         current={item.current}
-                        openDetailClassify={() => { setDetailClassifyOpen(true) }}
+                        item={item}
+                        openDetailClassify={() => handleChooseItem(item)}
                     />
                 ))}
             </ScrollView>
             <AddNewClassify
                 modalVisible={addNewClassifyOpen}
                 setModalVisible={setAddNewClassifyOpen}
+                listIcon={listIcon}
+                setLoading={setLoading}
+                handleGetlist={getListClassify}
             />
             <DetailClassify
                 modalVisible={detailClassifyOpen}
                 setModalVisible={setDetailClassifyOpen}
-                isIncomeStatus={isIncome}
+                item={chooseItem}
+                listIcon={listIcon}
+                setLoading={setLoading}
+                handleGetlist={getListClassify}
+
             />
+            <Loading visiable={loading} />
         </SafeAreaView>
     )
 }

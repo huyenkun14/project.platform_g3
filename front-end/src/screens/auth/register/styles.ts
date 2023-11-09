@@ -8,12 +8,11 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 40,
         backgroundColor: defaultColors.backgroundColor,
     },
-    title: {
-        color: defaultColors.titleColor,
-        fontSize: 40,
-        fontWeight: '800',
-        marginBottom: 3,
-        textAlign: 'center',
+    logo: {
+        height: 80,
+        marginBottom: 10,
+        resizeMode: 'contain',
+        alignSelf: 'center',
     },
     slogan: {
         textAlign: 'center',
@@ -33,7 +32,7 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         fontWeight: '500',
-        color: defaultColors.text_3,
+        color: defaultColors.text_1,
     },
     input: {
         color: defaultColors.text_1,

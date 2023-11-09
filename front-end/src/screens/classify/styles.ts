@@ -14,19 +14,19 @@ export const styles = StyleSheet.create({
     },
     optionBtn: {
         width: 100,
-        backgroundColor: defaultColors.flatListItem,
+        // backgroundColor: defaultColors.flatListItem,
         borderRadius: 8,
         marginTop: 10,
         marginBottom: 20,
         paddingVertical: 10,
-        shadowColor: defaultColors.shadowColor,
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
-        elevation: 7,
+        // shadowColor: defaultColors.shadowColor,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 3,
+        // },
+        // shadowOpacity: 0.29,
+        // shadowRadius: 4.65,
+        // elevation: 7,
     },
     optionText: {
         textAlign: 'center',
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
 
     },
     searchImageView: {
-        width: 100,
+        width: 50,
         marginTop: -10,
         backgroundColor: defaultColors.flatListItem,
         height: 40,

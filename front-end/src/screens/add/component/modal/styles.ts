@@ -9,11 +9,11 @@ export const styles = StyleSheet.create({
     backgroundColor: defaultColors.borderColor,
     paddingVertical: 20,
     position: 'relative',
+    minHeight: SCREEN_HEIGHT
   },
   logo: {
-    height: 120,
     alignSelf: 'center',
-    width: SCREEN_WIDTH,
+    height: 60,
     resizeMode: 'contain',
   },
   header: {
@@ -80,8 +80,8 @@ export const styles = StyleSheet.create({
     width: SCREEN_WIDTH * 0.3,
     backgroundColor: defaultColors.flatListItem,
     borderRadius: 10,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   newClassifyIcon: {
     height: 30,
@@ -119,6 +119,13 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     color: defaultColors.text_3,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    maxWidth: SCREEN_WIDTH - 50
   },
   button: {
     marginTop: 10,

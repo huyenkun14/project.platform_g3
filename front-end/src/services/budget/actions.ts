@@ -18,6 +18,14 @@ export const getBudgetByIdAction = createAsyncThunk(
     }
 )
 
+export const getBudgetByMonthAction = createAsyncThunk(
+    'budget/getBudgetByMonthAction',
+    async (date: string) => {
+        const res = await httpClient.get(`${BUDGET.GET_BY_MONTH}?monthAndYear=${date}`)
+        return res.data
+    }
+)
+
 export const getBudgetGetOverAction = createAsyncThunk(
     'budget/getBudgetGetOverAction',
     async () => {

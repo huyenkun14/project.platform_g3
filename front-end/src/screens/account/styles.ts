@@ -8,12 +8,11 @@ export const styles = StyleSheet.create({
         backgroundColor: defaultColors.backgroundColor,
         position: 'relative',
     },
-    title: {
-        color: defaultColors.titleColor,
-        fontSize: 25,
-        fontWeight: '800',
-        marginBottom: 3,
-        marginLeft: 25,
+    logo: {
+        height: 40,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        marginBottom: 10,
     },
     item: {
         flexDirection: 'row',

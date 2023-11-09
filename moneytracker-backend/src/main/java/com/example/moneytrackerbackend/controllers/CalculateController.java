@@ -7,6 +7,7 @@ import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.CategoryService;
 import com.example.moneytrackerbackend.services.TransactionService;
+import com.example.moneytrackerbackend.utils.ColorUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertCategory;
@@ -57,23 +59,25 @@ public class CalculateController {
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/financial-summary/each-category")
-    public ResponseEntity<List<AmountOfCategory>> calculateForEachCategory(@RequestParam String value, @RequestParam String monthAndYear, Principal principal){
+    public ResponseEntity<List<AmountOfCategory>> calculateForEachCategory(@RequestParam boolean value, @RequestParam String monthAndYear, Principal principal){
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
         Long userId = userDetails.getId();
-        boolean b = Boolean.getBoolean(value);
-        List<Category> categories = categoryService.getAllByValue(b, userId);
+        List<Category> categories = categoryService.getAllByValue(value, userId);
 
         List<AmountOfCategory> dataOfCategories = new ArrayList<>();
         for (Category category:categories){
             AmountOfCategory dataOfCategory = new AmountOfCategory();
+            dataOfCategory.setColor(ColorUtil.getColorByIndex(dataOfCategories.size()));
             dataOfCategory.setCategory(convertCategory(category));
             dataOfCategory.setTotalAmount(transactionService.getSumAmountByCategory(category.getId(), monthAndYear));
-            dataOfCategories.add(dataOfCategory);
+            if(dataOfCategory.getTotalAmount()!=0){
+                dataOfCategories.add(dataOfCategory);
+            }
         }
+        Collections.sort(dataOfCategories);
 
         return ResponseEntity.ok(dataOfCategories);
     }
-
 }

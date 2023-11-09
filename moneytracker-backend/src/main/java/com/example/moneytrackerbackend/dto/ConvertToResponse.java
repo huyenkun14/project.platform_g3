@@ -1,18 +1,13 @@
 package com.example.moneytrackerbackend.dto;
 
-import com.example.moneytrackerbackend.dto.response.BudgetResponse;
-import com.example.moneytrackerbackend.dto.response.CategoryResponse;
-import com.example.moneytrackerbackend.dto.response.TransactionResponse;
-import com.example.moneytrackerbackend.dto.response.UserResponse;
-import com.example.moneytrackerbackend.entities.Budget;
-import com.example.moneytrackerbackend.entities.Category;
-import com.example.moneytrackerbackend.entities.Transaction;
-import com.example.moneytrackerbackend.entities.User;
+import com.example.moneytrackerbackend.dto.response.*;
+import com.example.moneytrackerbackend.entities.*;
 
 public class ConvertToResponse {
     public static CategoryResponse convertCategory(Category category) {
         return CategoryResponse.builder()
                 .categoryId(category.getId())
+                .iconId(category.getIconId())
                 .urlIcon("/icon?iconId=" + category.getIconId())
                 .title(category.getTitle())
                 .value(category.isValue())
@@ -49,6 +44,13 @@ public class ConvertToResponse {
                 .amount(budget.getAmount())
                 .category(convertCategory(budget.getCategory()))
                 .endDate(budget.getEndDate())
+                .build();
+    }
+    public static WarningResponse convertWarning(Warning warning){
+        return WarningResponse.builder()
+                .warningId(warning.getId())
+                .message(warning.getMessage())
+                .date(warning.getDate())
                 .build();
     }
 }

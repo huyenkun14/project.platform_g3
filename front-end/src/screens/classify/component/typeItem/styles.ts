@@ -24,9 +24,17 @@ export const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: defaultColors.backgroundType,
         marginRight: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imageIcon: {
+        tintColor: defaultColors.text_white,
+        height: 22,
+        width: 22,
+        resizeMode: 'contain',
     },
     title: {
-        color: defaultColors.text_black,
+        color: defaultColors.text_1,
         fontSize: 16,
         fontWeight: '600',
     },
@@ -48,21 +56,5 @@ export const styles = StyleSheet.create({
     },
     warning: {
         backgroundColor: '#FFDCA2',
-    },
-    swipeContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginRight:25,
-    },
-    swipeIconWrap: {
-        paddingVertical: 30,
-        paddingHorizontal: 20,
-        backgroundColor: 'red'
-    },
-    swipeIcon: {
-        height: 20,
-        width: 20,
-        resizeMode: 'contain',
-        tintColor: defaultColors.text_white
     },
 })
