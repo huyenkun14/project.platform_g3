@@ -7,9 +7,7 @@ const styles = () => {
   const st = StyleSheet.create({
  modalContainer: {
     flex: 1,
-    paddingHorizontal: 25,
-    backgroundColor: theme.borderColor,
-    paddingVertical: 20,
+    backgroundColor: theme.backgroundImg,
     position: 'relative',
     minHeight: SCREEN_HEIGHT
   },
@@ -40,7 +38,7 @@ const styles = () => {
     fontSize: 15,
     marginBottom: 12,
     fontWeight: '500',
-    color: theme.text_3,
+    color: theme.text_1,
     marginLeft: 10
   },
   input: {
@@ -51,15 +49,19 @@ const styles = () => {
     height: 50,
     overflow: 'hidden',
     backgroundColor: theme.backgroundColor,
+    borderColor: theme.flatListItem,
+    borderWidth: 1,
+    marginHorizontal: 25
   },
   inputLabelContainer: {
     flexDirection: 'row',
+    marginHorizontal: 25,
   },
   inputLabelIcon: {
     height: 20,
     width: 20,
     resizeMode: 'contain',
-    tintColor: theme.text_3,
+    tintColor: theme.text_1,
   },
   inputNote: {
     height: 100,
@@ -67,6 +69,7 @@ const styles = () => {
     paddingVertical: 10,
   },
   dropdownContainer: {
+    marginHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -74,7 +77,8 @@ const styles = () => {
     width: SCREEN_WIDTH * 0.5,
   },
   dropdown: {
-    borderColor: theme.backgroundColor,
+    borderColor: theme.backgroundImg,
+    borderWidth: 1,
     borderRadius: 10,
   },
   newClassify: {
@@ -116,7 +120,7 @@ const styles = () => {
   },
   moneyText: {
     position: 'absolute',
-    right: 15,
+    right: 40,
     top: 15,
     fontSize: 14,
     fontWeight: '400',
@@ -125,11 +129,16 @@ const styles = () => {
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10
   },
   image: {
-    maxWidth: SCREEN_WIDTH - 50
+    // width: SCREEN_WIDTH - 50,
+    height: 200,
+    width: 200,
+    resizeMode: 'contain'
   },
   button: {
+    marginHorizontal: 25,
     marginTop: 10,
     fontSize: 16,
     paddingVertical: 15,

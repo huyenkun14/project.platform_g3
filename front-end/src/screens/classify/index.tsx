@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import st from './styles'
 import Header from '../../components/header';
 import TypeItem from './component/typeItem';
-import AddNewClassify from './component/addPopup';
+import AddNewClassify from '../../components/addNewClassify';
 import { getAllClassifyAction } from '../../services/classify/actions';
 import { useDispatch } from 'react-redux';
 import DetailClassify from './component/detailClassify';
