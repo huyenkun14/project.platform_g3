@@ -5,6 +5,7 @@ import com.example.moneytrackerbackend.entities.*;
 
 public class ConvertToResponse {
     public static CategoryResponse convertCategory(Category category) {
+
         return CategoryResponse.builder()
                 .categoryId(category.getId())
                 .iconId(category.getIconId())
@@ -15,6 +16,7 @@ public class ConvertToResponse {
     }
 
     public static UserResponse convertUser(User user, int totalIncome, int totalSpending) {
+
         return UserResponse.builder()
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
@@ -27,6 +29,7 @@ public class ConvertToResponse {
     }
 
     public static TransactionResponse convertTransaction(Transaction transaction) {
+
         return TransactionResponse.builder()
                 .transactionId(transaction.getId())
                 .date(transaction.getDate())

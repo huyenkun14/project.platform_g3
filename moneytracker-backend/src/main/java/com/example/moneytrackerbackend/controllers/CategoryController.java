@@ -7,6 +7,7 @@ import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.Category;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,10 +27,11 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/category/create")
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest, Principal principal) {
+    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest categoryRequest, Principal principal) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
+
         categoryRequest.setUserId(userId);
 
         Category category = categoryService.createCategory(categoryRequest);
@@ -39,7 +41,7 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/category/update")
-    public ResponseEntity<CategoryResponse> updateCategory(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<CategoryResponse> updateCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
 
         Category category = categoryService.updateCategory(categoryRequest);
 
@@ -51,6 +53,7 @@ public class CategoryController {
     public ResponseEntity<MessageResponse> deleteCategory(@RequestParam("categoryId") Long id) {
 
         categoryService.deleteCategory(id);
+
         return ResponseEntity.ok(new MessageResponse("Success delete category"));
     }
 
@@ -59,6 +62,7 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> getCategory(@RequestParam Long categoryId) {
 
         Category category = categoryService.getCategoryById(categoryId);
+
         return ResponseEntity.ok(convertCategory(category));
     }
 
@@ -70,6 +74,7 @@ public class CategoryController {
         Long userId = userDetails.getId();
 
         List<Category> categories = categoryService.getAllCategory(userId);
+
         return ResponseEntity.ok(categories.stream().map(ConvertToResponse::convertCategory).toList());
     }
 
@@ -81,6 +86,7 @@ public class CategoryController {
         Long userId = userDetails.getId();
 
         List<Category> categories = categoryService.getAllByValue(value, userId);
+
         return ResponseEntity.ok(categories.stream().map(ConvertToResponse::convertCategory).toList());
     }
 }

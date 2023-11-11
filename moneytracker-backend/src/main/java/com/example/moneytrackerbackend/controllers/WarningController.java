@@ -46,6 +46,7 @@ public class WarningController {
 
             return ResponseEntity.ok(convertWarning(warning));
         }
+
         return ResponseEntity.ok().build();
     }
 

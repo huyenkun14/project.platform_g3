@@ -1,20 +1,19 @@
 package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
+import com.example.moneytrackerbackend.dto.request.RegisterRequest;
 import com.example.moneytrackerbackend.dto.request.UserRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.dto.response.UserResponse;
 import com.example.moneytrackerbackend.entities.Transaction;
 import com.example.moneytrackerbackend.entities.User;
-import com.example.moneytrackerbackend.exceptiones.CustomException;
-import com.example.moneytrackerbackend.repositories.UserRepository;
 import com.example.moneytrackerbackend.security.JwtUtils;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.CategoryService;
-import com.example.moneytrackerbackend.services.ImageService;
 import com.example.moneytrackerbackend.services.TransactionService;
 import com.example.moneytrackerbackend.services.UserServiceImp;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,9 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -34,14 +31,11 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-    private final PasswordEncoder encoder;
     private final UserServiceImp userService;
     private final TransactionService transactionService;
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtils tokenProvider;
-    private final UserRepository userRepository;
-    private final ImageService imageService;
     private final CategoryService categoryService;
 
     @PostMapping("/api/auth/login")
@@ -62,18 +56,9 @@ public class UserController {
     }
 
     @PostMapping("api/auth/register")
-    public ResponseEntity<MessageResponse> register(@RequestBody UserRequest registerRequest) {
+    public ResponseEntity<MessageResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
 
-        if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new CustomException("Error: Email is already taken!");
-        }
-
-        User user = User.builder().username(registerRequest.getUsername())
-                .password(encoder.encode(registerRequest.getPassword()))
-                .email(registerRequest.getEmail())
-                .phoneNumber(registerRequest.getPhoneNumber())
-                .build();
-        user = userService.saveUser(user);
+        User user = userService.saveUser(registerRequest);
         categoryService.createDefaultCategory(user.getId());
 
         return ResponseEntity.ok(new MessageResponse("Success register account"));
@@ -103,50 +88,15 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("api/v1/user/set-avatar")
-    public ResponseEntity<MessageResponse> setAvatar(@RequestParam("image") MultipartFile image, Principal principal) {
-
-        Long imgId = imageService.saveUploadedFile(image);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Long userId = userDetails.getId();
-        User user = userService.getUser(userId);
-
-        user.setImageId(imgId);
-        userService.saveUser(user);
-
-        return ResponseEntity.ok(new MessageResponse("Success set avatar"));
-    }
-
-    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("api/v1/user/update")
     public ResponseEntity<MessageResponse> updateUser(Principal principal,
-                                                      @RequestParam(value = "avatar", required = false) MultipartFile avatar,
-                                                      @RequestParam("username") String username,
-                                                      @RequestParam("email") String email,
-                                                      @RequestParam("phoneNumber") String phoneNumber) {
+                                                      UserRequest userRequest) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        User user = userService.getUser(userId);
+        userRequest.setUserId(userId);
 
-        if (!user.getEmail().equals(email)) {
-            if (userRepository.existsByEmail(email)) {
-                throw new CustomException("Error: Email is already taken!");
-            }
-            user.setEmail(email);
-        }
-        if (avatar != null) {
-            Long imgId = imageService.saveUploadedFile(avatar);
-            if (user.getImageId() != null) {
-                imageService.deleteImage(user.getImageId());
-            }
-            user.setImageId(imgId);
-        }
-
-        user.setUsername(username);
-        user.setPhoneNumber(phoneNumber);
-        userService.saveUser(user);
+        userService.updateUser(userRequest);
 
         return ResponseEntity.ok(new MessageResponse("Success update your account."));
     }
@@ -159,15 +109,8 @@ public class UserController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
-        User user = userService.getUser(userId);
+        userService.updatePassword(prePassword, password, userId);
 
-        if(encoder.matches(prePassword, user.getPassword())){
-            user.setPassword(encoder.encode(password));
-            userService.saveUser(user);
-
-            return ResponseEntity.ok(new MessageResponse("Success save new password."));
-        }
-
-        return ResponseEntity.ok(new MessageResponse("Old password is not collect."));
+        return ResponseEntity.ok(new MessageResponse(""));
     }
 }

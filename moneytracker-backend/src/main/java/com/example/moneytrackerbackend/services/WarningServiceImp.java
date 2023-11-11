@@ -49,6 +49,6 @@ public class WarningServiceImp implements WarningService{
         return warningRepository.save(warning);
     }
     public List<Warning> getAllWarning(Long userId){
-        return warningRepository.findAllByUserIdOrderByDateDesc(userId);
+        return warningRepository.findAllByUserIdOrderByIdDesc(userId);
     }
 }

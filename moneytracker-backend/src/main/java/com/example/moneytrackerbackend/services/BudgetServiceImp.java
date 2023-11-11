@@ -57,7 +57,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     public List<Budget> getAllBudget(Long userId) {
-        return budgetRepository.findAllByUserId(userId);
+        return budgetRepository.findAllByCategoryUserIdOrderById(userId);
     }
 
     public List<Budget> getAllBudgetOfMonth(String monthAndYear, Long userId) {

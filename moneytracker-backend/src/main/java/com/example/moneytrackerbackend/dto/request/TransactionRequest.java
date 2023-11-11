@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @Builder
 public class TransactionRequest {
+
     private Long transactionId;
-//    private Long userId;
     private Long categoryId;
     private int amount;
     private MultipartFile image;
