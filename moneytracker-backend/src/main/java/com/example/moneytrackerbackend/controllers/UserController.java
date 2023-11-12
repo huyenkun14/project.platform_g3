@@ -12,7 +12,6 @@ import com.example.moneytrackerbackend.security.JwtUtils;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.CategoryService;
 import com.example.moneytrackerbackend.services.TransactionService;
-import com.example.moneytrackerbackend.services.UserDetailsServiceImp;
 import com.example.moneytrackerbackend.services.UserServiceImp;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
