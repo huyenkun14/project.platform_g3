@@ -10,10 +10,16 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class TransactionResponse {
+
     private Long transactionId;
+
     private CategoryResponse category;
+
     private int amount;
+
     private String description;
+
     private LocalDate date;
+
     private String urlImage;
 }

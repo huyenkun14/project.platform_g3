@@ -11,9 +11,12 @@ import lombok.*;
 @Entity
 @Table
 public class Icon {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String filename;
+
     private String type;
 }

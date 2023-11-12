@@ -17,8 +17,11 @@ import static com.example.moneytrackerbackend.utils.TimeUtil.formatterDate;
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImp implements TransactionService {
+
     private final TransactionRepository transactionRepository;
+
     private final CategoryRepository categoryRepository;
+
     private final ImageService imageService;
 
     public Transaction createTransaction(TransactionRequest transactionRequest) {
@@ -34,10 +37,12 @@ public class TransactionServiceImp implements TransactionService {
                 .date(date)
                 .description(transactionRequest.getDescription())
                 .build();
+
         if(transactionRequest.getImage()!= null){
             Long imageId = imageService.saveUploadedFile(transactionRequest.getImage());
             transaction.setImageId(imageId);
         }
+
         transaction = transactionRepository.save(transaction);
 
         return transaction;
@@ -95,8 +100,10 @@ public class TransactionServiceImp implements TransactionService {
         return transactionRepository.findAllByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
     }
     public int getSumAmountByCategory(Long categoryId, String monthAndYear){
+
         String[] mothYear = monthAndYear.split("-");
         List<Transaction> transactions= transactionRepository.findAllByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
+
         return transactions.stream().mapToInt(Transaction::getAmount).sum();
     }
 }

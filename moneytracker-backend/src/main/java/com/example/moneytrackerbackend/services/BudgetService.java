@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public interface BudgetService {
+
     Budget createBudget(BudgetRequest budgetRequest);
 
     Budget updateBudget(BudgetRequest budgetRequest);

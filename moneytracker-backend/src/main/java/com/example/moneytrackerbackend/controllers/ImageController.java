@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 @RestController
 @RequiredArgsConstructor
 public class ImageController {
+
     private final ImageService imageService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/image/upload")

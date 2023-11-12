@@ -16,8 +16,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImp implements CategoryService {
+
     private final CategoryRepository categoryRepository;
+
     private final TransactionRepository transactionRepository;
+
     private final UserRepository userRepository;
 
     public Category createCategory(CategoryRequest categoryRequest) {

@@ -13,6 +13,7 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
+
     @Value("${auth.jwt_secret}")
     private String jwtSecret;
 
@@ -36,11 +37,13 @@ public class JwtUtils {
     }
 
     public String getEmailFromJwtToken(String token) {
+
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
+
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
             return true;
@@ -54,6 +57,5 @@ public class JwtUtils {
             throw new CustomException("JWT claims string is empty: "+ e.getMessage());
         }
 
-//        return false;
     }
 }

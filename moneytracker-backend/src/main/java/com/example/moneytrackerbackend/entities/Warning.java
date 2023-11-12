@@ -13,12 +13,16 @@ import java.time.LocalDateTime;
 @Builder
 @Table
 public class Warning {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
     private String message;
+
     private LocalDateTime date;
 }

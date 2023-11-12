@@ -26,6 +26,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class IconController {
+
     private final IconService iconService;
     @PostMapping("/api/icon/upload")
     public ResponseEntity<MessageResponse> uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {

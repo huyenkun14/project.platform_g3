@@ -8,8 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorMessage {
+
     private int statusCode;
+
     private String timestamp;
+
     private String message;
+
     private String description;
 }

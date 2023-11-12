@@ -10,9 +10,12 @@ import lombok.*;
 @Entity
 @Table
 public class Image {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String filename;
+
     private String type;
 }

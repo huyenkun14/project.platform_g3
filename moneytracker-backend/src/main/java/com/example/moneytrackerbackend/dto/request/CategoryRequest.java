@@ -1,6 +1,7 @@
 package com.example.moneytrackerbackend.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Builder
@@ -11,11 +12,14 @@ import lombok.*;
 public class CategoryRequest {
 
     private Long categoryId;
-    @NotBlank
+
     private Long userId;
-    @NotBlank
+
+    @NotBlank(message = "Title must not null")
     private String title;
+
     private Long iconId;
-    @NotBlank
+
+    @NotNull(message = "Value must not null")
     private boolean value;
 }

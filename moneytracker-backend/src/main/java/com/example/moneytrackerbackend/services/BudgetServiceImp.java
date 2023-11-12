@@ -17,10 +17,10 @@ import static com.example.moneytrackerbackend.utils.TimeUtil.formatterDate;
 @Service
 @RequiredArgsConstructor
 public class BudgetServiceImp implements BudgetService {
+
     private final BudgetRepository budgetRepository;
+
     private final CategoryRepository categoryRepository;
-
-
 
     public Budget createBudget(BudgetRequest budgetRequest) {
 

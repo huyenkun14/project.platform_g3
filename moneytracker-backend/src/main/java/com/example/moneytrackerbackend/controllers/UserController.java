@@ -12,6 +12,7 @@ import com.example.moneytrackerbackend.security.JwtUtils;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.CategoryService;
 import com.example.moneytrackerbackend.services.TransactionService;
+import com.example.moneytrackerbackend.services.UserDetailsServiceImp;
 import com.example.moneytrackerbackend.services.UserServiceImp;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,17 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+
+//    private final UserDetailsServiceImp userDetailsServiceImp;
+
     private final UserServiceImp userService;
+
     private final TransactionService transactionService;
 
     private final AuthenticationManager authenticationManager;
+
     private final JwtUtils tokenProvider;
+
     private final CategoryService categoryService;
 
     @PostMapping("/api/auth/login")
@@ -90,7 +97,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("api/v1/user/update")
     public ResponseEntity<MessageResponse> updateUser(Principal principal,
-                                                      UserRequest userRequest) {
+                                                      @Valid UserRequest userRequest) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
@@ -109,6 +116,7 @@ public class UserController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
+
         userService.updatePassword(prePassword, password, userId);
 
         return ResponseEntity.ok(new MessageResponse(""));

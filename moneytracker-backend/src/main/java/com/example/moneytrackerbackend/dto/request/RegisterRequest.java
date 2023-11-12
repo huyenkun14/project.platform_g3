@@ -3,6 +3,7 @@ package com.example.moneytrackerbackend.dto.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @NoArgsConstructor
@@ -17,11 +18,11 @@ public class RegisterRequest {
     private String username;
 
     @NotBlank(message = "Password must not null")
-    @Min(value = 8, message = "Password must min 8 chart")
+    @Size(min = 8, message = "Password must min 8 chart")
     private String password;
 
     @NotBlank
-    @Email
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
     @NotBlank(message = "Phone number must not null")

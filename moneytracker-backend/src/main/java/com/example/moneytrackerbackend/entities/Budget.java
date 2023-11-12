@@ -13,13 +13,18 @@ import java.time.LocalDate;
 @Entity
 @Table
 public class Budget {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
     private int amount;
+
     private LocalDate startDate;
+
     private LocalDate endDate;
 }

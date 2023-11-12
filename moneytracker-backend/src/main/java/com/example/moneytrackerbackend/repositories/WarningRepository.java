@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 
 public interface WarningRepository extends JpaRepository<Warning, Long> {
+
     List<Warning> findAllByUserIdOrderByIdDesc(Long userId);
 }

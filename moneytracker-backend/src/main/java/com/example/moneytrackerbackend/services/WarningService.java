@@ -7,7 +7,10 @@ import java.util.List;
 
 @Service
 public interface WarningService {
+
     int checkBudget(Long categoryId, String date);
+
     List<Warning> getAllWarning(Long userId);
+
     Warning createWarning(Long transactionId, int amount);
 }

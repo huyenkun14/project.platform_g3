@@ -1,6 +1,7 @@
 package com.example.moneytrackerbackend.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,15 +12,15 @@ public class BudgetRequest {
 
     private Long BudgetId;
 
-    @NotBlank
+    @NotNull(message = "Category must not null")
     private Long categoryId;
 
-    @NotBlank
+    @NotNull(message = "Amount must not null")
     private int amount;
 
-    @NotBlank
+    @NotBlank(message = "Start date must not null")
     private String startDate;
 
-    @NotBlank
+    @NotBlank(message = "End date must not null")
     private String endDate;
 }
