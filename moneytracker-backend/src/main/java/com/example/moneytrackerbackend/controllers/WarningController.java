@@ -24,8 +24,10 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertWarni
 @RequiredArgsConstructor
 public class WarningController {
 
-    private final UserServiceImp userService;
+    private final UserDetailsServiceImp userService;
+
     private final WarningService warningService;
+
     private final EmailService emailService;
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -46,6 +48,7 @@ public class WarningController {
 
             return ResponseEntity.ok(convertWarning(warning));
         }
+
         return ResponseEntity.ok().build();
     }
 

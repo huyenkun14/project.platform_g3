@@ -21,15 +21,23 @@ import static com.example.moneytrackerbackend.utils.TimeUtil.formatterDate;
 @Service
 @RequiredArgsConstructor
 public class WarningServiceImp implements WarningService{
+
     private final TransactionRepository transactionRepository;
+
     private final WarningRepository warningRepository;
+
     private final BudgetRepository budgetRepository;
+
     private final CategoryRepository categoryRepository;
 
     public int checkBudget(Long categoryId, String date){
+
         LocalDate date1 = formatterDate(date);
+
         int sumAmount = transactionRepository.sumAmountByCategory(categoryId, date1.getMonthValue(), date1.getYear());
+
         Budget budget = budgetRepository.findByCategoryId(categoryId, date1.getMonthValue(), date1.getYear());
+
         if(budget!=null && budget.getAmount()>0){
             return budget.getAmount() - sumAmount;
         }
@@ -39,6 +47,7 @@ public class WarningServiceImp implements WarningService{
     public Warning createWarning(Long categoryId, int amount){
 
         Category category = categoryRepository.findById(categoryId).orElseThrow(()->new CustomException("Error: no category."));
+
         String content = "Chi tiêu của bạn cho " + category.getTitle() + " đã vượt mức ngân sách là " + formatMoney(amount) + ".";
 
         Warning warning = Warning.builder()
@@ -49,6 +58,6 @@ public class WarningServiceImp implements WarningService{
         return warningRepository.save(warning);
     }
     public List<Warning> getAllWarning(Long userId){
-        return warningRepository.findAllByUserIdOrderByDateDesc(userId);
+        return warningRepository.findAllByUserIdOrderByIdDesc(userId);
     }
 }

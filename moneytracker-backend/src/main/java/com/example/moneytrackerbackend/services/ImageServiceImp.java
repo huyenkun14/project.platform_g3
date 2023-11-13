@@ -24,13 +24,16 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImp implements ImageService {
+
+    private final ImageRepository imageRepository;
+
     @Value("${media.img_path}")
     private String imgFolder;
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+
     private static final List<String> ACCEPTED_CONTENT_TYPES = Arrays.asList(
             "image/jpeg", "image/png", "image/gif"
     );
-    private final ImageRepository imageRepository;
 
     public Image getImage(Long id) {
         return imageRepository.findById(id).orElse(null);

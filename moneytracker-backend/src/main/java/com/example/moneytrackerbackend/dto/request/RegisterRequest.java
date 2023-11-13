@@ -2,18 +2,23 @@ package com.example.moneytrackerbackend.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-@Data
-public class UserRequest {
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 
-    private Long userId;
+public class RegisterRequest {
 
     @NotBlank(message = "Username must not null")
     private String username;
 
-    private MultipartFile avatar;
+    @NotBlank(message = "Password must not null")
+    @Size(min = 8, message = "Password must min 8 chart")
+    private String password;
 
     @NotBlank
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
