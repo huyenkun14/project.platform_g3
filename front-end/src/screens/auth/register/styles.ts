@@ -11,9 +11,10 @@ const styles = () => {
             backgroundColor: theme.backgroundColor,
         },
         logo: {
-            height: 50,
-            resizeMode: 'stretch',
+            height: 80,
+            resizeMode: 'contain',
             alignSelf: 'center',
+            marginBottom: 10,
         },
         title: {
             color: theme.titleColor,

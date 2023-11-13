@@ -8,6 +8,6 @@ export interface IEntryInfo {
         },
         amount: number,
         description: string,
-        date: string
-    
+        date: string,
+        urlImage: string
 }

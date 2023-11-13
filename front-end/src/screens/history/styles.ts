@@ -6,7 +6,7 @@ const styles = () => {
     const theme = useTheme();
     const st = StyleSheet.create({
         container: {
-            backgroundColor: '#fff',
+            backgroundColor: theme.backgroundColor,
             paddingBottom: 80,
             minHeight: SCREEN_HEIGHT,
         },

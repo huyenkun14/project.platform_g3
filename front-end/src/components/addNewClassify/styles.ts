@@ -2,8 +2,7 @@ import { StyleSheet } from "react-native";
 import useTheme from "../../hooks/useTheme";
 
 const styles = () => {
-    const theme = useTheme()
-
+    const theme = useTheme();
     const st = StyleSheet.create({
         modalContainer: {
             flex: 1,
@@ -59,23 +58,25 @@ const styles = () => {
         },
         checkboxContainer: {
             flexDirection: 'row',
-            justifyContent: 'space-between',
             marginTop: 30,
-            // paddingHorizontal: 30
-        },
-        checkboxView:{
-            flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center'
         },
-        checkbox: {
-            marginRight: 8,
+        activeColor: {
+            color: theme.tabActive,
+            fontSize: 16,
+        },
+        inActiveColor: {
+            fontSize: 16,
+            color: '#CCCCCC'
         },
         addImage: {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 30,
-            height: 50,
+            marginBottom: 30,
+            height: 150,
             borderColor: theme.borderColor,
             borderWidth: 2,
             borderStyle: 'dotted',
@@ -90,12 +91,18 @@ const styles = () => {
         },
         button: {
             backgroundColor: theme.tabActive,
-            paddingVertical: 15,
+            // paddingVertical: 15,
+            height: 40,
             borderRadius: 5,
+            alignItems: 'center',
+            justifyContent: 'center',
+
+        },
+        buttonText: {
             textAlign: 'center',
-            fontSize: 16,
+            fontSize: 14,
+            fontWeight: "500",
             color: theme.text_white,
-            marginTop: 30,
 
         },
         shadow: {
@@ -115,5 +122,4 @@ const styles = () => {
     })
     return st
 }
-
 export default styles

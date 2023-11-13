@@ -51,7 +51,7 @@ const styles = () => {
             color: theme.text_1,
         },
         lineChartContainer: {
-    
+
         },
         lineChartNoteContainer: {
             flexDirection: 'row',
@@ -97,6 +97,11 @@ const styles = () => {
             marginVertical: 10,
             alignSelf: 'center',
             textDecorationLine: 'underline'
+        },
+        detailText: {
+            fontSize: 16,
+            fontWeight: '500',
+            color: theme.text_1
         },
         detailContentContainer: {
             paddingHorizontal: 15,

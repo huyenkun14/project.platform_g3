@@ -29,10 +29,10 @@ const Option = (props) => {
             <Modal animationType='slide' visible={openModalTheme} transparent>
                 <TouchableWithoutFeedback onPress={() => setOpenModalTheme(false)}>
                     <View style={{justifyContent: "flex-end",  width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.6)"}}>
-                        <View style={{backgroundColor: themeX.backgroundColor, borderTopLeftRadius: 16, borderTopRightRadius: 16, padding: 16}}>
-                            <Text style={{fontSize: 18, fontWeight: "800", textAlign: "center"}}>Theme</Text>
+                        <View style={{backgroundColor: themeX.borderColor, borderTopLeftRadius: 16, borderTopRightRadius: 16, padding: 16}}>
+                            <Text style={{fontSize: 18, fontWeight: "800", textAlign: "center"}}>Chủ đề</Text>
                             <TouchableOpacity onPress={() => handleToggle('light')} style={{flexDirection: "row", alignItems: "center", marginTop: 16, justifyContent: "space-between"}}>
-                                <Text style={{fontSize: 16, fontWeight: "600", color: themeMode === "light" ? themeX.OPTION_ACTIVE : themeX.WHITE}}>Giao diện sáng</Text>
+                                <Text style={{fontSize: 16, fontWeight: "600", color: themeMode === "light" ? themeX.OPTION_ACTIVE : themeX.BLACK}}>Giao diện sáng</Text>
                                 {
                                     themeMode === "light" && <View style={{width: 8, height: 8 , borderRadius: 100, backgroundColor: themeX.OPTION_ACTIVE}} />
                                 }
@@ -41,6 +41,12 @@ const Option = (props) => {
                                 <Text style={{fontSize: 16, fontWeight: "600", color: themeMode === "dark" ? themeX.OPTION_ACTIVE : themeX.BLACK}}>Giao diện tối</Text>
                                 {
                                     themeMode === "dark" && <View style={{width: 8, height: 8 , borderRadius: 100, backgroundColor: themeX.OPTION_ACTIVE}} />
+                                }
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleToggle('lovely')} style={{flexDirection: "row", alignItems: "center", marginTop: 16, justifyContent: "space-between"}}>
+                                <Text style={{fontSize: 16, fontWeight: "600", color: themeMode === "lovely" ? themeX.OPTION_ACTIVE : themeX.BLACK}}>Đáng iu</Text>
+                                {
+                                    themeMode === "lovely" && <View style={{width: 8, height: 8 , borderRadius: 100, backgroundColor: themeX.OPTION_ACTIVE}} />
                                 }
                             </TouchableOpacity>
                         </View>

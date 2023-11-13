@@ -7,9 +7,7 @@ const styles = () => {
   const st = StyleSheet.create({
  modalContainer: {
     flex: 1,
-    paddingHorizontal: 25,
-    backgroundColor: defaultColors.borderColor,
-    paddingVertical: 20,
+    backgroundColor: theme.backgroundImg,
     position: 'relative',
     minHeight: SCREEN_HEIGHT
   },
@@ -19,13 +17,13 @@ const styles = () => {
     resizeMode: 'contain',
   },
   header: {
-    color: defaultColors.titleColor,
+    color: theme.titleColor,
     fontSize: 25,
     fontWeight: '800',
     textAlign: 'center',
   },
   title: {
-    color: defaultColors.text_3,
+    color: theme.text_3,
     fontSize: 16,
     fontWeight: '500',
     textAlign: 'center',
@@ -40,26 +38,30 @@ const styles = () => {
     fontSize: 15,
     marginBottom: 12,
     fontWeight: '500',
-    color: defaultColors.text_3,
+    color: theme.text_1,
     marginLeft: 10
   },
   input: {
-    color: defaultColors.text_1,
+    color: theme.text_1,
     fontSize: 13.5,
     paddingHorizontal: 10,
     borderRadius: 10,
     height: 50,
     overflow: 'hidden',
-    backgroundColor: defaultColors.backgroundColor,
+    backgroundColor: theme.backgroundColor,
+    borderColor: theme.flatListItem,
+    borderWidth: 1,
+    marginHorizontal: 25
   },
   inputLabelContainer: {
     flexDirection: 'row',
+    marginHorizontal: 25,
   },
   inputLabelIcon: {
     height: 20,
     width: 20,
     resizeMode: 'contain',
-    tintColor: defaultColors.text_3,
+    tintColor: theme.text_1,
   },
   inputNote: {
     height: 100,
@@ -67,6 +69,7 @@ const styles = () => {
     paddingVertical: 10,
   },
   dropdownContainer: {
+    marginHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -74,13 +77,14 @@ const styles = () => {
     width: SCREEN_WIDTH * 0.5,
   },
   dropdown: {
-    borderColor: defaultColors.backgroundColor,
+    borderColor: theme.backgroundImg,
+    borderWidth: 1,
     borderRadius: 10,
   },
   newClassify: {
     height: 50,
     width: SCREEN_WIDTH * 0.3,
-    backgroundColor: defaultColors.flatListItem,
+    backgroundColor: theme.flatListItem,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -89,7 +93,7 @@ const styles = () => {
     height: 30,
     width: 20,
     resizeMode: 'contain',
-    tintColor: defaultColors.backgroundColor
+    tintColor: theme.backgroundColor
   },
   timeContainer: {
     flexDirection: 'row',
@@ -99,7 +103,7 @@ const styles = () => {
   timeIconView: {
     height: 40,
     width: 40,
-    backgroundColor: defaultColors.flatListItem,
+    backgroundColor: theme.flatListItem,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -108,7 +112,7 @@ const styles = () => {
     height: 20,
     width: 20,
     resizeMode: 'contain',
-    tintColor: defaultColors.text_white
+    tintColor: theme.text_white
   },
   timeText: {
     marginLeft: 20,
@@ -116,29 +120,34 @@ const styles = () => {
   },
   moneyText: {
     position: 'absolute',
-    right: 15,
+    right: 40,
     top: 15,
     fontSize: 14,
     fontWeight: '400',
-    color: defaultColors.text_3,
+    color: theme.text_3,
   },
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10
   },
   image: {
-    maxWidth: SCREEN_WIDTH - 50
+    // width: SCREEN_WIDTH - 50,
+    height: 200,
+    width: 200,
+    resizeMode: 'contain'
   },
   button: {
+    marginHorizontal: 25,
     marginTop: 10,
     fontSize: 16,
     paddingVertical: 15,
     textAlign: 'center',
     borderRadius: 10,
     marginBottom: 20,
-    borderColor: defaultColors.borderColor,
+    borderColor: theme.borderColor,
     borderWidth: 0.5,
-    shadowColor: defaultColors.shadowColor,
+    shadowColor: theme.shadowColor,
     shadowOffset: {
       width: 0,
       height: 3,
@@ -148,13 +157,13 @@ const styles = () => {
     elevation: 3,
   },
   buttonCancel: {
-    color: defaultColors.text_1,
-    backgroundColor: defaultColors.backgroundColor,
+    color: theme.text_1,
+    backgroundColor: theme.backgroundColor,
   },
   buttonAdd: {
-    color: defaultColors.text_white,
+    color: theme.text_white,
     opacity: 0.9,
-    backgroundColor: defaultColors.tabActive,
+    backgroundColor: theme.tabActive,
   },
   bg: {
     position: 'absolute',
@@ -169,10 +178,10 @@ const styles = () => {
   shadow: {
     marginBottom: 20,
     // borderRadius: 10,
-    // borderColor: defaultColors.borderColor,
+    // borderColor: theme.borderColor,
     // borderWidth: 1.5,
-    // backgroundColor: defaultColors.backgroundColor,
-    // shadowColor: defaultColors.shadowColor,
+    // backgroundColor: theme.backgroundColor,
+    // shadowColor: theme.shadowColor,
     // shadowOffset: {
     //   width: 0,
     //   height: 3,

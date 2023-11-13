@@ -1,39 +1,64 @@
-import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid } from 'react-native'
+import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid, ScrollView, TouchableWithoutFeedback, Switch } from 'react-native'
 import React, { useState } from 'react'
+import st from './styles'
 import { useDispatch } from 'react-redux'
 import { createClassifyAction } from '../../services/classify/actions'
-import { createBudgetAction } from '../../services/budget/actions'
 import Checkbox from 'expo-checkbox';
-import st from './styles'
+import { BASE_URL } from '../../constants/api'
+import { createCategory } from '../../services/classify'
+import useTheme from '../../hooks/useTheme'
 
-const AddNewClassify = ({ modalVisible, setModalVisible }) => {
-    const styles = st();
+const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, handleGetlist }) => {
     const dispatch = useDispatch<any>()
     const [isIncomeChecked, setIncomeChecked] = useState(false);
-    const [isExpenseChecked, setExpenseChecked] = useState(false);
+    const [iconCurrent, setIconCurrent] = useState<number>(null);
+    const styles = st();
+    const theme = useTheme();
 
     const [infoClassify, setInfoClassify] = useState({
         title: '',
         image: '',
         value: false
     })
+
+    const handleClearData = () => {
+        setInfoClassify({
+            title: '',
+            image: '',
+            value: false
+        })
+        setIconCurrent(null)
+    }
     const onChangeInfoClassify = (name) => {
         return (value: any) => {
             setInfoClassify({ ...infoClassify, [name]: value })
             console.log('infoClassify', infoClassify)
         }
     }
-    const handleCreateClassify = () => {
-        dispatch(createClassifyAction({
+    const handleChangeInfoClassifyValue = (value: boolean) => {
+        let _data = { ...infoClassify }
+        _data.value = value
+        setInfoClassify(_data)
+    }
+    const handleCreateClassify = async () => {
+        setLoading(true)
+        const res = await createCategory({
+            iconId: iconCurrent,
             title: infoClassify.title,
-            value: isIncomeChecked
-        }))
-            .then(res => {
-                console.log(res)
-                ToastAndroid.show('Thêm danh mục thành công', ToastAndroid.SHORT)
-                setModalVisible(false)
-            })
-            .catch(err => console.log('err', err))
+            value: isIncomeChecked,
+        })
+        setLoading(false)
+        if (res?.status === 200) {
+            handleGetlist?.()
+            handleClearData()
+            ToastAndroid.show('Thêm danh mục thành công', ToastAndroid.SHORT)
+            setModalVisible(false)
+        }
+        else {
+            handleClearData()
+            ToastAndroid.show('Thêm danh mục không thành công', ToastAndroid.SHORT)
+            setModalVisible(false)
+        }
     }
 
     return (
@@ -43,6 +68,7 @@ const AddNewClassify = ({ modalVisible, setModalVisible }) => {
                 transparent={true}
                 visible={modalVisible}
             >
+                {/* <TouchableWithoutFeedback onPress={() => { setModalVisible(false) }}> */}
                 <View style={styles.modalContainer}>
                     <View style={styles.modalInner}>
                         <View style={styles.headerContainer}>
@@ -65,39 +91,67 @@ const AddNewClassify = ({ modalVisible, setModalVisible }) => {
                             />
                         </View>
                         <View style={styles.checkboxContainer}>
-                            <View style={styles.checkboxView}>
-                                <Checkbox
-                                    style={styles.checkbox}
-                                    value={isIncomeChecked}
-                                    onValueChange={setIncomeChecked}
-                                    color={isIncomeChecked ? '#4630EB' : undefined}
-                                />
-                                <Text>Thu nhập</Text>
-                            </View>
-                            {/* <View style={styles.checkboxView}>
-                                <Checkbox
-                                    style={styles.checkbox}
-                                    value={isExpenseChecked}
-                                    onValueChange={onChangeInfoClassify('value')}
-                                    color={isExpenseChecked ? '#4630EB' : undefined}
-                                />
-                                <Text>Chi tiêu</Text>
-                            </View> */}
+                            <Text style={isIncomeChecked ? styles.inActiveColor : styles.activeColor}>Chi tiêu</Text>
+                            <Switch
+                                trackColor={{ false: '#CCCCCC', true: '#CCCCCC' }}
+                                thumbColor={theme.tabActive}
+                                ios_backgroundColor="#CCCCCC"
+                                onValueChange={() => { setIncomeChecked(!isIncomeChecked) }}
+                                value={isIncomeChecked}
+                                style={{ marginHorizontal: 10 }}
+                            />
+                            <Text style={isIncomeChecked ? styles.activeColor : styles.inActiveColor}>Thu nhập</Text>
                         </View>
-                        <TouchableOpacity>
-                            <View style={styles.addImage}>
-                                <Image
-                                    source={require('../../../assets/images/icon/ic_camera.png')}
-                                    style={styles.addImageIcon}
-                                />
-                                <Text style={styles.addImageText}>Chọn ảnh</Text>
-                            </View>
-                        </TouchableOpacity>
+                        <View style={styles.addImage}>
+                            <ScrollView style={{ width: "100%", height: "100%" }} showsVerticalScrollIndicator={false}>
+                                <View
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        flexDirection: "row",
+                                        flexWrap: "wrap",
+                                        justifyContent: "space-around",
+                                    }}
+                                >
+                                    {listIcon &&
+                                        listIcon.length > 0 &&
+                                        listIcon.map((it) => {
+                                            return (
+                                                <View
+                                                    key={it?.id}
+                                                    style={{
+                                                        padding: 10,
+                                                        marginTop: 5,
+                                                        borderColor:
+                                                            it?.id !== iconCurrent
+                                                                ? theme.borderColor
+                                                                : theme.tabActive,
+                                                        borderWidth: 1,
+                                                        borderRadius: 5,
+                                                    }}
+                                                >
+                                                    <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
+                                                        <Image
+                                                            source={{ uri: `${BASE_URL}${it?.url}` }}
+                                                            style={{ width: 35, height: 35 }}
+                                                            resizeMode="stretch"
+                                                        />
+                                                    </TouchableOpacity>
+                                                </View>
+                                            );
+                                        })}
+                                </View>
+                            </ScrollView>
+                        </View>
+                        {/* </TouchableOpacity> */}
                         <TouchableOpacity onPress={handleCreateClassify}>
-                            <Text style={styles.button}>Thêm danh mục</Text>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>Thêm danh mục</Text>
+                            </View>
                         </TouchableOpacity>
                     </View>
                 </View>
+                {/* </TouchableWithoutFeedback> */}
             </Modal>
         </View>
     )

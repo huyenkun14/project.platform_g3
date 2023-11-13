@@ -83,7 +83,6 @@ const MyBottomTabs = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 300,
           backgroundColor: useTheme().backgroundColor
         },
       }}
