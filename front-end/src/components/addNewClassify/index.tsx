@@ -94,7 +94,7 @@ const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, h
                             <Text style={isIncomeChecked ? styles.inActiveColor : styles.activeColor}>Chi tiêu</Text>
                             <Switch
                                 trackColor={{ false: '#CCCCCC', true: '#CCCCCC' }}
-                                thumbColor={'blue'}
+                                thumbColor={theme.tabActive}
                                 ios_backgroundColor="#CCCCCC"
                                 onValueChange={() => { setIncomeChecked(!isIncomeChecked) }}
                                 value={isIncomeChecked}
@@ -118,6 +118,7 @@ const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, h
                                         listIcon.map((it) => {
                                             return (
                                                 <View
+                                                    key={it?.id}
                                                     style={{
                                                         padding: 10,
                                                         marginTop: 5,

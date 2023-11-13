@@ -96,11 +96,11 @@ const Home = () => {
     console.log('user info', userInfo);
   };
   const getListEntry = () => {
-    setLoading(true)
+    setLoading(false)
     dispatch(getAllEntryAction())
       .then(res => {
         setLoading(false)
-        console.log(res)
+        console.log(res, 'list entryyyyyyyyyyyyyyy')
         const converListEntry = res?.payload.slice(-5)
         setListEntry(converListEntry)
       })
@@ -110,7 +110,7 @@ const Home = () => {
       })
   }
   const getInfoUser = () => {
-    setLoading(true)
+    setLoading(false)
     dispatch(getInfoUserAction())
       .then(res => {
         setLoading(false)
@@ -173,7 +173,7 @@ const Home = () => {
         <Text style={styles.title}>Ads</Text>
         <Banner />
         {/* last entries */}
-        <View style={{ paddingBottom: 100 }}>
+        <View style={{ paddingBottom: 60 }}>
           <Text style={styles.title}>Gần đây</Text>
           {listEntry.length >= 1 ?
             listEntry.map((item, index) =>

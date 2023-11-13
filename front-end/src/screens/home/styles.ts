@@ -20,9 +20,9 @@ const styles = () => {
             marginTop: 10
         },
         title: {
-            fontWeight: '300',
+            fontWeight: '700',
             fontSize: 16,
-            marginBottom: 20,
+            marginBottom: 10,
             paddingHorizontal: 25,
             color: theme.text_1,
         },

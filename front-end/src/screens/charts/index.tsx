@@ -10,6 +10,7 @@ import { getFinancialValueAction, getFinancialYearlyAction } from '../../service
 import { formatMoney } from '../../../utils/formatMoney';
 import { SCREEN_WIDTH } from '../../../utils/Dimension';
 import useTheme from '../../hooks/useTheme';
+import { StatusBar } from 'react-native';
 
 const Chart = () => {
   const [chartType, setChartType] = useState('1')
@@ -56,8 +57,8 @@ const Chart = () => {
 
   const lineChartConfig = {
     backgroundColor: "blue",
-    backgroundGradientFrom: "#0083b0",
-    backgroundGradientTo: "#00b4db",
+    backgroundGradientFrom: theme.gradientFrom,
+    backgroundGradientTo: theme.gradientTo,
     decimalPlaces: 2, // optional, defaults to 2dp
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -165,25 +166,25 @@ const Chart = () => {
             <View style={styles.lineChartNoteContainer}>
               <View style={styles.lineChartNoteItem}>
                 <View style={[styles.lineChartNoteIcon, { backgroundColor: 'green' }]} />
-                <Text>Thu nhập</Text>
+                <Text style={styles.detailText}>Thu nhập</Text>
               </View>
               <View style={styles.lineChartNoteItem}>
                 <View style={[styles.lineChartNoteIcon, { backgroundColor: 'orange' }]} />
-                <Text>Chi tiêu</Text>
+                <Text style={styles.detailText}>Chi tiêu</Text>
               </View>
             </View>
             <Text style={styles.detailButton}>Thống kê</Text>
             <View style={styles.ChartTable}>
-              <Text style={{ fontSize: 16, fontWeight: '500' }}>Tháng</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500' }}>Thu nhập</Text>
-              <Text style={{ fontSize: 16, fontWeight: '500' }}>Chi tiêu</Text>
+              <Text style={styles.detailText}>Tháng</Text>
+              <Text style={styles.detailText}>Thu nhập</Text>
+              <Text style={styles.detailText}>Chi tiêu</Text>
             </View>
-            <View style={{ paddingBottom: 100 }}>
+            <View>
               {listFinancialYearly?.map((item, index) => (
                 <View style={styles.ChartTable} key={index}>
-                  <Text>{item?.month}</Text>
-                  <Text>{item?.incomeMoney}</Text>
-                  <Text>{item?.spendingMoney}</Text>
+                  <Text style={[styles.detailText, {fontWeight: '300', fontSize: 14}]}>{item?.month}</Text>
+                  <Text style={[styles.detailText, {fontWeight: '300', fontSize: 14}]}>{item?.incomeMoney}</Text>
+                  <Text style={[styles.detailText, {fontWeight: '300', fontSize: 14}]}>{item?.spendingMoney}</Text>
                 </View>
               ))}
             </View>
@@ -212,8 +213,8 @@ const Chart = () => {
               </View>
               <Text style={styles.detailButton}>Thống kê</Text>
               <View style={styles.ChartTable}>
-                <Text style={{ fontSize: 16, fontWeight: '500' }}>Danh mục</Text>
-                <Text style={{ fontSize: 16, fontWeight: '500' }}>VNĐ</Text>
+                <Text style={styles.detailText}>Danh mục</Text>
+                <Text style={styles.detailText}>VNĐ</Text>
               </View>
               {
                 dataPieChartIncome?.map((item, index) => (
@@ -246,8 +247,8 @@ const Chart = () => {
                 </View>
                 <Text style={styles.detailButton}>Thống kê</Text>
                 <View style={styles.ChartTable}>
-                  <Text style={{ fontSize: 16, fontWeight: '500' }}>Danh mục</Text>
-                  <Text style={{ fontSize: 16, fontWeight: '500' }}>VNĐ</Text>
+                  <Text style={styles.detailText}>Danh mục</Text>
+                  <Text style={styles.detailText}>VNĐ</Text>
                 </View>
                 {
                   dataPieChartIncome?.map((item, index) => (
@@ -266,6 +267,7 @@ const Chart = () => {
 
   return (
     <SafeAreaView>
+      <StatusBar />
       <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:100}}>
         <Header title='Biểu đồ' />
         {/* options */}

@@ -9,6 +9,8 @@ import { deleteEntryAction, getEntryByIdAction, updateEntryAction } from '../../
 import { IEntryInfo } from './type';
 import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit';
 import { useNavigation } from '@react-navigation/native';
+import { addCommas, removeNonNumeric } from '../../../utils/formatMoney';
+import { BASE_URL } from '../../constants/api';
 
 const EntryDetail = ({ route }) => {
     const { entryId } = route.params
@@ -23,11 +25,14 @@ const EntryDetail = ({ route }) => {
         category: {
             categoryId: "",
             title: "",
-            value: false
+            value: false,
+            urlIcon:"",
+            iconId:"",
         },
         amount: "",
         description: "",
-        date: ""
+        date: "",
+        urlImage: "",
     })
     const onChangeInfoEntry = (name) => {
         return (value: any) => {
@@ -71,7 +76,7 @@ const EntryDetail = ({ route }) => {
     }, [])
 
     const getEntry = () => {
-        dispatch(getEntryByIdAction(entryId))
+        dispatch(getEntryByIdAction(41))
             .then(res => {
                 setEntryInfo(res?.payload)
             })
@@ -108,42 +113,42 @@ const EntryDetail = ({ route }) => {
                     />
                     <Image
                         style={styles.titleIcon}
-                        source={require('../../../assets/images/icon/ic_coins.png')}
+                        source={{uri:`${BASE_URL}${entryInfo?.category?.urlIcon}`}}
                     />
                 </View>
                 <View style={styles.boxContainer}>
-                    <View style={styles.boxItemContainer}>
-                        <Image
-                            style={styles.boxIcon}
-                            source={require('../../../assets/images/icon/ic_circle_ellipsis.png')}
-                        />
-                        <View>
-                            <Text style={styles.inputLabel}>Loại</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={String(entryInfo?.category?.title)}
-                                editable={false}
-                                onChangeText={onChangeInfoEntry('title')}
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={styles.boxItemContainer}>
+                            <Image
+                                style={styles.boxIcon}
+                                source={require('../../../assets/images/icon/ic_circle_ellipsis.png')}
                             />
+                            <View>
+                                <Text style={styles.inputLabel}>Danh mục</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={String(entryInfo?.category?.title)}
+                                    editable={false}
+                                    onChangeText={onChangeInfoEntry('title')}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.boxItemContainer}>
+                            <Image
+                                style={styles.boxIcon}
+                                source={require('../../../assets/images/icon/ic_usd_circle.png')}
+                            />
+                            <View>
+                                <Text style={styles.inputLabel}>Số tiền</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={addCommas(removeNonNumeric(entryInfo?.amount))}
+                                    editable={isEdit}
+                                    onChangeText={onChangeInfoEntry('amount')}
+                                />
+                            </View>
                         </View>
                     </View>
-                    <View style={styles.boxItemContainer}>
-                        <Image
-                            style={styles.boxIcon}
-                            source={require('../../../assets/images/icon/ic_usd_circle.png')}
-                        />
-                        <View>
-                            <Text style={styles.inputLabel}>Số tiền</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={String(entryInfo?.amount)}
-                                editable={isEdit}
-                                onChangeText={onChangeInfoEntry('amount')}
-                            />
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.boxContainer}>
                     <View style={styles.boxItemContainer}>
                         <Image
                             style={styles.boxIcon}
@@ -152,7 +157,7 @@ const EntryDetail = ({ route }) => {
                         <View>
                             <Text style={styles.inputLabel}>Ghi chú</Text>
                             <TextInput
-                                style={[styles.input, { height: 80, marginTop: 3 }]}
+                                style={[styles.input, { height: 50, marginTop: 3 }]}
                                 value={String(entryInfo?.description)}
                                 multiline
                                 editable={isEdit}
@@ -161,6 +166,11 @@ const EntryDetail = ({ route }) => {
                         </View>
                     </View>
                 </View>
+                {
+                    entryInfo?.urlImage && <View style={styles.boxContainer}>
+                        <Image style={{ width: 200,height:200, resizeMode: 'contain' }} source={{ uri: `${BASE_URL}${entryInfo?.urlImage}` }} />
+                    </View>
+                }
                 <View style={styles.buttonContainer}>
                     {isEdit ? (
                         <TouchableOpacity

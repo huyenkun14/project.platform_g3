@@ -33,7 +33,7 @@ const History = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{paddingBottom: 50}}>
         <Header title='Lịch sử giao dịch' />
         <View style={styles.timeContainer}>
           <TouchableOpacity

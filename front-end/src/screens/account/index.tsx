@@ -39,8 +39,8 @@ const Account = () => {
                     style={styles.item}
                     onPress={() => {
                         MailComposer.composeAsync({
-                            subject: 'test',
-                            body: 'test',
+                            subject: '',
+                            body: '',
                             recipients: ['molyhuce@gmail.com'],
                             isHtml: true
                         }).then(data => {
