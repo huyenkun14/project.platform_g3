@@ -55,7 +55,7 @@ const Login = () => {
         <KeyboardAvoidingView style={styles.container}>
             <Image
                 style={styles.logo}
-                source={require('../../../../assets/images/moly.png')}
+                source={require('../../../../assets/images/Moly.png')}
             />
             <Text style={styles.slogan}>Đừng để tiền rơi</Text>
             <Text style={styles.inputLabel}>E-mail: </Text>

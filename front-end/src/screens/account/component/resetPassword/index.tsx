@@ -63,7 +63,7 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
                 <View style={styles.container}>
                 <Image
                     style={styles.logo}
-                    source={require('../../../../../assets/images/moly.png')}
+                    source={require('../../../../../assets/images/Moly.png')}
                 />
                     <Text style={styles.inputLabel}>Mật khẩu cũ</Text>
                     <TextInput
