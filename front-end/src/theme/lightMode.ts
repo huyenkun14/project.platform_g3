@@ -20,11 +20,14 @@ const lightColors = {
         //auth
         titleColor: '#3B3DBF',
         solgan: '#BDBDBD',
-
+        // chart
+        gradientFrom: "#0083b0",
+        gradientTo: "#00b4db",
         // other
         WHITE: '#FFFFFF',
         BLACK: "#000000",
-        CANCEL_BACKGROUNG: "#DC143C"
+        CANCEL_BACKGROUNG: "#DC143C",
+        OPTION_ACTIVE: "#3B3DBF",
 }
 
 export default lightColors;

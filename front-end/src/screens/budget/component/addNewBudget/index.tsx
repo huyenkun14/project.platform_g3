@@ -1,6 +1,6 @@
 import { View, Text, Modal, TouchableOpacity, Image, TextInput, ToastAndroid } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { styles } from './styles'
+import st from './styles'
 import moment from 'moment';
 import DatePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -17,6 +17,7 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
     const [listOpen, setListOpen] = useState(false);
     const [date, setDate] = useState<Date>(new Date());
     const dispatch = useDispatch<any>()
+    const styles = st();
     const [infoBudget, setInfoBudget] = useState({
         startDate: '',
         endDate: '',

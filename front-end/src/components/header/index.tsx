@@ -1,16 +1,17 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { styles } from './styles'
 import { useNavigation } from '@react-navigation/native'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { getInfoUserAction } from '../../services/user/actions'
 import { useDispatch } from 'react-redux'
 import { BASE_URL } from '../../constants/api'
+import st from './styles'
 
 const Header = (props: any) => {
     const { isBack, title } = props
     const dispatch = useDispatch<any>()
     const navigation = useNavigation<any>()
+    const styles = st();
     const [infoUser, setInfoUser] = useState({
         id: "",
         email: "",

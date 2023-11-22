@@ -17,8 +17,11 @@ import static com.example.moneytrackerbackend.utils.TimeUtil.formatterDate;
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImp implements TransactionService {
+
     private final TransactionRepository transactionRepository;
+
     private final CategoryRepository categoryRepository;
+
     private final ImageService imageService;
 
     public Transaction createTransaction(TransactionRequest transactionRequest) {
@@ -34,10 +37,12 @@ public class TransactionServiceImp implements TransactionService {
                 .date(date)
                 .description(transactionRequest.getDescription())
                 .build();
+
         if(transactionRequest.getImage()!= null){
             Long imageId = imageService.saveUploadedFile(transactionRequest.getImage());
             transaction.setImageId(imageId);
         }
+
         transaction = transactionRepository.save(transaction);
 
         return transaction;
@@ -53,7 +58,7 @@ public class TransactionServiceImp implements TransactionService {
     }
 
     public List<Transaction> getAllTransaction(Long userId) {
-        return transactionRepository.findAllByCategoryUserIdOrderByIdDesc(userId);
+        return transactionRepository.findAllOrderByIdDesc(userId);
     }
 
     public Transaction updateTransaction(TransactionRequest transactionRequest){
@@ -83,7 +88,7 @@ public class TransactionServiceImp implements TransactionService {
     public List<Transaction> getTransactionOfMonth(String monthAndYear, Long userId) {
 
         String[] mothYear = monthAndYear.split("-");
-        return transactionRepository.findTransactionsOfMonth(userId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
+        return transactionRepository.findAllByMonth(userId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
     }
 
     public List<Transaction> getTransactionByCategory(Long categoryId) {
@@ -92,11 +97,13 @@ public class TransactionServiceImp implements TransactionService {
     public List<Transaction> getTransactionByCategoryOnMonth(String monthAndYear, Long categoryId) {
 
         String[] mothYear = monthAndYear.split("-");
-        return transactionRepository.findTransactionByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
+        return transactionRepository.findAllByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
     }
     public int getSumAmountByCategory(Long categoryId, String monthAndYear){
+
         String[] mothYear = monthAndYear.split("-");
-        List<Transaction> transactions= transactionRepository.findTransactionByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
+        List<Transaction> transactions= transactionRepository.findAllByCategoryAndMonth(categoryId, Integer.parseInt(mothYear[0]), Integer.parseInt(mothYear[1]));
+
         return transactions.stream().mapToInt(Transaction::getAmount).sum();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.moneytrackerbackend.security;
 
 import com.example.moneytrackerbackend.exceptiones.CustomException;
-import com.example.moneytrackerbackend.services.UserServiceImp;
+import com.example.moneytrackerbackend.services.UserDetailsServiceImp;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,19 +22,22 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserServiceImp userDetailsService;
+    private UserDetailsServiceImp userDetailsService;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
         try {
+
             String jwt = parseJwt(request);
+
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+
                 String email = jwtUtils.getEmailFromJwtToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-//                Long userId = jwtUtils.getUserIdFromJWT(jwt);
-//                UserDetails userDetails = userDetailsService.loadUserById(userId);
+
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
@@ -45,7 +48,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            new CustomException("Cannot set user authentication: {}");
+            throw new CustomException("Cannot set user authentication: {}");
         }
 
         filterChain.doFilter(request, response);

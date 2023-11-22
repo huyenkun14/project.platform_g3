@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native'
-import { defaultColors } from '../../../../theme'
+import useTheme from '../../../../hooks/useTheme'
 
-export const styles = StyleSheet.create({
+const styles = () => {
+    const theme = useTheme();
+const st = StyleSheet.create({
     optionContainer: {
         width: 90,
         alignItems: 'center',
@@ -12,9 +14,9 @@ export const styles = StyleSheet.create({
         width: 56,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: defaultColors.optionItem,
+        backgroundColor: theme.optionItem,
         borderRadius: 8,
-        shadowColor: defaultColors.shadowColor,
+        shadowColor: theme.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,
@@ -27,12 +29,16 @@ export const styles = StyleSheet.create({
         height: 25,
         width: 25,
         resizeMode: 'contain',
-        tintColor: defaultColors.flatListItem,
+        tintColor: theme.flatListItem,
     },
     optionText: {
         textAlign: 'center',
         marginTop: 10,
         fontWeight: '500',
-        color: defaultColors.text_1
+        color: theme.text_1
     }
 })
+return st
+}
+
+export default styles

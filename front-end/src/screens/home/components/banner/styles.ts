@@ -1,20 +1,22 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, Dimensions } from 'react-native';
-import { defaultColors } from '../../../../theme';
+import useTheme from '../../../../hooks/useTheme';
 
-export const SLIDER_WIDTH = Dimensions.get('window').width
-export const SLIDER_HEIGHT = SLIDER_WIDTH * 0.45
-export const ITEM_WIDTH = SLIDER_WIDTH - 10
-export const ITEM_HEIGHT = SLIDER_WIDTH * 0.45
+const styles = () => {
+    const theme = useTheme();
+    const SLIDER_WIDTH = Dimensions.get('window').width
+const SLIDER_HEIGHT = SLIDER_WIDTH * 0.45
+const ITEM_WIDTH = SLIDER_WIDTH - 10
+const ITEM_HEIGHT = SLIDER_WIDTH * 0.45
 
-export const styles = StyleSheet.create({
+const st = StyleSheet.create({
     container: {
-        backgroundColor: defaultColors.backgroundType,
+        backgroundColor: theme.backgroundType,
         borderRadius: 8,
         marginTop: -20,
         width: ITEM_WIDTH,
         height: ITEM_HEIGHT,
-        shadowColor: defaultColors.shadowColor,
+        shadowColor: theme.shadowColor,
         shadowOffset: {
             width: 0,
             height: 3,
@@ -30,5 +32,9 @@ export const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
 })
+    return {st, SLIDER_HEIGHT, SLIDER_WIDTH}
+}
+
+export default styles;
 
 

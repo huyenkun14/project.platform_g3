@@ -17,10 +17,10 @@ import static com.example.moneytrackerbackend.utils.TimeUtil.formatterDate;
 @Service
 @RequiredArgsConstructor
 public class BudgetServiceImp implements BudgetService {
+
     private final BudgetRepository budgetRepository;
+
     private final CategoryRepository categoryRepository;
-
-
 
     public Budget createBudget(BudgetRequest budgetRequest) {
 
@@ -57,7 +57,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     public List<Budget> getAllBudget(Long userId) {
-        return budgetRepository.findAllByUserId(userId);
+        return budgetRepository.findAllByCategoryUserIdOrderById(userId);
     }
 
     public List<Budget> getAllBudgetOfMonth(String monthAndYear, Long userId) {

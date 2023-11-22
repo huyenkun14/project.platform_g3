@@ -7,6 +7,7 @@ import com.example.moneytrackerbackend.dto.response.MessageResponse;
 import com.example.moneytrackerbackend.entities.Budget;
 import com.example.moneytrackerbackend.security.UserDetailsImpl;
 import com.example.moneytrackerbackend.services.BudgetService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,16 +26,18 @@ public class BudgetController {
     private final BudgetService budgetService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/budget/create")
-    public ResponseEntity<BudgetResponse> createBudget(@RequestBody BudgetRequest budgetRequest){
+    public ResponseEntity<BudgetResponse> createBudget(@Valid @RequestBody BudgetRequest budgetRequest){
 
         Budget budget = budgetService.createBudget(budgetRequest);
+
         return ResponseEntity.ok(convertBudget(budget));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("/api/v1/budget/update")
-    public ResponseEntity<BudgetResponse> updateBudget(@RequestBody BudgetRequest budgetRequest){
+    public ResponseEntity<BudgetResponse> updateBudget(@Valid @RequestBody BudgetRequest budgetRequest){
 
         Budget budget = budgetService.updateBudget(budgetRequest);
+
         return ResponseEntity.ok(convertBudget(budget));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -42,6 +45,7 @@ public class BudgetController {
     public ResponseEntity<MessageResponse> deleteBudget(@RequestParam("budgetId") Long id){
 
         budgetService.deleteBudget(id);
+
         return ResponseEntity.ok(new MessageResponse("Success delete budget"));
     }
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -50,7 +54,9 @@ public class BudgetController {
 
         UserDetailsImpl userDetails= (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
+
         List<Budget> budgets = budgetService.getAllBudget(userId);
+
         return ResponseEntity.ok(budgets.stream().map(ConvertToResponse::convertBudget).toList());
     }
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -58,6 +64,7 @@ public class BudgetController {
     public ResponseEntity<BudgetResponse> getTransaction(@RequestParam("budgetId") Long id){
 
         Budget budget = budgetService.getBudget(id);
+
         return ResponseEntity.ok(convertBudget(budget));
     }
     @PreAuthorize("hasRole('ROLE_USER')")

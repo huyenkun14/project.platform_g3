@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ToastAndroid } from 'react-native';
-import { styles } from './styles'
+import st from './styles'
 import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_TITLE } from '../../../constants/navigation';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { loginActions } from '../../../services/auth/actions';
 import { getItemObjectAsyncStorage, setItemAsyncStorage } from '../../../../utils/asyncStorage';
 import { KEY_STORAGE } from '../../../constants/storage';
 import Loading from '../../../../utils/loading/Loading';
+import Toast from '../../../../utils/toast';
 
 const Login = () => {
     const [account, setAccount] = useState({
@@ -17,6 +18,7 @@ const Login = () => {
     const navigation = useNavigation<any>()
     const dispatch = useDispatch<any>()
     const [loading, setLoading] = useState<boolean>(false)
+    const styles = st();
 
     const handleChangeAccount = (textInputName) => {
         return (value: any) => {
@@ -36,6 +38,7 @@ const Login = () => {
                         email: '',
                         password: '',
                     });
+                    return(<Toast description='Đăng nhập thành công' time={3} />)
                 } else {
                     ToastAndroid.show('Xem lại thông tin đăng nhập!', ToastAndroid.SHORT)
                 }
@@ -52,7 +55,7 @@ const Login = () => {
         <KeyboardAvoidingView style={styles.container}>
             <Image
                 style={styles.logo}
-                source={require('../../../../assets/images/Moly.png')}
+                source={require('../../../../assets/images/moly.png')}
             />
             <Text style={styles.slogan}>Đừng để tiền rơi</Text>
             <Text style={styles.inputLabel}>E-mail: </Text>

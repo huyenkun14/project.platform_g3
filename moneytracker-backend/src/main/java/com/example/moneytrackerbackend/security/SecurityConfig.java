@@ -1,6 +1,6 @@
 package com.example.moneytrackerbackend.security;
 
-import com.example.moneytrackerbackend.services.UserServiceImp;
+import com.example.moneytrackerbackend.services.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-    UserServiceImp userDetailsService;
-
-//    @Autowired
-//    private AuthEntryPointJwt unauthorizedHandler;
+    UserDetailsServiceImp userDetailsService;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {

@@ -21,8 +21,10 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class IconServiceImp implements IconService {
+
     @Value("${media.icon_path}")
     private String iconFolder;
+
     private final IconRepository iconRepository;
 
     public Icon getIcon(Long id) {
@@ -41,7 +43,7 @@ public class IconServiceImp implements IconService {
         return path;
     }
 
-    public Long saveUploadedIcon(MultipartFile file) throws IOException {
+    public void saveUploadedIcon(MultipartFile file) throws IOException {
 
         File dirIcon = new File(iconFolder);
         if (!dirIcon.exists()) {
@@ -55,14 +57,19 @@ public class IconServiceImp implements IconService {
         int ranNum = rand.nextInt();
 
         if (!file.isEmpty()) {
+
             byte[] bytes = file.getBytes();
+
             Path path = Paths.get(dirIcon + "//" + file.getName() + ranNum + getFileExtension(file.getOriginalFilename()));
+
             Files.write(path, bytes);
+
             Icon icon = new Icon();
             icon.setFilename(path.getFileName().toString());
             icon.setType(file.getContentType());
-            icon = iconRepository.save(icon);
-            return icon.getId();
+
+            iconRepository.save(icon);
+
         } else throw new CustomException("Error: File null, can not save!!");
     }
 

@@ -26,11 +26,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class IconController {
+
     private final IconService iconService;
     @PostMapping("/api/icon/upload")
     public ResponseEntity<MessageResponse> uploadIcon(@RequestParam("icons") MultipartFile[] icons)throws IOException {
 
         iconService.uploadFiles(icons);
+
         return ResponseEntity.ok( new MessageResponse("Success"));
     }
     @GetMapping("/api/icon")
@@ -41,10 +43,12 @@ public class IconController {
         Resource resource = new UrlResource(path.toUri());
 
         if (resource.exists()) {
+
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.valueOf(media.getType()).toString())
                     .body(resource);
         } else {
+
             throw new CustomException("Error: can open icon");
         }
     }

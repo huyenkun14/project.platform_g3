@@ -20,11 +20,14 @@ const darkColors = {
     //auth
     titleColor: '#3B3DBF',
     solgan: '#BDBDBD',
-
+    // chart
+    gradientFrom: "#424242",
+    gradientTo: "#585858",
     // other
     WHITE: '#FFFFFF',
     BLACK: "#000000",
-    CANCEL_BACKGROUNG: "#DC143C"
+    CANCEL_BACKGROUNG: "#DC143C",
+    OPTION_ACTIVE: "#3B3DBF",
 }
 
 export default darkColors;

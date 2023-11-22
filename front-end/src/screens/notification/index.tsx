@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../components/header'
 import { useDispatch } from 'react-redux'
 import { getAllWarningAction } from '../../services/notification/actions'
-import { styles } from './styles'
+import st from './styles'
 
 const Notification = () => {
     const dispatch = useDispatch<any>()
+    const styles = st();
     const [listWarning, setListWarning] = useState([])
     useEffect(() => {
         getListWarning()

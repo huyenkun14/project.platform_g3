@@ -27,7 +27,9 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertCateg
 @RestController
 @RequiredArgsConstructor
 public class CalculateController {
+
     private final CategoryService categoryService;
+
     private final TransactionService transactionService;
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/api/v1/financial-summary/yearly")
@@ -43,15 +45,21 @@ public class CalculateController {
 
         List<MonthlyData> yearlyData = new ArrayList<>();
         for (String monthAndYear : listMonthOfYear) {
+
             List<Transaction> transactions = transactionService.getTransactionOfMonth(monthAndYear, userId);
+
             MonthlyData monthlyData = new MonthlyData();
+
             monthlyData.setMonth(monthAndYear);
+
             monthlyData.setIncomeMoney(transactions.stream()
                     .filter(t -> t.getCategory().isValue())
                     .mapToInt(Transaction::getAmount).sum());
+
             monthlyData.setSpendingMoney(transactions.stream()
                     .filter(t -> !t.getCategory().isValue())
                     .mapToInt(Transaction::getAmount).sum());
+
             yearlyData.add(monthlyData);
         }
 
@@ -68,14 +76,18 @@ public class CalculateController {
 
         List<AmountOfCategory> dataOfCategories = new ArrayList<>();
         for (Category category:categories){
+
             AmountOfCategory dataOfCategory = new AmountOfCategory();
+
             dataOfCategory.setColor(ColorUtil.getColorByIndex(dataOfCategories.size()));
             dataOfCategory.setCategory(convertCategory(category));
             dataOfCategory.setTotalAmount(transactionService.getSumAmountByCategory(category.getId(), monthAndYear));
+
             if(dataOfCategory.getTotalAmount()!=0){
                 dataOfCategories.add(dataOfCategory);
             }
         }
+
         Collections.sort(dataOfCategories);
 
         return ResponseEntity.ok(dataOfCategories);

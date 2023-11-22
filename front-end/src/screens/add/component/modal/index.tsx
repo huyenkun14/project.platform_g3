@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, Image, Button, TextInput, Modal, StyleSheet, ScrollView, SafeAreaView, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform, ToastAndroid, KeyboardAvoidingView, Alert } from 'react-native';
-import { styles } from './styles';
+import st from './styles';
 import DatePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AddNewClassify from '../../../../components/addNewClassify';
@@ -15,6 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
   const [date, setDate] = useState<Date>(new Date());
+  const styles = st();
   const [image, setImage] = useState(null);
   const [infoEntry, setInfoEntry] = useState({
     time: moment(date).format("DD-MM-YYYY"),
@@ -50,11 +51,11 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
     data.append('amount', infoEntry.money.replace('.', ''))
     data.append('date', infoEntry.time)
     data.append('description', infoEntry.note)
-    data.append('image', {
-      uri: imageToUpload,
-      type: `image/${imageType}`,
-      name: imageName
-    });
+    // data.append('image', {
+    //   uri: imageToUpload,
+    //   type: `image/${imageType}`,
+    //   name: imageName
+    // });
     dispatch(createEntryAction(data))
       .then(res => {
         if (res?.payload) {
@@ -73,16 +74,16 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
       })
       .catch(err => console.log('err', err))
   }
-  const checkWarning = () => {
-    dispatch(checkWarningAction({
-      transactionId: newEntry?.transactionId
-    }))
-      .then(res => {
-        console.log(res, 'warninggggggg')
-        setWarning(res?.payload)
-      })
-      .catch(err => console.log(err))
-  }
+  // const checkWarning = () => {
+  //   dispatch(checkWarningAction({
+  //     transactionId: newEntry?.transactionId
+  //   }))
+  //     .then(res => {
+  //       console.log(res, 'warninggggggg')
+  //       setWarning(res?.payload)
+  //     })
+  //     .catch(err => console.log(err))
+  // }
   const onListClassifyOpen = useCallback(() => {
     setListOpen(false);
   }, []);
@@ -124,7 +125,7 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
             />
             <Image
               style={styles.logo}
-              source={require('../../../../../assets/images/Moly.png')}
+              source={require('../../../../../assets/images/moly.png')}
             />
             <Text style={styles.title}>{title}</Text>
             <View style={[styles.shadow, styles.timeContainer]}>
@@ -227,10 +228,10 @@ const AddNewEntry = ({ isIncome, title, modalVisible, setModalVisible }) => {
               </View>
               <TouchableOpacity onPress={() => {
                 handleCreateEntry()
-                checkWarning()
-                if (warning?.message) {
-                  Alert.alert(`${warning?.message}`)
-                }
+                // checkWarning()
+                // if (warning?.message) {
+                //   Alert.alert(`${warning?.message}`)
+                // }
               }}>
                 <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
               </TouchableOpacity>
