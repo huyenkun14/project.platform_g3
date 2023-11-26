@@ -11,6 +11,7 @@ import { formatMoney } from '../../../utils/formatMoney';
 import { SCREEN_WIDTH } from '../../../utils/Dimension';
 import useTheme from '../../hooks/useTheme';
 import { StatusBar } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 const Chart = () => {
   const [chartType, setChartType] = useState('1')
@@ -18,6 +19,7 @@ const Chart = () => {
   const styles = st();
   const theme = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [overviewYear, setOverviewYear] = useState(moment().format("YYYY"));
   const [date, setDate] = useState<Date>(new Date());
   const [listFinancialYearly, setListFinancialYearly] = useState([])
   const [listFinancialCategory, setListFinancialCategory] = useState([])
@@ -30,14 +32,13 @@ const Chart = () => {
   };
   useEffect(() => {
     getFinancialList()
-  }, [date]);
+  }, [overviewYear]);
   useEffect(() => {
     getFinancialValueList()
   }, [date, isIncome])
 
   const getFinancialList = () => {
-    const year = moment(date).format("YYYY")
-    dispatch(getFinancialYearlyAction(year))
+    dispatch(getFinancialYearlyAction(overviewYear))
       .then(res => {
         setListFinancialYearly(res?.payload)
       })
@@ -129,6 +130,22 @@ const Chart = () => {
       case '1':
         return (
           <View>
+            <View style={styles.timeContainer}>
+              <TouchableOpacity
+                style={styles.timeIconView}
+                onPress={() => { }}
+              >
+                <Image
+                  style={styles.timeIcon}
+                  source={require('../../../assets/images/icon/ic_calendar.png')}
+                />
+              </TouchableOpacity>
+              <TextInput
+                style={styles.timeText}
+                value={overviewYear}
+                onChangeText={setOverviewYear}
+              />
+            </View>
             <View
               style={{
                 justifyContent: 'center',
