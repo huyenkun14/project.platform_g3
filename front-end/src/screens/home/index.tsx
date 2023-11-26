@@ -160,7 +160,7 @@ const Home = () => {
         </View>
         {/* feature */}
         <View style={styles.overviewContainer}>
-          <Text style={styles.title}>Danh mục</Text>
+          <Text style={styles.title}>Tiện ích</Text>
           <View style={styles.optionContainer}>
             {optionsData.map((item) => (
               <Option title={item.title} icon={item.icon} key={item.id} router={item.router} theme={item?.theme} />

@@ -156,10 +156,10 @@ const InfoUser = () => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalInner}>
                         <View>
-                            {infoUser?.urlImage ?
+                            {!(infoUser?.urlImage == '/image?imageId=null') ?
                                 <Image
                                     style={styles.modalAvatar}
-                                    source={{ uri: `${BASE_URL}${infoUser?.urlImage}` }}
+                                    source={{ uri: image ?? `${BASE_URL}${infoUser?.urlImage}` }}
                                 />
                                 :
                                 <Image
