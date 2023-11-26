@@ -18,6 +18,14 @@ export const getClassifyByIdAction = createAsyncThunk(
     }
 )
 
+export const getClassifyByValueAction = createAsyncThunk(
+    'classify/getClassifyByValueAction',
+    async (value: boolean) => {
+        const res = await httpClient.get(`${CLASSIFY.GET_BY_VALUE}?value=${value}`)
+        return res.data
+    }
+)
+
 export const createClassifyAction = createAsyncThunk(
     'classify/createClassifyAction',
     async (payload: {}) => {

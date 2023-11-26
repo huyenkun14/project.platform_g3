@@ -18,6 +18,13 @@ const styles = () => {
             borderBottomColor: theme.borderColor,
             borderBottomWidth: 0.5,
         },
+        newIcon: {
+            height: 10,
+            width: 10,
+            backgroundColor: theme.tabActive,
+            borderRadius: 10,
+            marginRight: 10,
+        },
         typeContainer: {
             flexDirection: 'row',
             alignItems: 'center',
@@ -52,7 +59,7 @@ const styles = () => {
             fontWeight: '500',
         },
         note: {
-            maxWidth: SCREEN_WIDTH*0.45,
+            maxWidth: SCREEN_WIDTH * 0.45,
         },
         alignRight: {
             textAlign: 'right',

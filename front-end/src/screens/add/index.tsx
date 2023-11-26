@@ -4,7 +4,7 @@ import st from './styles'
 import DatePicker from '@react-native-community/datetimepicker';
 import Header from '../../components/header'
 import Entry from '../../components/entry'
-import AddNewEntry from './component/modal'
+import SuccessNotify from './component/modal/SuccessNotify'
 import { getAllEntryAction } from '../../services/entry/actions'
 import { useDispatch } from 'react-redux'
 import useTheme from '../../hooks/useTheme'
@@ -18,9 +18,13 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import Toast from '../../../utils/toast';
 import AddNewClassify from '../../components/addNewClassify';
 import { getAllIcon } from '../../services/icon';
+import ListCategoryModal from '../../components/listCategoryModal';
 const Add = () => {
   const styles = st();
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
+  const [isSuccess, showSuccess] = useState(false)
+  const [isListCategory, showListCategory] = useState(false)
+  const [category, setCategory] = useState<any>()
   const [date, setDate] = useState<Date>(new Date());
   const [image, setImage] = useState(null);
   const [infoEntry, setInfoEntry] = useState({
@@ -64,7 +68,7 @@ const Add = () => {
     const imageName = imageToUpload?.split('/').pop()
     const imageType = imageToUpload?.split('.').pop()
     const data = new FormData()
-    data.append('categoryId', classifyValue)
+    data.append('categoryId', category?.categoryId)
     data.append('amount', infoEntry.money.replace('.', ''))
     data.append('date', infoEntry.time)
     data.append('description', infoEntry.note)
@@ -83,8 +87,9 @@ const Add = () => {
             note: '',
             money: '',
           })
-          // ToastAndroid.show('Thêm giao dịch thành công', ToastAndroid.SHORT)
-          return (<Toast description='Thêm giao dịch thành công' time={3} />)
+          setCategory('')
+          setImage(null)
+          showSuccess(true)
         } else {
           ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
         }
@@ -149,25 +154,15 @@ const Add = () => {
         </View>
         <View>
           <View style={[styles.shadow, styles.dropdownContainer]}>
-            <View style={styles.dropdownView}>
-              <DropDownPicker
-                style={[styles.dropdown]}
-                open={listClassifyOpen}
-                value={classifyValue}
-                items={listClassify}
-                setOpen={setListClassifyOpen}
-                setValue={setClassifyValue}
-                setItems={setListClassify}
-                itemKey="label"
-                placeholder="Chọn danh mục"
-                onOpen={onListClassifyOpen}
-                onChangeValue={onChangeInfoEntry('title')}
-                dropDownDirection="DEFAULT"
-                searchable
-                listMode='MODAL'
-                zIndex={2000}
-              />
-            </View>
+            <TouchableOpacity
+              style={styles.dropdownView}
+              onPress={() => {
+                showListCategory(true)
+                console.log(category, 'categoryyyyyyyyyyyyyy')
+              }}
+            >
+              <Text>{category?.title||'Chọn danh mục'}</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.newClassify} onPress={() => {
               setAddNewClassifyOpen(true)
               handleGetIcon()
@@ -268,7 +263,24 @@ const Add = () => {
             handleGetlist={getListClassify}
           />
         }
+        {
+          isListCategory &&
+          <ListCategoryModal
+            modalVisible={isListCategory}
+            setModalVisible={showListCategory}
+            setEntryClassify={setCategory}
+          />
+        }
       </ScrollView>
+      <SuccessNotify
+        modalVisible={isSuccess}
+        setModalVisible={showSuccess}
+        title={infoEntry?.title}
+        date={infoEntry?.time}
+        amount={infoEntry?.money}
+        urlIcon={category?.urlIcon}
+        description={infoEntry?.note}
+      />
     </SafeAreaView>
   )
 
