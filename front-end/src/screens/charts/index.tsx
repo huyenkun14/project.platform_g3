@@ -182,9 +182,9 @@ const Chart = () => {
             <View>
               {listFinancialYearly?.map((item, index) => (
                 <View style={styles.ChartTable} key={index}>
-                  <Text style={[styles.detailText, {fontWeight: '300', fontSize: 14}]}>{item?.month}</Text>
-                  <Text style={[styles.detailText, {fontWeight: '300', fontSize: 14}]}>{item?.incomeMoney}</Text>
-                  <Text style={[styles.detailText, {fontWeight: '300', fontSize: 14}]}>{item?.spendingMoney}</Text>
+                  <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{item?.month}</Text>
+                  <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{item?.incomeMoney}</Text>
+                  <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{item?.spendingMoney}</Text>
                 </View>
               ))}
             </View>
@@ -218,9 +218,9 @@ const Chart = () => {
               </View>
               {
                 dataPieChartIncome?.map((item, index) => (
-                  <View style={[styles.ChartTable,{backgroundColor: item?.color}]} key={index}>
-                    <Text style={{color: "#fff"}}>{item?.name}</Text>
-                    <Text style={{color: "#fff"}}>{item?.population}</Text>
+                  <View style={[styles.ChartTable, { backgroundColor: item?.color }]} key={index}>
+                    <Text style={{ color: "#fff" }}>{item?.name}</Text>
+                    <Text style={{ color: "#fff" }}>{item?.population}</Text>
                   </View>
                 ))
               }
@@ -252,9 +252,9 @@ const Chart = () => {
                 </View>
                 {
                   dataPieChartIncome?.map((item, index) => (
-                    <View key={index} style={[styles.ChartTable,{backgroundColor: item?.color}]}>
-                      <Text style={{color: "#fff"}}>{item?.name}</Text>
-                      <Text style={{color: "#fff"}}>{item?.population}</Text>
+                    <View key={index} style={[styles.ChartTable, { backgroundColor: item?.color }]}>
+                      <Text style={{ color: "#fff" }}>{item?.name}</Text>
+                      <Text style={{ color: "#fff" }}>{item?.population}</Text>
                     </View>
                   ))
                 }
@@ -268,18 +268,18 @@ const Chart = () => {
   return (
     <SafeAreaView>
       <StatusBar />
-      <ScrollView style={styles.container} contentContainerStyle={{paddingBottom:100}}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
         <Header title='Biểu đồ' />
         {/* options */}
         <View style={styles.option}>
-          <TouchableOpacity onPress={() => { setChartType('1') }}>
-            <Text style={[styles.optionTitle, { backgroundColor: chartType == '1' ? theme.flatListItem : '#d8d8d8' }]}>Tổng quan</Text>
+          <TouchableOpacity onPress={() => { setChartType('1') }} style={{ borderBottomColor: chartType == '1' ? theme.tabActive : '#d8d8d8', borderBottomWidth: 2 }}>
+            <Text style={[styles.optionTitle, { color: chartType == '1' ? theme.tabActive : '#d8d8d8' }]}>Tổng quan</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setChartType('2'), setIsIncome(false) }}>
-            <Text style={[styles.optionTitle, { backgroundColor: chartType == '2' ? theme.flatListItem : '#d8d8d8' }]}>Chi tiêu</Text>
+          <TouchableOpacity onPress={() => { setChartType('2'), setIsIncome(false) }} style={{ borderBottomColor: chartType == '2' ? theme.tabActive : '#d8d8d8', borderBottomWidth: 2 }}>
+            <Text style={[styles.optionTitle, { color: chartType == '2' ? theme.tabActive : '#d8d8d8' }]}>Chi tiêu</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setChartType('3'), setIsIncome(true) }}>
-            <Text style={[styles.optionTitle, { backgroundColor: chartType == '3' ? theme.flatListItem : '#d8d8d8' }]}>Thu nhập</Text>
+          <TouchableOpacity onPress={() => { setChartType('3'), setIsIncome(true) }} style={{ borderBottomColor: chartType == '3' ? theme.tabActive : '#d8d8d8', borderBottomWidth: 2 }}>
+            <Text style={[styles.optionTitle, { color: chartType == '3' ? theme.tabActive : '#d8d8d8' }]}>Thu nhập</Text>
           </TouchableOpacity>
         </View>
         {renderChart()}
