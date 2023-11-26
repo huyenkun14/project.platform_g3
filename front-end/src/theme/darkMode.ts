@@ -28,6 +28,7 @@ const darkColors = {
     BLACK: "#000000",
     CANCEL_BACKGROUNG: "#DC143C",
     OPTION_ACTIVE: "#3B3DBF",
+    backgroundTheme: '#CCCCCC'
 }
 
 export default darkColors;

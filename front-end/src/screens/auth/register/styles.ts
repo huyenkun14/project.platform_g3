@@ -33,7 +33,7 @@ const styles = () => {
             color: theme.text_err,
             textAlign: 'center',
             marginTop: 20,
-            fontStyle: 'italic', 
+            fontStyle: 'italic',
             fontSize: 13,
         },
         inputLabel: {

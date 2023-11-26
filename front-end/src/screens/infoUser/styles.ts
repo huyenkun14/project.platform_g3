@@ -13,12 +13,8 @@ const st = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: 20,
+        paddingVertical: 30,
         paddingHorizontal: 25,
-        // position: 'absolute',
-        // top: 10,
-        // zIndex: 100,
-        // width: SCREEN_WIDTH,
     },
     headerIcon: {
         height: 20,

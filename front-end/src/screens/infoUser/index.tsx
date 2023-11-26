@@ -94,6 +94,9 @@ const InfoUser = () => {
                         source={require('../../../assets/images/icon/ic_arrowLeft.png')}
                     />
                 </TouchableOpacity>
+                <Text
+                    style={{fontWeight:'400',fontSize:18}}
+                >Thông tin tài khoản</Text>
                 <TouchableOpacity onPress={() => { setModalVisible(true) }}>
                     <Image
                         style={styles.headerIcon}
