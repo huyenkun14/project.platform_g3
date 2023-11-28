@@ -28,6 +28,7 @@ const lightColors = {
         BLACK: "#000000",
         CANCEL_BACKGROUNG: "#DC143C",
         OPTION_ACTIVE: "#3B3DBF",
+        backgroundTheme: '#EFF8FB'
 }
 
 export default lightColors;

@@ -80,37 +80,22 @@ const Classify = () => {
             <Header title="Danh mục" isBack={false} />
             <View style={styles.option}>
                 <TouchableOpacity
-                    style={[styles.optionBtn, { backgroundColor: !isIncome ? theme.flatListItem : theme.borderColor }]}
+                    style={[styles.optionBtn, { borderBottomColor: isIncome ? theme.borderColor : theme.tabActive }]}
                     onPress={() => {
                         setType(listClassify?.filter(item => item?.value === false))
                         setIsIncome(false)
                     }}>
-                    <Text style={styles.optionText}>Chi tiêu</Text>
+                    <Text style={[styles.optionText, { color: isIncome ? 'grey' : theme.tabActive }]}>Chi tiêu</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.optionBtn, { backgroundColor: isIncome ? theme.flatListItem : theme.borderColor }]}
+                    style={[styles.optionBtn, { borderBottomColor: isIncome ? theme.tabActive : theme.borderColor }]}
                     onPress={() => {
                         setType(listClassify?.filter(item => item?.value === true))
                         setIsIncome(true)
                     }}>
-                    <Text style={styles.optionText}>Thu nhập</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setAddNewClassifyOpen(true) }}>
-                    <View style={styles.searchImageView}>
-                        <Image style={styles.searchImage} source={require('../../../assets/images/icon/ic_plus.png')} />
-                    </View>
+                    <Text style={[styles.optionText, { color: isIncome ? theme.tabActive : 'grey' }]}>Thu nhập</Text>
                 </TouchableOpacity>
             </View>
-            {/* <View style={styles.searchContainer}>
-                <View style={styles.searchView}>
-                    <TextInput style={styles.searchInput} placeholder='Tìm kiếm' />
-                </View>
-                <TouchableOpacity onPress={() => { setAddNewClassifyOpen(true) }}>
-                    <View style={styles.searchImageView}>
-                        <Image style={styles.searchImage} source={require('../../../assets/images/icon/ic_plus.png')} />
-                    </View>
-                </TouchableOpacity>
-            </View> */}
             <ScrollView contentContainerStyle={{ paddingBottom: 250 }}>
                 {type.map((item, index) => (
                     <TypeItem
@@ -124,6 +109,9 @@ const Classify = () => {
                     />
                 ))}
             </ScrollView>
+            <TouchableOpacity style={styles.addImageView} onPress={() => { setAddNewClassifyOpen(true) }}>
+                <Image style={styles.addImage} source={require('../../../assets/images/icon/ic_plus.png')} />
+            </TouchableOpacity>
             <AddNewClassify
                 modalVisible={addNewClassifyOpen}
                 setModalVisible={setAddNewClassifyOpen}

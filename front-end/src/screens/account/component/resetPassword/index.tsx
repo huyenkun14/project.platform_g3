@@ -22,34 +22,40 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
     const handleResetPassword = () => {
         if (!textChange.newPass || !textChange.oldPass || !textChange.reNewPass) {
             ToastAndroid.show('Phải điền đủ tất cả các ô.', ToastAndroid.SHORT)
+            console.log('Phải điền đủ tất cả các ô.')
         }
         else if (textChange.newPass && textChange.newPass !== textChange.reNewPass) {
             ToastAndroid.show('Mật khẩu nhập lại không đúng.', ToastAndroid.SHORT)
+            console.log('Mật khẩu nhập lại không đúng')
         }
         else {
             dispatch(resetPasswordAction({
                 prePassword: textChange.oldPass,
-                password: textChange.newPass
+                password: textChange.reNewPass
             }))
                 .then(res => {
                     if (res?.payload) {
                         console.log(res)
                         ToastAndroid.show('Đổi mật khẩu thành công', ToastAndroid.SHORT)
+                        console.log('Đổi mật khẩu thành công.')
                         setModalVisible(false)
                         setTextChange({
                             oldPass: '',
                             newPass: '',
                             reNewPass: '',
                         })
-                    } else ToastAndroid.show('Mật khẩu cũ không đúng.', ToastAndroid.SHORT)
+                    } else {
+                        ToastAndroid.show('Mật khẩu cũ không đúng.', ToastAndroid.SHORT)
+                        console.log('Mật khẩu cũ không đúng.')
+                    }
                 })
                 .catch(err => ToastAndroid.show('Có lỗi', ToastAndroid.SHORT))
         }
     }
-
     const onChangeText = (name) => {
         return (value: any) => {
             setTextChange({ ...textChange, [name]: value })
+            console.log(textChange,'textchangeeeeeeeeee')
         }
     }
     return (
@@ -88,7 +94,7 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
                     />
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
-                            <Text style={styles.buttonText}>Thay đổi</Text>
+                            <Text style={styles.buttonText}>Lưu thay đổi</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.button}

@@ -7,7 +7,7 @@ const styles = () => {
     const st = StyleSheet.create({
         container: {
             minHeight: SCREEN_HEIGHT,
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.backgroundImg,
             position: 'relative',
         },
         logo: {

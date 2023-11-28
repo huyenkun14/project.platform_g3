@@ -9,7 +9,7 @@ const st = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 25,
-        paddingVertical: 15,
+        paddingVertical: 10,
         borderRadius: 8,
         borderTopColor: theme.borderColor,
         borderTopWidth: 0.5,
