@@ -63,7 +63,8 @@ public class TransactionController {
     @GetMapping("/api/v1/transaction/get-transactions")
     public ResponseEntity<List<TransactionResponse>> getAllTransactionOfMonth(Principal principal,
                                                                               @RequestParam(value = "monthAndYear", required = false) String monthAndYear,
-                                                                              @RequestParam(value = "categoryId", required = false) Long categoryId) {
+                                                                              @RequestParam(value = "categoryId", required = false) Long categoryId,
+                                                                              @RequestParam(value = "size", required = false) Integer size) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
@@ -76,8 +77,11 @@ public class TransactionController {
             transactions = transactionService.getTransactionOfMonth(monthAndYear, userId);
         } else if (categoryId != null) {
             transactions = transactionService.getTransactionByCategory(categoryId);
+        } else if (size != null){
+            transactions = transactionService.getAllTransaction(userId).subList(0,size);
         } else {
             transactions = transactionService.getAllTransaction(userId);
+
         }
 
         return ResponseEntity.ok(transactions.stream().map(ConvertToResponse::convertTransaction).toList());
