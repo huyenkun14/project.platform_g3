@@ -55,7 +55,7 @@ const styles = () => {
         formItem: {
             borderRadius: 10,
             borderWidth: 1,
-            borderColor: theme.tabActive,
+            borderColor: theme.flatListItem,
             backgroundColor: theme.backgroundColor,
             justifyContent: 'center',
             shadowColor: theme.shadowColor,
