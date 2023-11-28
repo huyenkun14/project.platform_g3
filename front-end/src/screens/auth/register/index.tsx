@@ -50,15 +50,17 @@ const Login = () => {
         email: account.email,
         password: account.password,
         phoneNumber: account.phone
-      }))
-      showToast()
-      navigation.navigate(NAVIGATION_TITLE.LOGIN);
-      setAccount({
-        name: "",
-        phone: "",
-        email: "",
-        password: "",
-      });
+      })).then(res =>{
+        showToast()
+        navigation.navigate(NAVIGATION_TITLE.LOGIN);
+        setAccount({
+          name: "",
+          phone: "",
+          email: "",
+          password: "",
+        });
+      })
+      .catch(err => ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT) )
     }
   };
 

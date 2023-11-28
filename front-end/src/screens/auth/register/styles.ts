@@ -41,7 +41,7 @@ const styles = () => {
             marginTop: 20,
             marginBottom: 10,
             fontWeight: '500',
-            color: theme.text_3,
+            color: theme.text_1,
         },
         input: {
             color: theme.text_1,
@@ -54,6 +54,8 @@ const styles = () => {
         },
         formItem: {
             borderRadius: 10,
+            borderWidth: 1,
+            borderColor: theme.tabActive,
             backgroundColor: theme.backgroundColor,
             justifyContent: 'center',
             shadowColor: theme.shadowColor,
