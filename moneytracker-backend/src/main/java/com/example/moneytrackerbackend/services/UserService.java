@@ -1,6 +1,7 @@
 package com.example.moneytrackerbackend.services;
 
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
+import com.example.moneytrackerbackend.dto.request.ResetPasswordRequest;
 import com.example.moneytrackerbackend.dto.request.UserRequest;
 import com.example.moneytrackerbackend.entities.User;
 
@@ -12,5 +13,5 @@ public interface UserService {
 
     void updateUser(UserRequest userRequest);
 
-    void updatePassword(String prePassword, String password, Long userId);
+    void updatePassword(ResetPasswordRequest resetPasswordRequest, Long userId);
 }

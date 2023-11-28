@@ -1,6 +1,7 @@
 package com.example.moneytrackerbackend.services;
 
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
+import com.example.moneytrackerbackend.dto.request.ResetPasswordRequest;
 import com.example.moneytrackerbackend.dto.request.UserRequest;
 import com.example.moneytrackerbackend.entities.User;
 import com.example.moneytrackerbackend.exceptiones.CustomException;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImp  implements UserService{
+public class UserServiceImp implements UserService{
 
     private final PasswordEncoder encoder;
 
@@ -69,15 +70,15 @@ public class UserServiceImp  implements UserService{
 
         userRepository.save(user);
     }
-    public void updatePassword(String prePassword, String password, Long userId){
+    public void updatePassword(ResetPasswordRequest resetPasswordRequest, Long userId){
 
         User user = getUser(userId);
 
-        if(!encoder.matches(prePassword, user.getPassword())){
+        if(!encoder.matches(resetPasswordRequest.getPrePassword(), user.getPassword())){
             throw new CustomException("Old password is not collect.");
         }
 
-        user.setPassword(encoder.encode(password));
+        user.setPassword(encoder.encode(resetPasswordRequest.getPassword()));
         userRepository.save(user);
     }
     public void deleteUser(Long useId){

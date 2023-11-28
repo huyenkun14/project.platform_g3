@@ -2,6 +2,7 @@ package com.example.moneytrackerbackend.controllers;
 
 import com.example.moneytrackerbackend.dto.request.LoginRequest;
 import com.example.moneytrackerbackend.dto.request.RegisterRequest;
+import com.example.moneytrackerbackend.dto.request.ResetPasswordRequest;
 import com.example.moneytrackerbackend.dto.request.UserRequest;
 import com.example.moneytrackerbackend.dto.response.LoginResponse;
 import com.example.moneytrackerbackend.dto.response.MessageResponse;
@@ -31,8 +32,6 @@ import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertUser;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-
-//    private final UserDetailsServiceImp userDetailsServiceImp;
 
     private final UserServiceImp userService;
 
@@ -109,14 +108,12 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping("api/v1/user/reset-password")
-    public ResponseEntity<MessageResponse> updateUserPassword(Principal principal,
-                                                              @RequestParam("prePassword") String prePassword,
-                                                              @RequestParam("password") String password) {
+    public ResponseEntity<MessageResponse> updateUserPassword(Principal principal, @Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Long userId = userDetails.getId();
 
-        userService.updatePassword(prePassword, password, userId);
+        userService.updatePassword(resetPasswordRequest, userId);
 
         return ResponseEntity.ok(new MessageResponse(""));
     }
