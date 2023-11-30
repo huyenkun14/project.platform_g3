@@ -7,13 +7,12 @@ const styles = () => {
     const st = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: theme.borderColor
+            backgroundColor: theme.backgroundColor,
         },
         timeContainer: {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: 20,
         },
         timeIconView: {
             height: 40,
@@ -32,7 +31,7 @@ const styles = () => {
         timeText: {
             marginLeft: 20,
             fontSize: 16,
-            color: theme.text_white,
+            color: theme.text_1,
         },
         titleContainer: {
             paddingHorizontal: 35,
@@ -42,15 +41,16 @@ const styles = () => {
             alignItems: 'center',
         },
         title: {
-            color: theme.text_white,
-            fontSize: 20,
+            color: theme.text_1,
+            fontSize: 16,
             fontWeight: '600'
         },
         titleIcon: {
-            height: 30,
-            width: 30,
+            height: 20,
+            width: 20,
             resizeMode: 'contain',
-            tintColor: theme.text_white,
+            tintColor: theme.text_1,
+            marginRight: 10
         },
         boxContainer: {
             backgroundColor: theme.backgroundColor,
@@ -58,35 +58,32 @@ const styles = () => {
             width: SCREEN_WIDTH - 50,
             marginBottom: 20,
             borderRadius: 10,
+            borderColor: theme.tabActive,
+            borderWidth:1,
             paddingHorizontal: 15,
-            paddingTop: 20,
-    
-        },
-        boxItemContainer: {
             flexDirection: 'row',
-            paddingBottom: 20,
+            minHeight: 50,
+            alignItems:'center'
         },
         boxIcon: {
             height: 20,
             width: 20,
             resizeMode: 'contain',
-            tintColor: 'green',
+            tintColor: theme.tabActive,
             marginRight: 10,
-            marginTop: 10,
         },
         inputLabel: {
             fontSize: 12,
             color: theme.text_3,
-            // marginBottom: -5,
         },
         input: {
             fontSize: 15,
             paddingRight: 40,
             verticalAlign: 'top',
+            color: theme.text_1,
         },
         buttonContainer:{
             marginHorizontal: 25,
-            marginTop: 20,
         },
         button: {
             textAlign: 'center',
@@ -132,12 +129,12 @@ const styles = () => {
             top: 0,
             left: 0,
             right: 0,
-            height: SCREEN_HEIGHT*0.35,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
+            height: SCREEN_HEIGHT,
+            // borderBottomLeftRadius: 20,
+            // borderBottomRightRadius: 20,
             zIndex: -10,
             opacity: 0.9,
-            backgroundColor: theme.tabActive
+            backgroundColor: theme.backgroundImg
         },
     })
     return st

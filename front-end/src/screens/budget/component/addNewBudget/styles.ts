@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import useTheme from "../../../../hooks/useTheme";
-import { SCREEN_HEIGHT } from "../../../../../utils/Dimension";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../../../utils/Dimension";
 
 const styles = () => {
     const theme = useTheme();
@@ -39,6 +39,20 @@ const styles = () => {
             marginLeft: 20,
             fontSize: 16,
             color: theme.text_1,
+        },
+        newClassify: {
+            height: 50,
+            width: SCREEN_WIDTH * 0.3,
+            backgroundColor: theme.flatListItem,
+            borderRadius: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        newClassifyIcon: {
+            height: 30,
+            width: 20,
+            resizeMode: 'contain',
+            tintColor: theme.backgroundColor
         },
         dropdownContainer: {
             flexDirection: 'row',
@@ -97,7 +111,7 @@ const styles = () => {
         },
         addBtnText: {
             fontSize: 16,
-            fontWeight:'600',
+            fontWeight: '600',
             color: theme.text_white
         },
         shadow: {

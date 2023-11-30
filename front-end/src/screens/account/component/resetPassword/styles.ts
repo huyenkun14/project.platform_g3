@@ -8,14 +8,15 @@ const styles = () => {
     const st = StyleSheet.create({
     container: {
         minHeight: SCREEN_HEIGHT,
-        backgroundColor: theme.backgroundColor,
-        justifyContent: 'center',
+        backgroundColor: theme.backgroundImg,
+        paddingTop:30,
         paddingHorizontal: 25,
     },
     logo: {
         height: 60,
         resizeMode: 'contain',
         alignSelf: 'center',
+        marginBottom:10,
     },
     title: {
         color: theme.titleColor,
@@ -25,27 +26,29 @@ const styles = () => {
         textAlign: 'center',
     },
     inputLabel: {
-        marginBottom: 8,
+        marginBottom: 6,
         fontWeight: '500',
         color: theme.text_1,
     },
     input: {
-        padding: 8,
-        borderColor: theme.borderColor,
+        backgroundColor:theme.backgroundColor,
+        paddingHorizontal:10,
+        height:50,
+        borderColor: theme.tabActive,
         borderRadius: 8,
         borderWidth: 1,
-        marginBottom: 16,
+        marginBottom: 10,
     }, 
     buttonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'space-evenly',
+        justifyContent:'space-between',
         marginTop: 16,
     }, 
     button: {
-        height: 40,
+        height: 50,
         borderRadius: 8,
-        width: SCREEN_WIDTH/3,
+        width: SCREEN_WIDTH/2.5,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: theme.tabActive

@@ -7,7 +7,7 @@ const styles = () => {
     const st = StyleSheet.create({
         container: {
             minHeight: SCREEN_HEIGHT,
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.backgroundImg,
             position: 'relative',
         },
         logo: {
@@ -24,6 +24,8 @@ const styles = () => {
             marginLeft: 25,
         },
         item: {
+            borderWidth: 1,
+            borderColor: theme.flatListItem,
             flexDirection: 'row',
             alignItems: 'center',
             marginHorizontal: 25,

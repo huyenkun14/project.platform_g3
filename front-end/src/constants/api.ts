@@ -14,6 +14,7 @@ export const USER = {
 export const CLASSIFY = {
     CREATE: "/v1/category/create",
     GET_ALL: "/v1/category/get-all",
+    GET_BY_VALUE: "/v1/category/by-value",
     GET_BY_ID: "/v1/category",
     UPDATE: "/v1/category/update",
     DELETE: "/v1/category/delete",

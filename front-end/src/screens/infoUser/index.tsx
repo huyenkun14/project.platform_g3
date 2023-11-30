@@ -94,6 +94,9 @@ const InfoUser = () => {
                         source={require('../../../assets/images/icon/ic_arrowLeft.png')}
                     />
                 </TouchableOpacity>
+                <Text
+                    style={{fontWeight:'400',fontSize:18}}
+                >Thông tin tài khoản</Text>
                 <TouchableOpacity onPress={() => { setModalVisible(true) }}>
                     <Image
                         style={styles.headerIcon}
@@ -156,10 +159,10 @@ const InfoUser = () => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalInner}>
                         <View>
-                            {infoUser?.urlImage ?
+                            {!(infoUser?.urlImage == '/image?imageId=null') ?
                                 <Image
                                     style={styles.modalAvatar}
-                                    source={{ uri: `${BASE_URL}${infoUser?.urlImage}` }}
+                                    source={{ uri: image ?? `${BASE_URL}${infoUser?.urlImage}` }}
                                 />
                                 :
                                 <Image

@@ -18,11 +18,10 @@ const styles = () => {
         },
         optionTitle: {
             textAlign: 'center',
-            paddingVertical: 10,
-            width: (SCREEN_WIDTH - 30) / 3.3,
+            paddingBottom: 16,
+            width: (SCREEN_WIDTH - 30) / 3,
             fontSize: 16,
-            borderRadius: 8,
-            color: theme.text_2,
+            fontWeight:'600',
             overflow: 'hidden',
         },
         timeContainer: {

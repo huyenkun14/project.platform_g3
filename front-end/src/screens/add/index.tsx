@@ -1,10 +1,10 @@
-import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid } from 'react-native'
+import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import st from './styles'
 import DatePicker from '@react-native-community/datetimepicker';
 import Header from '../../components/header'
 import Entry from '../../components/entry'
-import AddNewEntry from './component/modal'
+import SuccessNotify from './component/modal/SuccessNotify'
 import { getAllEntryAction } from '../../services/entry/actions'
 import { useDispatch } from 'react-redux'
 import useTheme from '../../hooks/useTheme'
@@ -18,9 +18,13 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import Toast from '../../../utils/toast';
 import AddNewClassify from '../../components/addNewClassify';
 import { getAllIcon } from '../../services/icon';
+import ListCategoryModal from '../../components/listCategoryModal';
 const Add = () => {
   const styles = st();
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
+  const [isSuccess, showSuccess] = useState(false)
+  const [isListCategory, showListCategory] = useState(false)
+  const [category, setCategory] = useState<any>()
   const [date, setDate] = useState<Date>(new Date());
   const [image, setImage] = useState(null);
   const [infoEntry, setInfoEntry] = useState({
@@ -30,45 +34,37 @@ const Add = () => {
     money: '',
   })
   const dispatch = useDispatch<any>()
-  const [listClassify, setListClassify] = useState([]);
-  const [listClassifyOpen, setListClassifyOpen] = useState(false);
-  const [classifyValue, setClassifyValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [listIcon, setListIcon] = useState<{ id: number, url: string }[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [listOpen, setListOpen] = useState(false);
   const [newEntry, setNewEntry] = useState<any>([]);
   const [warning, setWarning] = useState<any>({});
   useEffect(() => {
     getListClassify()
-  }, [listClassifyOpen])
+  }, [])
   const handleGetIcon = async () => {
     setLoading(true)
     const res = await getAllIcon()
     setLoading(false)
-    console.log("res nè", res)
     if (res?.status === 200) {
       setListIcon(res?.data)
     }
   }
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
-      .then(res => {
-        const convertListClassify = res?.payload?.filter(item => item?.value === true).map((item, index) => ({ label: item.title, value: item.categoryId }))
-        setListClassify(convertListClassify)
-      })
-      .catch(err => console.log('err', err))
+      .then(res => console.log(res, 'get list classifyyyyyyyyyyyyy'))
+      .catch(err => console.log(err, 'get list classify errorrrrrrrrrrrrr'))
   }
   const handleCreateEntry = () => {
     const imageToUpload = image
     const imageName = imageToUpload?.split('/').pop()
     const imageType = imageToUpload?.split('.').pop()
     const data = new FormData()
-    data.append('categoryId', classifyValue)
+    data.append('categoryId', category?.categoryId)
     data.append('amount', infoEntry.money.replace('.', ''))
     data.append('date', infoEntry.time)
     data.append('description', infoEntry.note)
-    data.append('image', {
+    image && data.append('image', {
       uri: imageToUpload,
       type: `image/${imageType}`,
       name: imageName
@@ -77,33 +73,23 @@ const Add = () => {
       .then(res => {
         if (res?.payload) {
           setNewEntry(res?.payload)
-          setInfoEntry({
-            time: moment(date).format("DD-MM-YYYY"),
-            title: '',
-            note: '',
-            money: '',
-          })
-          // ToastAndroid.show('Thêm giao dịch thành công', ToastAndroid.SHORT)
-          return (<Toast description='Thêm giao dịch thành công' time={3} />)
+          showSuccess(true)
         } else {
           ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
         }
       })
       .catch(err => console.log('err', err))
   }
-  // const checkWarning = () => {
-  //   dispatch(checkWarningAction({
-  //     transactionId: newEntry?.transactionId
-  //   }))
-  //     .then(res => {
-  //       console.log(res, 'warninggggggg')
-  //       setWarning(res?.payload)
-  //     })
-  //     .catch(err => console.log(err))
-  // }
-  const onListClassifyOpen = useCallback(() => {
-    setListOpen(false);
-  }, []);
+  const checkWarning = () => {
+    dispatch(checkWarningAction({
+      transactionId: newEntry?.transactionId
+    }))
+      .then(res => {
+        console.log(res, 'warninggggggg')
+        setWarning(res?.payload)
+      })
+      .catch(err => console.log(err))
+  }
   const onChangeInfoEntry = (name) => {
     return (value: any) => {
       setInfoEntry({ ...infoEntry, [name]: value })
@@ -149,25 +135,15 @@ const Add = () => {
         </View>
         <View>
           <View style={[styles.shadow, styles.dropdownContainer]}>
-            <View style={styles.dropdownView}>
-              <DropDownPicker
-                style={[styles.dropdown]}
-                open={listClassifyOpen}
-                value={classifyValue}
-                items={listClassify}
-                setOpen={setListClassifyOpen}
-                setValue={setClassifyValue}
-                setItems={setListClassify}
-                itemKey="label"
-                placeholder="Chọn danh mục"
-                onOpen={onListClassifyOpen}
-                onChangeValue={onChangeInfoEntry('title')}
-                dropDownDirection="DEFAULT"
-                searchable
-                listMode='MODAL'
-                zIndex={2000}
-              />
-            </View>
+            <TouchableOpacity
+              style={styles.dropdownView}
+              onPress={() => {
+                showListCategory(true)
+                console.log(category, 'categoryyyyyyyyyyyyyy')
+              }}
+            >
+              <Text>{category?.title || 'Chọn danh mục'}</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.newClassify} onPress={() => {
               setAddNewClassifyOpen(true)
               handleGetIcon()
@@ -243,10 +219,10 @@ const Add = () => {
 
           <TouchableOpacity onPress={() => {
             handleCreateEntry()
-            // checkWarning()
-            // if (warning?.message) {
-            //   Alert.alert(`${warning?.message}`)
-            // }
+            checkWarning()
+            if (warning?.message) {
+              Alert.alert(`${warning?.message}`)
+            }
           }}>
             <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
           </TouchableOpacity>
@@ -268,10 +244,36 @@ const Add = () => {
             handleGetlist={getListClassify}
           />
         }
+        {
+          isListCategory &&
+          <ListCategoryModal
+            modalVisible={isListCategory}
+            setModalVisible={showListCategory}
+            setEntryClassify={setCategory}
+          />
+        }
       </ScrollView>
+      <SuccessNotify
+        modalVisible={isSuccess}
+        setModalVisible={showSuccess}
+        title={category?.title}
+        date={infoEntry?.time}
+        amount={infoEntry?.money}
+        urlIcon={category?.urlIcon}
+        description={infoEntry?.note}
+        setInfoEntry={() => {
+          setCategory('')
+          setImage(null)
+          setInfoEntry({
+            time: moment(date).format("DD-MM-YYYY"),
+            title: '',
+            note: '',
+            money: '',
+          })
+        }}
+      />
     </SafeAreaView>
   )
-
 }
 
 export default Add

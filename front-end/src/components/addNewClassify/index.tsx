@@ -122,18 +122,19 @@ const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, h
                                                     style={{
                                                         padding: 10,
                                                         marginTop: 5,
-                                                        borderColor:
+                                                        borderColor: theme.borderColor,
+                                                        backgroundColor:
                                                             it?.id !== iconCurrent
-                                                                ? theme.borderColor
-                                                                : theme.tabActive,
+                                                                ? 'transparent'
+                                                                : theme.backgroundType,
                                                         borderWidth: 1,
-                                                        borderRadius: 5,
+                                                        borderRadius: 8,
                                                     }}
                                                 >
                                                     <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
                                                         <Image
                                                             source={{ uri: `${BASE_URL}${it?.url}` }}
-                                                            style={{ width: 35, height: 35 }}
+                                                            style={{ width: 22, height: 22, tintColor: it?.id !== iconCurrent ? theme.text_1 : theme.text_white, }}
                                                             resizeMode="stretch"
                                                         />
                                                     </TouchableOpacity>

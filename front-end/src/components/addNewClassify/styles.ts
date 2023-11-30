@@ -13,7 +13,7 @@ const styles = () => {
             bottom: 0,
             left: 0,
             right: 0,
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.backgroundImg,
             // paddingHorizontal: 40,
             // paddingVertical: 40,
             padding: 16,
@@ -51,14 +51,16 @@ const styles = () => {
             color: theme.text_1,
             fontSize: 14,
             paddingHorizontal: 15,
-            borderRadius: 5,
+            borderRadius: 8,
             height: 50,
             overflow: 'hidden',
             backgroundColor: theme.backgroundColor,
+            borderWidth: 1,
+            borderColor: theme.flatListItem,
         },
         checkboxContainer: {
             flexDirection: 'row',
-            marginTop: 30,
+            marginVertical: 16,
             alignItems: 'center',
             justifyContent: 'center'
         },
@@ -71,15 +73,16 @@ const styles = () => {
             color: '#CCCCCC'
         },
         addImage: {
+            backgroundColor: theme.backgroundColor,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: 30,
-            marginBottom: 30,
             height: 150,
-            borderColor: theme.borderColor,
-            borderWidth: 2,
-            borderStyle: 'dotted',
+            borderColor: theme.backgroundType,
+            borderWidth: 1,
+            padding: 10,
+            borderRadius: 5,
+            marginBottom: 16,
         },
         addImageIcon: {
             height: 25,
@@ -92,24 +95,18 @@ const styles = () => {
         button: {
             backgroundColor: theme.tabActive,
             // paddingVertical: 15,
-            height: 40,
-            borderRadius: 5,
+            height: 50,
+            borderRadius: 8,
             alignItems: 'center',
             justifyContent: 'center',
-
         },
         buttonText: {
             textAlign: 'center',
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: "500",
             color: theme.text_white,
-
         },
         shadow: {
-            borderRadius: 5,
-            borderColor: theme.borderColor,
-            borderWidth: 1.5,
-            backgroundColor: theme.backgroundColor,
             // shadowColor: useTheme().shadowColor,
             // shadowOffset: {
             //   width: 0,

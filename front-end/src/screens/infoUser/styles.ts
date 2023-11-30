@@ -6,19 +6,15 @@ const styles = () => {
     const theme = useTheme();
 const st = StyleSheet.create({
     container: {
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.backgroundImg,
         minHeight: SCREEN_HEIGHT,
     },
     headerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingVertical: 20,
+        paddingVertical: 30,
         paddingHorizontal: 25,
-        // position: 'absolute',
-        // top: 10,
-        // zIndex: 100,
-        // width: SCREEN_WIDTH,
     },
     headerIcon: {
         height: 20,
@@ -89,7 +85,8 @@ const st = StyleSheet.create({
     modalContainer: {
         backgroundColor: 'rgba(0,0,0,0.5)',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 80,
         flex: 1,
     },
     modalInner: {
@@ -108,26 +105,29 @@ const st = StyleSheet.create({
         marginBottom: 16,
     },
     input: {
-        borderEndColor: theme.borderColor,
+        height: 50,
+        borderColor: theme.tabActive,
         borderRadius: 10,
         borderWidth: 1,
-        paddingVertical: 10,
-        marginTop: 8,
-        marginBottom: 16,
+        marginTop: 6,
+        marginBottom: 10,
         paddingHorizontal: 10,
     },
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         marginTop: 5
     },
     button: {
-        paddingHorizontal: 16,
-        paddingVertical: 8,
+        width: 140,
+        textAlign:'center',
+        paddingVertical: 14,
         backgroundColor: theme.flatListItem,
         color: theme.text_white,
         borderRadius: 8,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        fontWeight:'600',
+        fontSize:16,
     }
 })
     return st

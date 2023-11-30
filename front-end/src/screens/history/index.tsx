@@ -7,8 +7,10 @@ import moment from 'moment';
 import DatePicker from '@react-native-community/datetimepicker';
 import { getAllEntryAction, getEntryByMonthAction } from '../../services/entry/actions'
 import { useDispatch } from 'react-redux'
+import { useIsFocused } from '@react-navigation/native';
 
 const History = () => {
+  const isFocused = useIsFocused()
   const [showDatePicker, setShowDatePicker] = useState(false);
   const styles = st();
   const [date, setDate] = useState<Date>(new Date());
@@ -21,7 +23,7 @@ const History = () => {
   };
   useEffect(() => {
     getListEntry()
-  }, [date]);
+  }, [isFocused, date]);
   const getListEntry = () => {
     const month = moment(date).format("MM-YYYY")
     dispatch(getEntryByMonthAction(month))
@@ -33,7 +35,7 @@ const History = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={{paddingBottom: 50}}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
         <Header title='Lịch sử giao dịch' />
         <View style={styles.timeContainer}>
           <TouchableOpacity
@@ -53,7 +55,7 @@ const History = () => {
               entryId={item.transactionId}
               key={index}
               title={item.category.title}
-              time={item.date}
+              time={moment(item.date).format('DD-MM-YYYY')}
               price={item.amount}
               note={item.description}
               status={item.category.value}
