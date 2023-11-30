@@ -36,7 +36,7 @@ const Entry = (props: any) => {
           :
           <Text style={[styles.title, styles.money, styles.alignRight]}>- {formatMoneyWithVND(price)}</Text>
         }
-        <Text style={[styles.content, styles.alignRight]}>{moment(time).format('DD-MM-YYYY')}</Text>
+        <Text style={[styles.content, styles.alignRight]}>{time}</Text>
       </View>
     </TouchableOpacity>
   )

@@ -11,6 +11,14 @@ export const getAllEntryAction = createAsyncThunk(
     }
 )
 
+export const getLastEntryAction = createAsyncThunk(
+    'entry/getLastEntryAction',
+    async (size: number) => {
+        const res = await httpClient.get(`${ENTRY.GET_ALL}?size=${size}`)
+        return res.data
+    }
+)
+
 export const getEntryByMonthAction = createAsyncThunk(
     'entry/getEntryByMonthAction',
     async (month: string) => {

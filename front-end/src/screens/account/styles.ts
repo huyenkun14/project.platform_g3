@@ -24,6 +24,8 @@ const styles = () => {
             marginLeft: 25,
         },
         item: {
+            borderWidth: 1,
+            borderColor: theme.flatListItem,
             flexDirection: 'row',
             alignItems: 'center',
             marginHorizontal: 25,

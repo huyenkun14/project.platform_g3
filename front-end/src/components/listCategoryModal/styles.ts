@@ -49,7 +49,7 @@ const styles = () => {
       justifyContent: 'space-between',
       alignItems: 'center',
       marginHorizontal: 25,
-      paddingVertical: 5,
+      // paddingVertical: 5,
       borderRadius: 8,
       borderTopColor: theme.borderColor,
       borderTopWidth: 0.5,
