@@ -63,8 +63,9 @@ const EntryDetail = ({ route }) => {
         console.log(data)
         dispatch(updateEntryAction(data))
             .then((res) => {
-                console.log(res)
-                // navigation.navigate('Add')
+                console.log(res, 'sửa giao dịchhhhhhhhhhhhhh')
+                navigation.goBack()
+                Alert.alert('Sửa thành công')
             })
             .catch(err => {
                 console.log('Save error', err);
@@ -173,8 +174,8 @@ const EntryDetail = ({ route }) => {
                     </View>
                 </View>
                 {
-                    !(entryInfo?.urlImage == '/image?imageId=null') && !image && <TouchableOpacity onPress={pickImage} style={[styles.boxContainer, { justifyContent: 'center', paddingVertical: 16 }]}>
-                        <Image style={{ width: 200, height: 200, resizeMode: 'contain' }} source={{ uri: entryInfo?.urlImage == '/image?imageId=null' ? image : `${BASE_URL}${entryInfo?.urlImage}` }} />
+                    (!(entryInfo?.urlImage == '/image?imageId=null') || image) && <TouchableOpacity onPress={()=>{isEdit && pickImage()}} style={[styles.boxContainer, { justifyContent: 'center', paddingVertical: 16 }]}>
+                        <Image style={{ width: 200, height: 200, resizeMode: 'contain' }} source={{ uri: image ? image : `${BASE_URL}${entryInfo?.urlImage}` }} />
                         {isEdit && <TouchableOpacity
                             onPress={() => {
                                 setImage(null)

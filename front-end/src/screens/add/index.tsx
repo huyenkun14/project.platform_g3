@@ -1,4 +1,4 @@
-import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid } from 'react-native'
+import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import st from './styles'
 import DatePicker from '@react-native-community/datetimepicker';
@@ -34,34 +34,26 @@ const Add = () => {
     money: '',
   })
   const dispatch = useDispatch<any>()
-  const [listClassify, setListClassify] = useState([]);
-  const [listClassifyOpen, setListClassifyOpen] = useState(false);
-  const [classifyValue, setClassifyValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [listIcon, setListIcon] = useState<{ id: number, url: string }[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [listOpen, setListOpen] = useState(false);
   const [newEntry, setNewEntry] = useState<any>([]);
   const [warning, setWarning] = useState<any>({});
   useEffect(() => {
     getListClassify()
-  }, [listClassifyOpen])
+  }, [])
   const handleGetIcon = async () => {
     setLoading(true)
     const res = await getAllIcon()
     setLoading(false)
-    console.log("res nè", res)
     if (res?.status === 200) {
       setListIcon(res?.data)
     }
   }
   const getListClassify = () => {
     dispatch(getAllClassifyAction())
-      .then(res => {
-        const convertListClassify = res?.payload?.filter(item => item?.value === true).map((item, index) => ({ label: item.title, value: item.categoryId }))
-        setListClassify(convertListClassify)
-      })
-      .catch(err => console.log('err', err))
+      .then(res => console.log(res, 'get list classifyyyyyyyyyyyyy'))
+      .catch(err => console.log(err, 'get list classify errorrrrrrrrrrrrr'))
   }
   const handleCreateEntry = () => {
     const imageToUpload = image
@@ -72,7 +64,7 @@ const Add = () => {
     data.append('amount', infoEntry.money.replace('.', ''))
     data.append('date', infoEntry.time)
     data.append('description', infoEntry.note)
-    data.append('image', {
+    image && data.append('image', {
       uri: imageToUpload,
       type: `image/${imageType}`,
       name: imageName
@@ -81,14 +73,6 @@ const Add = () => {
       .then(res => {
         if (res?.payload) {
           setNewEntry(res?.payload)
-          setInfoEntry({
-            time: moment(date).format("DD-MM-YYYY"),
-            title: '',
-            note: '',
-            money: '',
-          })
-          setCategory('')
-          setImage(null)
           showSuccess(true)
         } else {
           ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
@@ -96,19 +80,16 @@ const Add = () => {
       })
       .catch(err => console.log('err', err))
   }
-  // const checkWarning = () => {
-  //   dispatch(checkWarningAction({
-  //     transactionId: newEntry?.transactionId
-  //   }))
-  //     .then(res => {
-  //       console.log(res, 'warninggggggg')
-  //       setWarning(res?.payload)
-  //     })
-  //     .catch(err => console.log(err))
-  // }
-  const onListClassifyOpen = useCallback(() => {
-    setListOpen(false);
-  }, []);
+  const checkWarning = () => {
+    dispatch(checkWarningAction({
+      transactionId: newEntry?.transactionId
+    }))
+      .then(res => {
+        console.log(res, 'warninggggggg')
+        setWarning(res?.payload)
+      })
+      .catch(err => console.log(err))
+  }
   const onChangeInfoEntry = (name) => {
     return (value: any) => {
       setInfoEntry({ ...infoEntry, [name]: value })
@@ -161,7 +142,7 @@ const Add = () => {
                 console.log(category, 'categoryyyyyyyyyyyyyy')
               }}
             >
-              <Text>{category?.title||'Chọn danh mục'}</Text>
+              <Text>{category?.title || 'Chọn danh mục'}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.newClassify} onPress={() => {
               setAddNewClassifyOpen(true)
@@ -238,10 +219,10 @@ const Add = () => {
 
           <TouchableOpacity onPress={() => {
             handleCreateEntry()
-            // checkWarning()
-            // if (warning?.message) {
-            //   Alert.alert(`${warning?.message}`)
-            // }
+            checkWarning()
+            if (warning?.message) {
+              Alert.alert(`${warning?.message}`)
+            }
           }}>
             <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
           </TouchableOpacity>
@@ -275,15 +256,24 @@ const Add = () => {
       <SuccessNotify
         modalVisible={isSuccess}
         setModalVisible={showSuccess}
-        title={infoEntry?.title}
+        title={category?.title}
         date={infoEntry?.time}
         amount={infoEntry?.money}
         urlIcon={category?.urlIcon}
         description={infoEntry?.note}
+        setInfoEntry={() => {
+          setCategory('')
+          setImage(null)
+          setInfoEntry({
+            time: moment(date).format("DD-MM-YYYY"),
+            title: '',
+            note: '',
+            money: '',
+          })
+        }}
       />
     </SafeAreaView>
   )
-
 }
 
 export default Add

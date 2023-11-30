@@ -2,7 +2,6 @@ import { ScrollView, View, Text, FlatList, Image, SafeAreaView, StatusBar } from
 import React, { useEffect, useState } from 'react'
 import st from './styles'
 import Header from '../../components/header'
-import { overview } from '../../mock/home'
 import Banner from './components/banner'
 import Entry from '../../components/entry'
 import Option from './components/option'
@@ -10,12 +9,15 @@ import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { getItemObjectAsyncStorage } from '../../../utils/asyncStorage'
 import { KEY_STORAGE } from '../../constants/storage'
 import { useDispatch } from 'react-redux'
-import { getAllEntryAction } from '../../services/entry/actions'
+import { getLastEntryAction } from '../../services/entry/actions'
 import { getInfoUserAction } from '../../services/user/actions'
 import Loading from '../../../utils/loading/Loading'
 import { formatMoneyNotVND } from '../../../utils/formatMoney'
+import { useIsFocused } from '@react-navigation/native';
+import moment from 'moment'
 
 const Home = () => {
+  const isFocused = useIsFocused()
   const dispatch = useDispatch<any>()
   const styles = st();
   const [listEntry, setListEntry] = useState([])
@@ -89,7 +91,7 @@ const Home = () => {
     getUserInfoSaved();
     getListEntry()
     getInfoUser()
-  }, []);
+  }, [isFocused]);
 
   const getUserInfoSaved = async () => {
     const userInfo = await getItemObjectAsyncStorage(KEY_STORAGE.SAVED_INFO);
@@ -97,7 +99,7 @@ const Home = () => {
   };
   const getListEntry = () => {
     setLoading(false)
-    dispatch(getAllEntryAction())
+    dispatch(getLastEntryAction(5))
       .then(res => {
         setLoading(false)
         console.log(res, 'list entryyyyyyyyyyyyyyy')
@@ -181,7 +183,7 @@ const Home = () => {
               entryId={item.transactionId}
               key={index}
               title={item.category.title}
-              time={item.date}
+              time={moment(item.date).format('DD-MM-YYYY')}
               price={item.amount}
               note={item.description}
               status={item.category.value}

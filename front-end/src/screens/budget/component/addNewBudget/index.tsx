@@ -8,13 +8,15 @@ import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createBudgetAction } from '../../../../services/budget/actions';
 import { addCommas, removeNonNumeric } from '../../../../../utils/formatMoney';
+import { getAllIcon } from '../../../../services/icon';
+import ListCategoryModal from '../../../../components/listCategoryModal';
 
 const AddNewBudget = ({ modalVisible, setModalVisible }) => {
+    const [loading, setLoading] = useState<boolean>(false)
+    const [category, setCategory] = useState<any>()
+    const [isListCategory, showListCategory] = useState(false)
     const [listClassify, setListClassify] = useState([]);
-    const [listClassifyOpen, setListClassifyOpen] = useState(false);
-    const [classifyValue, setClassifyValue] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [listOpen, setListOpen] = useState(false);
     const [date, setDate] = useState<Date>(new Date());
     const dispatch = useDispatch<any>()
     const styles = st();
@@ -26,7 +28,7 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
     })
     useEffect(() => {
         getListClassify()
-    }, [listClassifyOpen])
+    }, [])
     const getListClassify = () => {
         dispatch(getAllClassifyAction())
             .then(res => {
@@ -42,10 +44,10 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
             startDate: moment(firstDay).format("DD-MM-YYYY"),
             endDate: moment(lastDay).format("DD-MM-YYYY"),
             categoryId: infoBudget.categoryId,
-            amount: infoBudget.amount.replace('.','')
+            amount: infoBudget.amount.replace('.', '')
         }))
             .then(res => {
-                if(res?.payload){
+                if (res?.payload) {
                     console.log(res, 'create budgetttttttttttt')
                     ToastAndroid.show('Tạo ngân sách thành công', ToastAndroid.SHORT)
                     setModalVisible(false)
@@ -59,9 +61,6 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                 ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
             })
     }
-    const onListClassifyOpen = useCallback(() => {
-        setListOpen(false);
-    }, []);
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShowDatePicker(false);
@@ -104,25 +103,15 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                 <View style={styles.inputLabelContainer}>
                     <Text style={styles.inputLabel}>Danh mục</Text>
                 </View>
-                <View style={styles.dropdownView}>
-                    <DropDownPicker
-                        style={[styles.dropdown]}
-                        open={listClassifyOpen}
-                        value={classifyValue}
-                        items={listClassify}
-                        setOpen={setListClassifyOpen}
-                        setValue={setClassifyValue}
-                        setItems={setListClassify}
-                        itemKey="label"
-                        placeholder="Chọn danh mục"
-                        onOpen={onListClassifyOpen}
-                        onChangeValue={onChangeInfoBudget('categoryId')}
-                        dropDownDirection="DEFAULT"
-                        searchable
-                        listMode='MODAL'
-                        zIndex={2000}
-                    />
-                </View>
+                <TouchableOpacity
+                    style={styles.dropdownView}
+                    onPress={() => {
+                        showListCategory(true)
+                        console.log(category, 'categoryyyyyyyyyyyyyy')
+                    }}
+                >
+                    <Text>{category?.title || 'Chọn danh mục'}</Text>
+                </TouchableOpacity>
                 <View style={styles.inputLabelContainer}>
                     <Image
                         style={styles.inputLabelIcon}
@@ -153,6 +142,11 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                     <Text style={styles.addBtnText}>Tạo ngân sách</Text>
                 </TouchableOpacity>
             </Modal>
+            <ListCategoryModal
+                modalVisible={isListCategory}
+                setModalVisible={showListCategory}
+                setEntryClassify={setCategory}
+            />
         </View>
     )
 }

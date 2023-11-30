@@ -142,6 +142,7 @@ const styles = () => {
       resizeMode: 'contain'
     },
     button: {
+      overflow:'hidden',
       marginHorizontal: 25,
       marginTop: 10,
       fontSize: 16,

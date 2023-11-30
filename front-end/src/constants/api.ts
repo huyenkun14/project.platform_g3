@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.1.63:3000/api"
+export const BASE_URL = "http://192.168.1.68:3000/api"
 
 export const AUTH = {
     REGISTER: "/auth/register",
@@ -14,6 +14,7 @@ export const USER = {
 export const CLASSIFY = {
     CREATE: "/v1/category/create",
     GET_ALL: "/v1/category/get-all",
+    GET_BY_VALUE: "/v1/category/by-value",
     GET_BY_ID: "/v1/category",
     UPDATE: "/v1/category/update",
     DELETE: "/v1/category/delete",

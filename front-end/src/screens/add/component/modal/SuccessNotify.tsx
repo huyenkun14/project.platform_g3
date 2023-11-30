@@ -5,10 +5,10 @@ import Entry from '../../../../components/entry';
 import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_TITLE } from '../../../../constants/navigation';
 
-const AddNewEntry = ({ modalVisible, setModalVisible, title, date, amount, urlIcon, description }) => {
+const AddNewEntry = ({ modalVisible, setModalVisible, setInfoEntry, title, date, amount, urlIcon, description }) => {
   const navigation = useNavigation<any>()
   const styles = st();
-
+  console.log(title, date, amount, urlIcon, description, 'info entryyyyyyyyyyyyyyyyyyyyyyyyyyy')
   return (
     <Modal
       animationType="slide"
@@ -30,10 +30,14 @@ const AddNewEntry = ({ modalVisible, setModalVisible, title, date, amount, urlIc
             <TouchableOpacity style={styles.button} onPress={() => {
               setModalVisible(false)
               navigation.navigate(NAVIGATION_TITLE.HISTORY)
+              setInfoEntry()
             }}>
               <Text style={styles.buttonText}>Xem lịch sử giao dịch</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => { setModalVisible(false) }}>
+            <TouchableOpacity style={styles.button} onPress={() => {
+              setModalVisible(false)
+              setInfoEntry()
+            }}>
               <Text style={styles.buttonText}>Thêm giao dịch khác</Text>
             </TouchableOpacity>
           </View>

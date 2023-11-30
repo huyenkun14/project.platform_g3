@@ -58,25 +58,25 @@ const DetailClassify = (props: Iprops) => {
     };
   };
 
-  const handleUpdateCategory = async() => {
+  const handleUpdateCategory = async () => {
     setLoading(true)
     const res = await updateCategory(
-        {
-            categoryId: item?.categoryId, 
-            iconId: iconCurrent,
-            title: infoClassify.title,
-            value: value,
-        }
-        )
+      {
+        categoryId: item?.categoryId,
+        iconId: iconCurrent,
+        title: infoClassify.title,
+        value: value,
+      }
+    )
     setLoading(false)
     if (res?.status === 200) {
-        setModalVisible(false)
-        handleGetlist?.()
-        ToastAndroid.show("Sửa danh mục thành công", ToastAndroid.SHORT)
+      setModalVisible(false)
+      handleGetlist?.()
+      ToastAndroid.show("Sửa danh mục thành công", ToastAndroid.SHORT)
     }
     else {
-        setModalVisible(false)
-        ToastAndroid.show("Sửa danh mục không thành công", ToastAndroid.SHORT)
+      setModalVisible(false)
+      ToastAndroid.show("Sửa danh mục không thành công", ToastAndroid.SHORT)
     }
   }
 
@@ -94,7 +94,7 @@ const DetailClassify = (props: Iprops) => {
       handleGetlist?.()
       ToastAndroid.show("Xóa danh mục không thành công", ToastAndroid.SHORT)
     }
-  } 
+  }
   return (
     <View>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -136,7 +136,7 @@ const DetailClassify = (props: Iprops) => {
               items={items}
               setOpen={setOpen}
               setValue={setValue}
-              style={{ borderWidth: 1, borderColor: theme.borderColor }}
+              style={{ borderWidth: 1, borderColor: theme.backgroundType }}
               customItemContainerStyle={{
                 borderWidth: 0,
                 backgroundColor: "red",
@@ -176,22 +176,24 @@ const DetailClassify = (props: Iprops) => {
                     listIcon.map((it) => {
                       return (
                         <View
+                          key={it?.id}
                           style={{
                             padding: 10,
                             marginTop: 5,
-                            borderColor:
+                            borderColor: theme.borderColor,
+                            backgroundColor:
                               it?.id !== iconCurrent
-                                ? theme.borderColor
-                                : theme.tabActive,
+                                ? 'transparent'
+                                : theme.backgroundType,
                             borderWidth: 1,
-                            borderRadius: 5,
+                            borderRadius: 8,
                           }}
                         >
                           <TouchableOpacity onPress={() => setIconCurrent(it?.id)}>
                             <Image
-                                source={{ uri: `${BASE_URL}${it?.url}` }}
-                                style={{ width: 35, height: 35 }}
-                                resizeMode="stretch"
+                              source={{ uri: `${BASE_URL}${it?.url}` }}
+                              style={{ width: 22, height: 22, tintColor: it?.id !== iconCurrent ? theme.text_1 : theme.text_white, }}
+                              resizeMode="stretch"
                             />
                           </TouchableOpacity>
                         </View>
