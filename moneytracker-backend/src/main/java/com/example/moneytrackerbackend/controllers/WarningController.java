@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.moneytrackerbackend.dto.ConvertToResponse.convertWarning;
@@ -32,7 +33,7 @@ public class WarningController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/api/v1/warning/check")
-    public ResponseEntity<WarningResponse> warning(@RequestParam Long categoryId, @RequestParam String date, Principal principal) {
+    public ResponseEntity<WarningResponse> warning(@RequestParam Long categoryId, @RequestParam LocalDate date, Principal principal) {
 
         int check = warningService.checkBudget(categoryId, date);
 
