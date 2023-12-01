@@ -30,13 +30,13 @@ public class WarningServiceImp implements WarningService{
 
     private final CategoryRepository categoryRepository;
 
-    public int checkBudget(Long categoryId, String date){
+    public int checkBudget(Long categoryId, LocalDate date){
 
-        LocalDate date1 = formatterDate(date);
+//        LocalDate date1 = formatterDate(date);
 
-        int sumAmount = transactionRepository.sumAmountByCategory(categoryId, date1.getMonthValue(), date1.getYear());
+        int sumAmount = transactionRepository.sumAmountByCategory(categoryId, date.getMonthValue(), date.getYear());
 
-        Budget budget = budgetRepository.findByCategoryId(categoryId, date1.getMonthValue(), date1.getYear());
+        Budget budget = budgetRepository.findByCategoryId(categoryId, date.getMonthValue(), date.getYear());
 
         if(budget!=null && budget.getAmount()>0){
             return budget.getAmount() - sumAmount;
