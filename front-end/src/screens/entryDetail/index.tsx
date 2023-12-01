@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, Text, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Alert, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import DatePicker from '@react-native-community/datetimepicker';
 import st from './styles'
@@ -13,6 +13,7 @@ import { addCommas, removeNonNumeric } from '../../../utils/formatMoney';
 import { BASE_URL } from '../../constants/api';
 import useTheme from '../../hooks/useTheme';
 import * as ImagePicker from 'expo-image-picker';
+import Loading from '../../../utils/loading/Loading';
 
 const EntryDetail = ({ route }) => {
     const { entryId } = route.params
@@ -24,6 +25,8 @@ const EntryDetail = ({ route }) => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [date, setDate] = useState<Date>(new Date());
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false)
+
     const [entryInfo, setEntryInfo] = useState({
         transactionId: "",
         category: {
@@ -46,6 +49,7 @@ const EntryDetail = ({ route }) => {
     }
     const handleSave = () => {
         setIsEdit(false);
+        setLoading(true)
         const imageToUpload = image
         const imageName = imageToUpload?.split('/').pop()
         const imageType = imageToUpload?.split('.').pop()
@@ -53,33 +57,35 @@ const EntryDetail = ({ route }) => {
         data.append('description', entryInfo?.description)
         data.append('transactionId', entryInfo?.transactionId)
         data.append('date', moment(entryInfo?.date).format("DD-MM-YYYY"))
-        data.append('amount', entryInfo?.amount)
+        data.append('amount', String(entryInfo?.amount).replace(/\./g, ''))
         data.append('categoryId', entryInfo?.category?.categoryId)
-        data.append('image', {
+        image && data.append('image', {
             uri: imageToUpload,
             type: `image/${imageType}`,
             name: imageName
         });
-        console.log(data)
+        console.log(data, 'update entryyyyyyy')
         dispatch(updateEntryAction(data))
             .then((res) => {
-                console.log(res, 'sửa giao dịchhhhhhhhhhhhhh')
+                setLoading(false)
                 navigation.goBack()
-                Alert.alert('Sửa thành công')
+                ToastAndroid.show('Sửa thành công!', ToastAndroid.SHORT)
             })
             .catch(err => {
-                console.log('Save error', err);
+                setLoading(false)
             });
     }
 
     const handleDelete = () => {
+        setLoading(true)
         dispatch(deleteEntryAction(entryId))
             .then(() => {
-                Alert.alert('Xóa thành công')
+                setLoading(false)
+                ToastAndroid.show('Xóa thành công!', ToastAndroid.SHORT)
                 navigation.goBack()
             })
             .catch(err => {
-                console.log('Delete error', err);
+                setLoading(false);
             });
     }
 
@@ -88,18 +94,19 @@ const EntryDetail = ({ route }) => {
     }, [])
 
     const getEntry = () => {
+        setLoading(true)
         dispatch(getEntryByIdAction(entryId))
             .then(res => {
                 setEntryInfo(res?.payload)
-                console.log(res?.payload, 'entryyyyyyyyyyy')
+                setLoading(false)
             })
-            .catch(err => console.log('err', err))
+            .catch(err => setLoading(false))
     }
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShowDatePicker(false);
         setDate(currentDate);
-        setEntryInfo({ ...entryInfo, date: moment(currentDate).format('DD-MM-YYYY') });
+        setEntryInfo({ ...entryInfo, date: currentDate });
     };
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -174,7 +181,7 @@ const EntryDetail = ({ route }) => {
                     </View>
                 </View>
                 {
-                    (!(entryInfo?.urlImage == '/image?imageId=null') || image) && <TouchableOpacity onPress={()=>{isEdit && pickImage()}} style={[styles.boxContainer, { justifyContent: 'center', paddingVertical: 16 }]}>
+                    (!(entryInfo?.urlImage == '/image?imageId=null') || image) && <TouchableOpacity onPress={() => { isEdit && pickImage() }} style={[styles.boxContainer, { justifyContent: 'center', paddingVertical: 16 }]}>
                         <Image style={{ width: 200, height: 200, resizeMode: 'contain' }} source={{ uri: image ? image : `${BASE_URL}${entryInfo?.urlImage}` }} />
                         {isEdit && <TouchableOpacity
                             onPress={() => {
@@ -234,6 +241,7 @@ const EntryDetail = ({ route }) => {
                     />
                 }
             </ScrollView>
+            <Loading visiable={loading} />
         </SafeAreaView>
     )
 }

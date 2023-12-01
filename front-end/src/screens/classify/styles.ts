@@ -27,22 +27,22 @@ const styles = () => {
             fontSize: 16,
         },
         addImageView: {
-            width: 50,
-            marginTop: -10,
-            backgroundColor: theme.flatListItem,
-            height: 50,
+            backgroundColor: theme.backgroundImg,
+            flexDirection: 'row',
+            height: 40,
             justifyContent: 'center',
-            borderRadius: 50,
             alignItems: 'center',
-            position: 'absolute',
-            right: 25,
-            top: '30%'
+            width: 180,
+            marginVertical: 10,
+            borderRadius: 20,
+            alignSelf: 'center'
         },
         addImage: {
             height: 20,
             width: 20,
-            tintColor: theme.text_white,
-            resizeMode: 'contain'
+            tintColor: theme.text_3,
+            resizeMode: 'contain',
+            marginRight: 10
         }
     })
     return st

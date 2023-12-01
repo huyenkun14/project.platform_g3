@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.1.68:3000/api"
+export const BASE_URL = "http://192.168.10.106:3000/api"
 
 export const AUTH = {
     REGISTER: "/auth/register",

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import httpClient from "../../httpClient";
 import { CHART, ENTRY } from "../../constants/api";
-import formdata from "../../httpClient/formData";
+import formdata from "../../httpClient/multipartData";
 
 export const getFinancialYearlyAction = createAsyncThunk(
     'financial/getFinancialYearlyAction',

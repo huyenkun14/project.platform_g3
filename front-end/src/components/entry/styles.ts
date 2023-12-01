@@ -48,6 +48,7 @@ const styles = () => {
             color: theme.text_1,
             fontSize: 16,
             fontWeight: '600',
+            maxWidth: SCREEN_WIDTH * 0.3
         },
         money: {
             fontSize: 15
@@ -57,6 +58,7 @@ const styles = () => {
             fontSize: 12,
             marginTop: 3,
             fontWeight: '500',
+            maxWidth: SCREEN_WIDTH * 0.3
         },
         note: {
             maxWidth: SCREEN_WIDTH * 0.45,

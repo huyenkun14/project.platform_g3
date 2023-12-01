@@ -97,6 +97,10 @@ const Classify = () => {
                 </TouchableOpacity>
             </View>
             <ScrollView contentContainerStyle={{ paddingBottom: 250 }}>
+                <TouchableOpacity style={styles.addImageView} onPress={() => { setAddNewClassifyOpen(true) }}>
+                    <Image style={styles.addImage} source={require('../../../assets/images/icon/ic_plus.png')} />
+                    <Text>Thêm danh mục</Text>
+                </TouchableOpacity>
                 {type.map((item, index) => (
                     <TypeItem
                         title={item.title}
@@ -109,9 +113,6 @@ const Classify = () => {
                     />
                 ))}
             </ScrollView>
-            <TouchableOpacity style={styles.addImageView} onPress={() => { setAddNewClassifyOpen(true) }}>
-                <Image style={styles.addImage} source={require('../../../assets/images/icon/ic_plus.png')} />
-            </TouchableOpacity>
             <AddNewClassify
                 modalVisible={addNewClassifyOpen}
                 setModalVisible={setAddNewClassifyOpen}

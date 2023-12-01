@@ -2,8 +2,6 @@ import { View, Text, Modal, TextInput, TouchableOpacity, Image, ToastAndroid, Sc
 import React, { useState } from 'react'
 import st from './styles'
 import { useDispatch } from 'react-redux'
-import { createClassifyAction } from '../../services/classify/actions'
-import Checkbox from 'expo-checkbox';
 import { BASE_URL } from '../../constants/api'
 import { createCategory } from '../../services/classify'
 import useTheme from '../../hooks/useTheme'
@@ -32,7 +30,6 @@ const AddNewClassify = ({ modalVisible, setModalVisible, listIcon, setLoading, h
     const onChangeInfoClassify = (name) => {
         return (value: any) => {
             setInfoClassify({ ...infoClassify, [name]: value })
-            console.log('infoClassify', infoClassify)
         }
     }
     const handleChangeInfoClassifyValue = (value: boolean) => {

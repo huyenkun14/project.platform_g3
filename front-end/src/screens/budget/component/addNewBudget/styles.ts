@@ -6,7 +6,7 @@ const styles = () => {
     const theme = useTheme();
     const st = StyleSheet.create({
         container: {
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.backgroundImg,
             minHeight: SCREEN_HEIGHT,
         },
         closeIcon: {
@@ -68,7 +68,6 @@ const styles = () => {
         },
         inputLabel: {
             fontSize: 15,
-            marginBottom: 12,
             fontWeight: '500',
             color: theme.BLACK,
             marginLeft: 10
@@ -77,14 +76,16 @@ const styles = () => {
             color: theme.text_1,
             fontSize: 13.5,
             paddingHorizontal: 10,
-            borderRadius: 10,
+            borderRadius: 8,
             height: 50,
             overflow: 'hidden',
             backgroundColor: theme.backgroundColor,
+            justifyContent: 'center'
         },
         inputLabelContainer: {
             flexDirection: 'row',
-            marginTop: 20,
+            alignItems:'center',
+            marginBottom: 8,
             marginHorizontal: 25
         },
         inputLabelIcon: {
@@ -107,7 +108,7 @@ const styles = () => {
             height: 50,
             backgroundColor: theme.tabActive,
             borderRadius: 8,
-            marginHorizontal: 16
+            marginHorizontal: 25
         },
         addBtnText: {
             fontSize: 16,
@@ -115,11 +116,12 @@ const styles = () => {
             color: theme.text_white
         },
         shadow: {
-            marginBottom: 20,
-            borderColor: theme.text_1,
+            marginBottom: 16,
+            borderColor: theme.backgroundType,
             borderWidth: 1,
             marginHorizontal: 25,
             borderRadius: 10,
+            backgroundColor: theme.backgroundColor
         },
     })
     return st;

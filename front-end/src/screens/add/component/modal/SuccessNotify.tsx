@@ -5,10 +5,10 @@ import Entry from '../../../../components/entry';
 import { useNavigation } from '@react-navigation/native';
 import { NAVIGATION_TITLE } from '../../../../constants/navigation';
 
-const AddNewEntry = ({ modalVisible, setModalVisible, setInfoEntry, title, date, amount, urlIcon, description }) => {
+const AddNewEntry = ({ modalVisible, setModalVisible, setInfoEntry, title, date, amount, urlIcon, description, status, isWarning }) => {
   const navigation = useNavigation<any>()
+  console.log(amount);
   const styles = st();
-  console.log(title, date, amount, urlIcon, description, 'info entryyyyyyyyyyyyyyyyyyyyyyyyyyy')
   return (
     <Modal
       animationType="slide"
@@ -19,13 +19,15 @@ const AddNewEntry = ({ modalVisible, setModalVisible, setInfoEntry, title, date,
         <View style={styles.modalContainer}>
           <View style={styles.modalInner}>
             <Image source={require('../../../../../assets/splash.png')} style={styles.logo} />
+            {isWarning && <Text style={styles.warning}>Vượt quá ngân sách!</Text>}
             <Text style={styles.title}>Thêm giao dịch thành công</Text>
             <Entry
               title={title}
               time={date}
-              price={amount}
+              price={String(amount.replace(/\./g, ''))}
               note={description}
               imageUrl={urlIcon}
+              status={status}
             />
             <TouchableOpacity style={styles.button} onPress={() => {
               setModalVisible(false)

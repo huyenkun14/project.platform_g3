@@ -27,7 +27,7 @@ const styles = () => {
             color: theme.text_1,
         },
         overviewItem: {
-            height: 155,
+            height: 145,
             backgroundColor: theme.flatListItem,
             minWidth: 140,
             paddingHorizontal: 20,

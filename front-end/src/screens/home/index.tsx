@@ -14,7 +14,6 @@ import { getInfoUserAction } from '../../services/user/actions'
 import Loading from '../../../utils/loading/Loading'
 import { formatMoneyNotVND } from '../../../utils/formatMoney'
 import { useIsFocused } from '@react-navigation/native';
-import moment from 'moment'
 
 const Home = () => {
   const isFocused = useIsFocused()
@@ -183,7 +182,7 @@ const Home = () => {
               entryId={item.transactionId}
               key={index}
               title={item.category.title}
-              time={moment(item.date).format('DD-MM-YYYY')}
+              time={item.date}
               price={item.amount}
               note={item.description}
               status={item.category.value}
