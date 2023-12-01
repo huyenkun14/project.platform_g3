@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import httpClient from "../../httpClient";
 import { ENTRY } from "../../constants/api";
-import formdata from "../../httpClient/formData";
+import formdata from "../../httpClient/multipartData";
 
 export const getAllEntryAction = createAsyncThunk(
     'entry/getAllEntryAction',

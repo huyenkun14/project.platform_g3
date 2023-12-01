@@ -8,6 +8,7 @@ import DatePicker from '@react-native-community/datetimepicker';
 import { getAllEntryAction, getEntryByMonthAction } from '../../services/entry/actions'
 import { useDispatch } from 'react-redux'
 import { useIsFocused } from '@react-navigation/native';
+import Loading from '../../../utils/loading/Loading'
 
 const History = () => {
   const isFocused = useIsFocused()
@@ -16,6 +17,7 @@ const History = () => {
   const [date, setDate] = useState<Date>(new Date());
   const dispatch = useDispatch<any>()
   const [listEntry, setListEntry] = useState([])
+  const [loading, setLoading] = useState(false)
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
@@ -26,12 +28,13 @@ const History = () => {
   }, [isFocused, date]);
   const getListEntry = () => {
     const month = moment(date).format("MM-YYYY")
+    setLoading(true)
     dispatch(getEntryByMonthAction(month))
       .then(res => {
-        console.log(res)
         setListEntry(res?.payload)
+        setLoading(false)
       })
-      .catch(err => console.log('err', err))
+      .catch(err => setLoading(false))
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -55,7 +58,7 @@ const History = () => {
               entryId={item.transactionId}
               key={index}
               title={item.category.title}
-              time={moment(item.date).format('DD-MM-YYYY')}
+              time={item.date}
               price={item.amount}
               note={item.description}
               status={item.category.value}
@@ -73,6 +76,7 @@ const History = () => {
           />
         }
       </ScrollView>
+      <Loading visiable={loading} />
     </SafeAreaView>
   )
 }

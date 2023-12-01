@@ -3,38 +3,36 @@ import React, { useEffect, useState } from 'react'
 import st from './styles'
 import { useDispatch } from 'react-redux'
 import { getInfoUserAction, updateInfoUserAction } from '../../services/user/actions'
-import Header from '../../components/header'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker';
 import { BASE_URL } from '../../constants/api'
 import Loading from '../../../utils/loading/Loading'
 
 const InfoUser = () => {
+    const isFocused = useIsFocused()
     const dispatch = useDispatch<any>()
     const styles = st();
     const navigation = useNavigation<any>()
-    const [modalVisible, setModalVisible] = useState(false)
     const [isLoading, setLoading] = useState(false)
     const [image, setImage] = useState(null);
     const [infoUser, setInfoUser] = useState({
         id: "",
         email: "",
         phoneNumber: "",
-        totalIncomeMoney: "",
-        totalSpendingMoney: "",
         urlImage: "",
         username: ""
     })
     useEffect(() => {
         getInfoUser()
-    }, [modalVisible])
+    }, [isFocused])
     const getInfoUser = () => {
+        // setLoading(true)
         dispatch(getInfoUserAction())
             .then(res => {
-                console.log(res, "info userrrrrrrr")
+                setLoading(false)
                 setInfoUser(res?.payload)
             })
-            .catch(err => console.log('err', err))
+            .catch(err => setLoading(false))
     }
     const handleEditInfoUser = () => {
         const imageToUpload = image
@@ -42,23 +40,27 @@ const InfoUser = () => {
         const imageType = imageToUpload?.split('.').pop()
         console.log(`image/${imageType}`)
         const formdata = new FormData()
-        formdata.append('avatar', {
+        image && formdata.append('avatar', {
             uri: imageToUpload,
             type: `image/${imageType}`,
             name: imageName
         });
-        formdata.append('email', infoUser.email)
-        formdata.append('phoneNumber', infoUser.phoneNumber)
-        formdata.append('username', infoUser.username)
+        formdata.append('email', infoUser?.email)
+        formdata.append('phoneNumber', infoUser?.phoneNumber)
+        formdata.append('username', infoUser?.username)
         console.log('formdata', formdata)
+        setLoading(true)
         dispatch(updateInfoUserAction(formdata))
             .then((res) => {
                 if (res?.payload) {
                     setLoading(false)
-                    Alert.alert('Cập nhật thành công')
+                    ToastAndroid.show('Cập nhật thành công!', ToastAndroid.SHORT)
                     console.log(res, 'update userrrr')
-                    setModalVisible(false)
-                } else ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
+                    navigation.goBack()
+                } else {
+                    ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
+                    setLoading(false)
+                }
                 console.log(res, 'update userrrr')
             })
             .catch(err => {
@@ -95,123 +97,55 @@ const InfoUser = () => {
                     />
                 </TouchableOpacity>
                 <Text
-                    style={{fontWeight:'400',fontSize:18}}
-                >Thông tin tài khoản</Text>
-                <TouchableOpacity onPress={() => { setModalVisible(true) }}>
+                    style={{ fontWeight: '400', fontSize: 18 }}
+                >Chỉnh sửa tài khoản</Text>
+                <View style={styles.headerIcon} />
+            </View>
+            <View>
+                {!(infoUser?.urlImage == '/image?imageId=null') ?
                     <Image
-                        style={styles.headerIcon}
+                        style={styles.modalAvatar}
+                        source={{ uri: image ?? `${BASE_URL}${infoUser?.urlImage}` }}
+                    />
+                    :
+                    <Image
+                        style={styles.modalAvatar}
+                        source={require('../../../assets/images/icon/ic_user.png')}
+                    />
+                }
+                <TouchableOpacity
+                    style={[styles.modalAvatar, { position: 'absolute', backgroundColor: 'rgba(0,0,0,0.2)' }]}
+                    onPress={pickImage}>
+                    <Image
+                        style={{ height: 15, width: 15, position: 'absolute', bottom: 20, right: 20, tintColor: '#fff' }}
                         source={require('../../../assets/images/icon/ic_pencil.png')}
                     />
                 </TouchableOpacity>
             </View>
-            <View style={styles.avatarContainer}>
-                {infoUser?.urlImage ?
-                    <Image
-                        style={styles.avatar}
-                        source={{ uri: `${BASE_URL}${infoUser?.urlImage}` }}
-                    />
-                    :
-                    <Image
-                        style={styles.avatar}
-                        source={require('../../../assets/images/icon/ic_user.png')}
-                    />
-                }
-            </View>
-            <Text style={styles.usernameText}>{infoUser?.username}</Text>
-            <View style={styles.infoContainer}>
-                <Image
-                    style={styles.infoIcon}
-                    source={require('../../../assets/images/icon/ic_envelope.png')}
-                />
-                <Text style={styles.infoText}>{infoUser?.email}</Text>
-            </View>
-            <View style={styles.infoContainer}>
-                <Image
-                    style={styles.infoIcon}
-                    source={require('../../../assets/images/icon/ic_phone.png')}
-                />
-                <Text style={styles.infoText}>{infoUser?.phoneNumber}</Text>
-            </View>
-            <View style={styles.amountContainer}>
-                <View style={styles.amountItem}>
-                    <Image
-                        style={styles.amountIcon}
-                        source={require('../../../assets/images/icon/ic_saving.png')}
-                    />
-                    <Text style={styles.amountLabel}>Tổng thu nhập</Text>
-                    <Text style={styles.amountText}>{infoUser?.totalIncomeMoney}</Text>
-                </View>
-                <View style={styles.amountItem}>
-                    <Image
-                        style={styles.amountIcon}
-                        source={require('../../../assets/images/icon/ic_coins.png')}
-                    />
-                    <Text style={styles.amountLabel}>Tổng chi tiêu</Text>
-                    <Text style={styles.amountText}>{infoUser?.totalSpendingMoney}</Text>
-                </View>
-            </View>
-            {/* Popup Edit */}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalInner}>
-                        <View>
-                            {!(infoUser?.urlImage == '/image?imageId=null') ?
-                                <Image
-                                    style={styles.modalAvatar}
-                                    source={{ uri: image ?? `${BASE_URL}${infoUser?.urlImage}` }}
-                                />
-                                :
-                                <Image
-                                    style={styles.modalAvatar}
-                                    source={require('../../../assets/images/icon/ic_user.png')}
-                                />
-                            }
-                            <TouchableOpacity
-                                style={[styles.modalAvatar, { position: 'absolute', backgroundColor: 'rgba(0,0,0,0.5)' }]}
-                                onPress={pickImage}>
-                                <Image
-                                    style={{ height: 15, width: 15, position: 'absolute', bottom: 10, left: 10, tintColor: '#fff' }}
-                                    source={require('../../../assets/images/icon/ic_pencil.png')}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <Text>Username</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={infoUser?.username}
-                            onChangeText={onChangeInfoUser('username')}
-                        />
-                        <Text>Email</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={infoUser?.email}
-                            onChangeText={onChangeInfoUser('email')}
-                        />
-                        <Text>Số điện thoại</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={infoUser?.phoneNumber}
-                            onChangeText={onChangeInfoUser('phoneNumber')}
-                        />
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => { setModalVisible(false) }}>
-                                <Text style={styles.button}>Hủy Bỏ</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    handleEditInfoUser()
-                                    setLoading(true)
-                                }}>
-                                <Text style={styles.button}>Lưu thay đổi</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+            <Text style={styles.inputLabel}>Username</Text>
+            <TextInput
+                style={styles.input}
+                value={infoUser?.username}
+                onChangeText={onChangeInfoUser('username')}
+            />
+            <Text style={styles.inputLabel}>Email</Text>
+            <TextInput
+                style={styles.input}
+                value={infoUser?.email}
+                onChangeText={onChangeInfoUser('email')}
+            />
+            <Text style={styles.inputLabel}>Số điện thoại</Text>
+            <TextInput
+                style={styles.input}
+                value={infoUser?.phoneNumber}
+                onChangeText={onChangeInfoUser('phoneNumber')}
+            />
+            <TouchableOpacity
+                onPress={() => {
+                    handleEditInfoUser()
+                }}>
+                <Text style={styles.button}>Lưu thay đổi</Text>
+            </TouchableOpacity>
             <Loading visiable={isLoading} />
         </View>
     )

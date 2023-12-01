@@ -1,15 +1,15 @@
-import { View, Text, Modal, TouchableOpacity, Image, TextInput, ToastAndroid } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import { View, Text, Modal, TouchableOpacity, Image, TextInput, ToastAndroid, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import st from './styles'
 import moment from 'moment';
 import DatePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { useDispatch } from 'react-redux';
 import { getAllClassifyAction } from '../../../../services/classify/actions';
 import { createBudgetAction } from '../../../../services/budget/actions';
 import { addCommas, removeNonNumeric } from '../../../../../utils/formatMoney';
-import { getAllIcon } from '../../../../services/icon';
 import ListCategoryModal from '../../../../components/listCategoryModal';
+import { checkWarningAction } from '../../../../services/notification/actions';
+import Loading from '../../../../../utils/loading/Loading';
 
 const AddNewBudget = ({ modalVisible, setModalVisible }) => {
     const [loading, setLoading] = useState<boolean>(false)
@@ -43,22 +43,24 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
         dispatch(createBudgetAction({
             startDate: moment(firstDay).format("DD-MM-YYYY"),
             endDate: moment(lastDay).format("DD-MM-YYYY"),
-            categoryId: infoBudget.categoryId,
-            amount: infoBudget.amount.replace('.', '')
+            categoryId: category.categoryId,
+            amount: String(infoBudget?.amount).replace(/\./g, '')
         }))
             .then(res => {
+                setLoading(true)
                 if (res?.payload) {
-                    console.log(res, 'create budgetttttttttttt')
                     ToastAndroid.show('Tạo ngân sách thành công', ToastAndroid.SHORT)
                     setModalVisible(false)
+                    setLoading(false)
                 } else {
-                    console.log(res, 'create budgetttttttttttt')
                     ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
+                    setLoading(false)
                 }
             })
             .catch(err => {
                 console.log('err', err)
                 ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
+                setLoading(false)
             })
     }
     const onChangeDate = (event, selectedDate) => {
@@ -100,14 +102,10 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                         />
                     }
                 </View>
-                <View style={styles.inputLabelContainer}>
-                    <Text style={styles.inputLabel}>Danh mục</Text>
-                </View>
                 <TouchableOpacity
-                    style={styles.dropdownView}
+                    style={[styles.input, styles.shadow]}
                     onPress={() => {
                         showListCategory(true)
-                        console.log(category, 'categoryyyyyyyyyyyyyy')
                     }}
                 >
                     <Text>{category?.title || 'Chọn danh mục'}</Text>
@@ -141,12 +139,14 @@ const AddNewBudget = ({ modalVisible, setModalVisible }) => {
                 <TouchableOpacity style={styles.addBtn} onPress={handleCreateBudget}>
                     <Text style={styles.addBtnText}>Tạo ngân sách</Text>
                 </TouchableOpacity>
+                <ListCategoryModal
+                    isHideNav={true}
+                    modalVisible={isListCategory}
+                    setModalVisible={showListCategory}
+                    setEntryClassify={setCategory}
+                />
+                <Loading visiable={loading} />
             </Modal>
-            <ListCategoryModal
-                modalVisible={isListCategory}
-                setModalVisible={showListCategory}
-                setEntryClassify={setCategory}
-            />
         </View>
     )
 }

@@ -7,13 +7,16 @@ import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import DatePicker from '@react-native-community/datetimepicker';
 import { getFinancialValueAction, getFinancialYearlyAction } from '../../services/financialSummary/actions';
-import { formatMoney } from '../../../utils/formatMoney';
+import { addCommas, formatMoney, removeNonNumeric } from '../../../utils/formatMoney';
 import { SCREEN_WIDTH } from '../../../utils/Dimension';
 import useTheme from '../../hooks/useTheme';
 import { StatusBar } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native';
+import Loading from '../../../utils/loading/Loading';
 
 const Chart = () => {
+  const isFocused = useIsFocused()
   const [chartType, setChartType] = useState('1')
   const [isShowDetail, setIsshowDetail] = useState(false)
   const styles = st();
@@ -24,6 +27,7 @@ const Chart = () => {
   const [listFinancialYearly, setListFinancialYearly] = useState([])
   const [listFinancialCategory, setListFinancialCategory] = useState([])
   const [isIncome, setIsIncome] = useState<boolean>()
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch<any>()
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -32,26 +36,29 @@ const Chart = () => {
   };
   useEffect(() => {
     getFinancialList()
-  }, [overviewYear]);
+  }, [overviewYear, isFocused]);
   useEffect(() => {
     getFinancialValueList()
-  }, [date, isIncome])
+  }, [date, isIncome, isFocused])
 
   const getFinancialList = () => {
+    setLoading(true)
     dispatch(getFinancialYearlyAction(overviewYear))
       .then(res => {
         setListFinancialYearly(res?.payload)
+        setLoading(false)
       })
-      .catch(err => console.log('erryearly', err))
+      .catch(err => setLoading(false))
   }
   const getFinancialValueList = () => {
     const data = new FormData()
     data.append('value', String(isIncome))
     data.append('monthAndYear', moment(date).format("MM-YYYY"))
+    setLoading(true)
     dispatch(getFinancialValueAction(data))
       .then(res => {
-        console.log(res, 'incomeeeeeeeeeeeeeeeee')
         setListFinancialCategory(res?.payload)
+        setLoading(false)
       })
       .catch(err => console.log('monthAndYear', err))
   }
@@ -200,8 +207,8 @@ const Chart = () => {
               {listFinancialYearly?.map((item, index) => (
                 <View style={styles.ChartTable} key={index}>
                   <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{item?.month}</Text>
-                  <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{item?.incomeMoney}</Text>
-                  <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{item?.spendingMoney}</Text>
+                  <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{addCommas(removeNonNumeric(item?.incomeMoney))}</Text>
+                  <Text style={[styles.detailText, { fontWeight: '300', fontSize: 14 }]}>{addCommas(removeNonNumeric(item?.spendingMoney))}</Text>
                 </View>
               ))}
             </View>
@@ -237,7 +244,7 @@ const Chart = () => {
                 dataPieChartIncome?.map((item, index) => (
                   <View style={[styles.ChartTable, { backgroundColor: item?.color }]} key={index}>
                     <Text style={{ color: "#fff" }}>{item?.name}</Text>
-                    <Text style={{ color: "#fff" }}>{item?.population}</Text>
+                    <Text style={{ color: "#fff" }}>{addCommas(removeNonNumeric(item?.population))}</Text>
                   </View>
                 ))
               }
@@ -271,7 +278,7 @@ const Chart = () => {
                   dataPieChartIncome?.map((item, index) => (
                     <View key={index} style={[styles.ChartTable, { backgroundColor: item?.color }]}>
                       <Text style={{ color: "#fff" }}>{item?.name}</Text>
-                      <Text style={{ color: "#fff" }}>{item?.population}</Text>
+                      <Text style={{ color: "#fff" }}>{addCommas(removeNonNumeric(item?.population))}</Text>
                     </View>
                   ))
                 }
@@ -301,6 +308,7 @@ const Chart = () => {
         </View>
         {renderChart()}
       </ScrollView>
+      <Loading visiable={loading} />
     </SafeAreaView>
   )
 }

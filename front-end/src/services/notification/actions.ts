@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import httpClient from "../../httpClient";
 import { WARNING } from "../../constants/api";
-import formdata from "../../httpClient/formData";
+import formdata from "../../httpClient/multipartData";
 
 export const getAllWarningAction = createAsyncThunk(
     'warning/getAllWarningAction',

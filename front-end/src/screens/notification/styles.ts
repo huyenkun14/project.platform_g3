@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { SCREEN_WIDTH } from "../../../utils/Dimension";
 
 const styles = () => {
     const st = StyleSheet.create({
@@ -7,7 +8,6 @@ const styles = () => {
         },
         itemContainer: {
             flexDirection: 'row',
-            marginBottom: 16,
         },
         icon: {
             height: 25,
@@ -17,7 +17,7 @@ const styles = () => {
             marginRight: 25,
         },
         text: {
-            width: 295,
+            width: SCREEN_WIDTH * 0.7,
             lineHeight: 20,
         }
     })

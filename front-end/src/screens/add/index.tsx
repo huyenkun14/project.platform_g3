@@ -1,11 +1,9 @@
-import { View, Text, Button, StatusBar, Modal, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import { View, Text, StatusBar, TextInput, Image, ScrollView, SafeAreaView, TouchableOpacity, ToastAndroid, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import st from './styles'
 import DatePicker from '@react-native-community/datetimepicker';
 import Header from '../../components/header'
-import Entry from '../../components/entry'
 import SuccessNotify from './component/modal/SuccessNotify'
-import { getAllEntryAction } from '../../services/entry/actions'
 import { useDispatch } from 'react-redux'
 import useTheme from '../../hooks/useTheme'
 import { createEntryAction } from '../../services/entry/actions';
@@ -14,11 +12,11 @@ import { checkWarningAction } from '../../services/notification/actions';
 import { addCommas, removeNonNumeric } from '../../../utils/formatMoney';
 import * as ImagePicker from 'expo-image-picker';
 import { getAllClassifyAction } from '../../services/classify/actions'
-import DropDownPicker from 'react-native-dropdown-picker'
 import Toast from '../../../utils/toast';
 import AddNewClassify from '../../components/addNewClassify';
 import { getAllIcon } from '../../services/icon';
 import ListCategoryModal from '../../components/listCategoryModal';
+import Loading from '../../../utils/loading/Loading';
 const Add = () => {
   const styles = st();
   const [addNewClassifyOpen, setAddNewClassifyOpen] = useState(false)
@@ -61,7 +59,7 @@ const Add = () => {
     const imageType = imageToUpload?.split('.').pop()
     const data = new FormData()
     data.append('categoryId', category?.categoryId)
-    data.append('amount', infoEntry.money.replace('.', ''))
+    data.append('amount', String(infoEntry.money).replace(/\./g, ''))
     data.append('date', infoEntry.time)
     data.append('description', infoEntry.note)
     image && data.append('image', {
@@ -69,23 +67,28 @@ const Add = () => {
       type: `image/${imageType}`,
       name: imageName
     });
+    console.log(data);
     dispatch(createEntryAction(data))
       .then(res => {
+        setLoading(true)
         if (res?.payload) {
           setNewEntry(res?.payload)
           showSuccess(true)
+          checkWarning()
+          setLoading(false)
         } else {
           ToastAndroid.show('Có lỗi!', ToastAndroid.SHORT)
+          setLoading(false)
         }
       })
-      .catch(err => console.log('err', err))
+      .catch(err => setLoading(false))
   }
   const checkWarning = () => {
     dispatch(checkWarningAction({
-      transactionId: newEntry?.transactionId
+      categoryId: newEntry?.category?.categoryId,
+      date: newEntry?.date
     }))
       .then(res => {
-        console.log(res, 'warninggggggg')
         setWarning(res?.payload)
       })
       .catch(err => console.log(err))
@@ -219,10 +222,6 @@ const Add = () => {
 
           <TouchableOpacity onPress={() => {
             handleCreateEntry()
-            checkWarning()
-            if (warning?.message) {
-              Alert.alert(`${warning?.message}`)
-            }
           }}>
             <Text style={[styles.button, styles.buttonAdd]}>Thêm</Text>
           </TouchableOpacity>
@@ -247,6 +246,7 @@ const Add = () => {
         {
           isListCategory &&
           <ListCategoryModal
+            isHideNav={false}
             modalVisible={isListCategory}
             setModalVisible={showListCategory}
             setEntryClassify={setCategory}
@@ -261,17 +261,20 @@ const Add = () => {
         amount={infoEntry?.money}
         urlIcon={category?.urlIcon}
         description={infoEntry?.note}
+        status={category?.value}
+        isWarning={warning?.message}
         setInfoEntry={() => {
           setCategory('')
           setImage(null)
           setInfoEntry({
-            time: moment(date).format("DD-MM-YYYY"),
+            time: moment().format("DD-MM-YYYY"),
             title: '',
             note: '',
             money: '',
           })
         }}
       />
+      <Loading visiable={loading} />
     </SafeAreaView>
   )
 }

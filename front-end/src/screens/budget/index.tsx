@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, Image, ScrollView, Modal, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, Image, ScrollView, Modal, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getAllClassifyAction } from '../../services/classify/actions'
 import { useDispatch } from 'react-redux'
@@ -17,8 +17,11 @@ import { BASE_URL } from '../../constants/api'
 import { addCommas, formatMoneyNotVND, removeNonNumeric } from '../../../utils/formatMoney'
 import useTheme from '../../hooks/useTheme'
 import { SCREEN_WIDTH } from '../../../utils/Dimension'
+import { useIsFocused } from '@react-navigation/native';
+import { checkWarningAction } from '../../services/notification/actions'
 
 const Budget = () => {
+    const isFocused = useIsFocused()
     const dispatch = useDispatch<any>()
     const [isAddBudget, setAddBudget] = useState(false)
     const [listBudget, setListBudget] = useState([])
@@ -32,10 +35,24 @@ const Budget = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const theme = useTheme();
     const styles = st();
+    const [warning, setWarning] = useState<any>({});
+    const [newBudget, setNewBudget] = useState({
+        amount: 2000000,
+        budgetId: 6,
+        category: {
+            categoryId: 16,
+            iconId: 35,
+            title: "Viettel ",
+            urlIcon: "/icon?iconId=35",
+            value: false
+        },
+        endDate: "2023-12-31",
+        startDate: "2023-12-01"
+    })
     useEffect(() => {
         getListBudget()
         getFinancialValueList()
-    }, [isAddBudget, date])
+    }, [isAddBudget, date, isFocused])
 
     useEffect(() => {
         setValueCurrent(`${itemChoose?.amount}`)
@@ -46,11 +63,15 @@ const Budget = () => {
         setItemChoose(item)
     }
     const getListBudget = () => {
+        setLoading(true)
         dispatch(getBudgetByMonthAction(moment(date).format('MM-YYYY')))
             .then(res => {
-                setListBudget(res?.payload)
+                if(res?.payload){
+                    setListBudget(res?.payload)
+                    setLoading(false)
+                }
             })
-            .catch(err => console.log('err', err))
+            .catch(err => setLoading(false))
     }
     const getFinancialValueList = () => {
         const data = new FormData()
@@ -58,7 +79,12 @@ const Budget = () => {
         data.append('monthAndYear', moment(date).format("MM-YYYY"))
         dispatch(getFinancialValueAction(data))
             .then(res => {
-                setListFinancialCategory(res?.payload)
+                setLoading(true)
+                if(res?.payload) {
+                    setLoading(false)
+                    setListFinancialCategory(res?.payload)
+                }
+                setLoading(false)
             })
             .catch(err => console.log('monthAndYear', err))
     }
@@ -66,8 +92,7 @@ const Budget = () => {
         const currentDate = selectedDate || date;
         setShowDatePicker(false);
         setDate(currentDate);
-    };
-
+    }
     const handleUpdate = async () => {
         setLoading(true)
         const res = await updateBudget({
@@ -79,14 +104,30 @@ const Budget = () => {
         })
         setLoading(false)
         if (res?.status === 200) {
+            setNewBudget(res?.payload)
             setOpenModal(false)
             getListBudget()
             ToastAndroid.show("Sửa budget thành công", ToastAndroid.SHORT);
+            await checkWarning()
+            if (warning?.message) {
+                Alert.alert(`${warning?.message}`)
+            }
         }
         else {
             setOpenModal(false)
             ToastAndroid.show("Sửa budget không thành công", ToastAndroid.SHORT);
         }
+    }
+    const checkWarning = () => {
+        dispatch(checkWarningAction({
+            categoryId: newBudget?.category?.categoryId,
+            date: newBudget?.startDate
+        }))
+            .then(res => {
+                console.log(res, 'warninggggggg')
+                setWarning(res?.payload)
+            })
+            .catch(err => console.log(err))
     }
     const handleDelete = async () => {
         setLoading(true)
@@ -179,21 +220,21 @@ const Budget = () => {
                     Keyboard.dismiss()
                     setOpenModal(false)
                 }}
-                    >
-                    <View style={{backgroundColor: 'rgba(0,0,0,0.6)', flex: 1, alignItems: 'center', justifyContent: "center"}}>
-                        <View style={{width: 300, height: 200, backgroundColor: theme.WHITE, borderRadius: 8, padding: 16}}>
-                            <Text style={{fontSize: 18, fontWeight: "600", color: theme.flatListItem, textAlign: "center"}}>Sửa ngân sách</Text>
-                            <View style={{marginTop: 12}}>
-                                <Text style={{fontSize: 16, fontWeight: "500", color: theme.BLACK}}>Giá trị</Text>
-                                <View style={{flexDirection: "row", alignItems: "center", marginTop: 12}}>
-                                    <TextInput 
-                                        placeholder='Giá trị' 
-                                        keyboardType="numeric" 
-                                        value={valueCurrent} 
-                                        onChangeText={(text) => setValueCurrent(text)} 
+                >
+                    <View style={{ backgroundColor: 'rgba(0,0,0,0.6)', flex: 1, alignItems: 'center', justifyContent: "center" }}>
+                        <View style={{ width: 300, height: 200, backgroundColor: theme.WHITE, borderRadius: 8, padding: 16 }}>
+                            <Text style={{ fontSize: 18, fontWeight: "600", color: theme.flatListItem, textAlign: "center" }}>Sửa ngân sách</Text>
+                            <View style={{ marginTop: 12 }}>
+                                <Text style={{ fontSize: 16, fontWeight: "500", color: theme.BLACK }}>Ngân sách</Text>
+                                <View style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
+                                    <TextInput
+                                        placeholder='Giá trị'
+                                        keyboardType="numeric"
+                                        value={addCommas(removeNonNumeric(valueCurrent))}
+                                        onChangeText={(text) => setValueCurrent(text)}
                                         style={{
-                                            borderWidth: 1, 
-                                            borderColor: theme.borderColor, 
+                                            borderWidth: 1,
+                                            borderColor: theme.backgroundType,
                                             height: 40,
                                             flex: 1,
                                             padding: 5,
@@ -204,9 +245,10 @@ const Budget = () => {
                                     <Text>VND</Text>
                                 </View>
                             </View>
+                            {/*   */}
                             <View style={{ marginTop: 24, flexDirection: "row", justifyContent: "space-between" }}>
                                 <TouchableOpacity onPress={handleUpdate}>
-                                    <View style={{width: 150, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: theme.tabActive, overflow: "hidden"}}>
+                                    <View style={{ width: 150, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: theme.tabActive, overflow: "hidden" }}>
                                         <Text style={{
                                             fontSize: 15,
                                             fontWeight: "600",
@@ -215,7 +257,7 @@ const Budget = () => {
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={handleDelete}>
-                                    <View style={{width: 100, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: theme.CANCEL_BACKGROUNG, overflow: "hidden"}}>
+                                    <View style={{ width: 100, height: 40, justifyContent: "center", alignItems: "center", borderRadius: 8, backgroundColor: theme.CANCEL_BACKGROUNG, overflow: "hidden" }}>
                                         <Text style={{
                                             fontSize: 15,
                                             fontWeight: "600",

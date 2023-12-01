@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { NAVIGATION_TITLE } from '../../constants/navigation'
 import { getInfoUserAction } from '../../services/user/actions'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,7 @@ import st from './styles'
 
 const Header = (props: any) => {
     const { isBack, title } = props
+    const isFocused = useIsFocused()
     const dispatch = useDispatch<any>()
     const navigation = useNavigation<any>()
     const styles = st();
@@ -23,11 +24,10 @@ const Header = (props: any) => {
     })
     useEffect(() => {
         getInfoUser()
-    }, [])
+    }, [isFocused])
     const getInfoUser = () => {
         dispatch(getInfoUserAction())
             .then(res => {
-                console.log(res, "info userrrrrrrr")
                 setInfoUser(res?.payload)
             })
             .catch(err => console.log('err', err))

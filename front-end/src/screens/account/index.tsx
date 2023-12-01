@@ -29,7 +29,7 @@ const Account = () => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate(NAVIGATION_TITLE.INFO_USER) }}>
                     <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_info.png')} />
-                    <Text style={[styles.itemText]}>Thông tin</Text>
+                    <Text style={[styles.itemText]}>Chỉnh sửa tài khoản</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.item} onPress={() => { setUserInfoModal(true) }}>
                     <Image style={styles.itemIcon} source={require('../../../assets/images/icon/ic_lock.png')} />

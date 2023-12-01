@@ -6,7 +6,7 @@ import { getClassifyByValueAction } from '../../services/classify/actions'
 import { BASE_URL } from '../../constants/api';
 import useTheme from '../../hooks/useTheme';
 
-const ListCategoryModal = ({ modalVisible, setModalVisible, setEntryClassify }) => {
+const ListCategoryModal = ({ modalVisible, setModalVisible, setEntryClassify, isHideNav }) => {
 
     const styles = st();
     const theme = useTheme();
@@ -40,7 +40,7 @@ const ListCategoryModal = ({ modalVisible, setModalVisible, setEntryClassify }) 
                     <TouchableWithoutFeedback onPress={() => { setModalVisible(true) }}>
                         <View style={styles.modalInner}>
                             <Text style={styles.title}>Chọn danh mục</Text>
-                            <View style={styles.optionContainer}>
+                            {!isHideNav&&<View style={styles.optionContainer}>
                                 <TouchableOpacity
                                     onPress={() => {
                                         setIncomeTab(false)
@@ -59,7 +59,7 @@ const ListCategoryModal = ({ modalVisible, setModalVisible, setEntryClassify }) 
                                 >
                                     <Text style={[styles.optionText, { color: isIncomeTab ? theme.tabActive : 'grey' }]}>Thu nhập</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </View>}
                             <FlatList
                                 data={listCategory}
                                 renderItem={({ item }) => (

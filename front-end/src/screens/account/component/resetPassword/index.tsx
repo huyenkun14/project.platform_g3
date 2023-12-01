@@ -4,6 +4,7 @@ import st from './styles';
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux';
 import { resetPasswordAction } from '../../../../services/user/actions';
+import Loading from '../../../../../utils/loading/Loading';
 
 
 const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
@@ -15,7 +16,7 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
         newPass: '',
         reNewPass: '',
     });
-
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
 
     }, [])
@@ -34,6 +35,7 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
                 password: textChange.reNewPass
             }))
                 .then(res => {
+                    setLoading(true)
                     if (res?.payload) {
                         console.log(res)
                         ToastAndroid.show('Đổi mật khẩu thành công', ToastAndroid.SHORT)
@@ -44,9 +46,10 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
                             newPass: '',
                             reNewPass: '',
                         })
+                        setLoading(false)
                     } else {
                         ToastAndroid.show('Mật khẩu cũ không đúng.', ToastAndroid.SHORT)
-                        console.log('Mật khẩu cũ không đúng.')
+                        setLoading(false)
                     }
                 })
                 .catch(err => ToastAndroid.show('Có lỗi', ToastAndroid.SHORT))
@@ -55,7 +58,7 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
     const onChangeText = (name) => {
         return (value: any) => {
             setTextChange({ ...textChange, [name]: value })
-            console.log(textChange,'textchangeeeeeeeeee')
+            console.log(textChange, 'textchangeeeeeeeeee')
         }
     }
     return (
@@ -67,10 +70,10 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
                 visible={modalVisible}
             >
                 <View style={styles.container}>
-                <Image
-                    style={styles.logo}
-                    source={require('../../../../../assets/images/moly.png')}
-                />
+                    <Image
+                        style={styles.logo}
+                        source={require('../../../../../assets/images/moly.png')}
+                    />
                     <Text style={styles.inputLabel}>Mật khẩu cũ</Text>
                     <TextInput
                         style={styles.input}
@@ -110,6 +113,7 @@ const ResetPasswordModal = ({ modalVisible, setModalVisible }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Loading visiable={loading} />
             </Modal>
         </SafeAreaView >
     )
